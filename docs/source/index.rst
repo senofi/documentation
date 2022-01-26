@@ -10,7 +10,7 @@ Welcome to openidl's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   iac-github-actions.md
+   iac-github-actions.rst
 
 
 
