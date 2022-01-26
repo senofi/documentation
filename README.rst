@@ -1,9 +1,4 @@
-Template for the Read the Docs tutorial
+openIDL Documentation
 =======================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
-
-Read the tutorial here:
-
-https://docs.readthedocs.io/en/stable/tutorial/
+This document provides support for organizations hoping to setup, configure and use the openIDL network.
