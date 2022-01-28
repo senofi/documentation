@@ -1,3 +1,5 @@
+.. _Manage the Network:
+
 Managing the Network
 ====================
 

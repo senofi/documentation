@@ -17,8 +17,8 @@ Following are steps to deploy Application and UI Services
 
 -  Create Application User using Utilities Service
 
-Deploy MongoDB (GitHub Actions)
--------------------------------
+Deploy MongoDB (GitHub Actions)-
+--------------------------------
 
 **NOTE**: In case during mongoDB deployment if it fails due to issues
 before rerunning again after resolving issues, please run clean-up job
@@ -53,8 +53,8 @@ by action mongodb
 5. Once the required arguments are updated in the dialog box, click on
 the button “Run workflow” which will start the workflow.
 
-Port Forwarding to Mongo DB
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Port Forwarding to Mongo DB-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Setup AWS CLI and log-in using aws_access_key_id and
    aws_secret_access_key
@@ -81,8 +81,8 @@ NOTE: the mongodb_username and mongodb_password are put into the aws
 secrets manager at <org_name>-<env>-mongodb-user for the username and
 <org_name>-<env>-mongodb-user-token for the password
 
-Creating Application Configuration files
-----------------------------------------
+Creating Application Configuration files-
+-----------------------------------------
 
 Use the application configuration templates to replace the following
 files for each individual organization. These files are found in the
@@ -93,8 +93,8 @@ files in the config directory.
 
 There are targets available for specific like #make copy_carrier_secrets
 
-AAIS Variables
-~~~~~~~~~~~~~~
+AAIS Variables-
+~~~~~~~~~~~~~~~
 
 +------------------------+---------------------------------------------+
 | **JSON File Name**     | **Values to be Replaced**                   |
@@ -188,8 +188,8 @@ AAIS Variables
 |                        | AAIS_ORGNAME: aais                          |
 +------------------------+---------------------------------------------+
 
-Analytics Variables
-~~~~~~~~~~~~~~~~~~~
+Analytics Variables-
+~~~~~~~~~~~~~~~~~~~~
 
 +------------------------+---------------------------------------------+
 | **JSON File Name**     | **Values to be Replaced**                   |
@@ -310,8 +310,8 @@ Analytics Variables
 |                        | ANALYTICS_ORGNAME: analytics                |
 +------------------------+---------------------------------------------+
 
-Carrier Variables
-~~~~~~~~~~~~~~~~~
+Carrier Variables-
+~~~~~~~~~~~~~~~~~~
 
 +------------------------+---------------------------------------------+
 | **JSON File Name**     | **Values to be Replaced**                   |
@@ -406,8 +406,8 @@ Carrier Variables
 |                        | CARRIER_ORGNAME: trv                        |
 +------------------------+---------------------------------------------+
 
-Creating CA TLS CERT for connection profile
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Creating CA TLS CERT for connection profile-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Connect to vault using port-forwarding and AWS secret manager for
 secrets (refer 11.2.5 Connecting to vault)
@@ -461,8 +461,8 @@ Get the .pem secret contents.
 |                |                 | reinstated as part of the copy.   |
 +----------------+-----------------+-----------------------------------+
 
-Connecting to Vault Cluster (CA TLS Certificate)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Connecting to Vault Cluster (CA TLS Certificate)-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Setup AWS CLI and log-in using aws_access_key_id and
    aws_secret_access_key
@@ -520,8 +520,8 @@ Example: >aws eks update-kubeconfig –region <region> --name
       :width: 5.09792in
       :height: 2.62639in
 
-Adding config files to Vault
-----------------------------
+Adding config files to Vault-
+-----------------------------
 
 1. Setup AWS CLI and login using AWS access key and secret key
 
@@ -630,11 +630,11 @@ Mapping of values for add-vault-config script to AWS Secrets
 
    #kubectl delete pod ubuntu
 
-GitHub Actions to Deploy Secrets and Application
-------------------------------------------------
+GitHub Actions to Deploy Secrets and Application-
+-------------------------------------------------
 
-Pipeline to deploy secrets
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pipeline to deploy secrets-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. csv-table:: Pipeline
     :file: table15.csv
@@ -651,8 +651,8 @@ ii. env_type – Type of the environment. Example: dev \| test \| prod
 2. Upon the pipeline is manually triggered it deploys the secrets for
    openIDL application.
 
-Troubleshooting
-^^^^^^^^^^^^^^^
+Troubleshooting-
+^^^^^^^^^^^^^^^^
 
 If you see an error in the secret deployment or the app deployment.
 
@@ -756,8 +756,8 @@ The phone number must be in the form +11112223333
    :width: 6.50556in
    :height: 4.65486in
 
-Adding application users using Utilities Service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding application users using Utilities Service-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Launch the Utilities Service Swagger at http://utilities-service
    ${ENV}.${ORGNAME}.${DOMAIN}.com/api-docs

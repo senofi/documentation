@@ -13,7 +13,7 @@ The overall workflow is represented in the below workflow diagram. A user pushes
 .. |iac_design| image:: images/iac_gitactions_design.png
 .. |iac_gitactions_flow| image:: images/iac_gitactions_flow.png
 
-.. include:: setup_github_repo.rst
+.. include:: setup-github-repo.rest
 
 .. include:: iac-gitactions-activate.rst
 
@@ -23,7 +23,7 @@ Note:
 	The naming format for any feature branch should be <base_branch_name>*
 	Example: feature branch for carrier node in test environment may be: carrier_test_feature
 
-.. include:: iac-github-bestpractices.rst
+.. include:: iac-github-bestpractices.rest
 
 .. include:: iac-gitactions-environments.rst
 
@@ -41,7 +41,7 @@ Note:
 
 .. include:: iac-gitactions-references-inputs.rst
 
-.. include:: iac-manage-network.rst
+Use the :ref:`Manage the Network` section to setup the network
 
 .. include:: iac-gitactions-baf.rst
 

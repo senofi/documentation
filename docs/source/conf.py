@@ -29,6 +29,7 @@ author = 'AAIS'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [ 
+    'sphinx.ext.autosectionlabel',
     # 'sphinx_rtd_theme'
     ]
 
@@ -56,3 +57,5 @@ html_theme = 'bizstyle'
 html_static_path = ['_static']
 
 html_logo = "openidl_logo.logo"
+
+autosectonlabel_prefix_document = True

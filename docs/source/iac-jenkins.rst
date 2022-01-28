@@ -2,7 +2,8 @@
 Infrastructure as Code using Jenkins
 ===========================================
 
-In this section we'll use Jenkins, Ansible Tower (AXW) and Terraform Enterprise (Terraform Cloud)
+This document describes how to build openIDL nodes using Jenkins pipelines
+which works with Terraform Cloud/Enterprise and AWX. 
 
 Environment Required
 ====================
@@ -15,13 +16,8 @@ Environment Required
 
 4. Ansible Tower /AWX (open source)
 
-This document is an extension which details about Jenkins pipelines
-which works with Terraform Cloud/Enterprise and AWX to provision OpenIDL
-node. Hence follow the base document and as an extension work along
-these steps to setup Jenkins, AWX, Terraform Cloud, Git repository to
-use these pipelines.
 
-.. include:: setup_github_repo.rst
+.. include:: setup-github-repo.rest
 
 Source code repository (GitHub)
 -------------------------------
@@ -84,7 +80,7 @@ accordingly.
 recorded to enable them as secrets/credentials in Jenkins/AWX in next
 steps.
 
-.. include:: iac-github-bestpractices.rst
+.. include:: iac-github-bestpractices.rest
 
 Terraform Cloud/Enterprise
 ==========================
@@ -1776,10 +1772,9 @@ shows as “Build Now”. This will fail and will update your job with
 relevant parameters required for the job to run. Further runs will show
 an option Build with Parameters which will be right run.
 
-Use the Administration Guide section applicable for setting up this
-particular type of node.
-
 .. image:: images3/image67.png
+
+follow the :ref:`Manage the Network` section to complete all the steps for whichever node you are creating.
 
 .. _mongodb-job-1:
 
