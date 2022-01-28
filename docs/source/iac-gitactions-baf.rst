@@ -56,6 +56,8 @@ to the Action Tab in GitHub account (reference to screenshot below)
 5. Once the required arguments are updated in the dialog box, click on
 the button “Run workflow” which will start the workflow.
 
+Use the :ref:`Manage the Network` section to setup the network
+
 GitHub Actions list for setting the blockchain network and components
 ---------------------------------------------------------------------
 

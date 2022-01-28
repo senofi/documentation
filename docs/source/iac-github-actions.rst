@@ -41,8 +41,6 @@ Note:
 
 .. include:: iac-gitactions-references-inputs.rst
 
-Use the :ref:`Manage the Network` section to setup the network
-
 .. include:: iac-gitactions-baf.rst
 
 .. include:: iac-gitactions-deploy-app.rst
