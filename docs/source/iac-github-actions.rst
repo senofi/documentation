@@ -26,3 +26,26 @@ Note:
 .. include:: iac-github-bestpractices.rst
 
 .. include:: iac-gitactions-environments.rst
+
+.. include:: iac-prepare-aws-environment.rst
+
+.. include:: iac-setup-user-with-inline-policy.rst
+
+.. include:: iac-update-role-with-trust-policy.rst
+
+.. include:: iac-gitactions-setup-terraform.rst
+
+.. include:: iac-gitactions-setup-secrets.rst
+
+.. include:: iac-gitactions-prepareandsubmit.rst
+
+.. include:: iac-gitactions-references-inputs.rst
+
+.. include:: iac-manage-network.rst
+
+.. include:: iac-gitactions-baf.rst
+
+.. include:: iac-gitactions-deploy-app.rst
+
+.. include:: admin-add-application-users.rst
+

@@ -4,15 +4,18 @@
    contain the root `toctree` directive.
 
 Welcome to openIDL documentation!
-=================================================
+=================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :numbered:
    :caption: Contents:
 
    iac-github-actions.rst
    iac-jenkins.rst
+   iac-operational-procedures.rst
+   testing-app.rst
+   debugging.rst
 
 
 Overview

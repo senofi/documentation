@@ -1,0 +1,20 @@
+﻿Nodeà,,AAIS,,,Analytics,Carrier
+Roleà,Administrator,Regulator,Carrier,Stat-Agent,Stat-Agent,Carrier
+Scenario,,,,,,
+Login,N/A,Should see the data call list and the option to create a new data call,Should see the data call list but no option to create a data call,Should see the data call list,Should see the data call list,Should see the data call list
+Create a Data Call,N/A,Data call should appear in draft list if not issued on creation.,N/A,,,
+Issue Data Call,N/A,Data call should appear in issued list,N/A,,,
+Upload Data,N/A,,Data Should Appear in the Mongo Database,,,Should see data in the HDS
+View Reports,N/A,,,,,
+Create An Extraction Pattern,Extraction pattern is available to be applied to a data call,,,,,
+Publish the Extraction Pattern,Extraction pattern appears in list of available extraction patterns,N/A,N/A,N/A,,
+Update an Extraction Pattern,Extraction pattern is updated in the system,N/A,N/A,N/A,,
+Assign Extraction Pattern,N/A,N/A,N/A,Extraction pattern should be visibly connected to the data call.,,
+,,,,,,
+Like / Unlike,N/A,N/A,Only available for draft data calls.,N/A,,
+,,,Number of likes increases or decreases for the data call,,,
+View Liking Organizations,,,,,,
+View Consenting Organizations,,Should see list of consenting carriers,,,,
+Consent,N/A,,,,,
+Create a User,New user should show up in IBM Cloud list of users for this appid service,,,,,
+Update Chaincode,The new chaincode is used by the network.,,,,,

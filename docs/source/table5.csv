@@ -1,0 +1,7 @@
+﻿Purpose and Name,IAM Username,Description
+BAF Automation,<orgname>-<envtype>-baf-automation,IAM user provisioned for BAF automation
+,Example: aais-dev-baf-automation,
+GitHub Actions Automation,<orgname>-<envtype>-gitactions-eksadm,IAM user provisioned for GitHub Actions pipelines
+,Example: aais-dev-gitactions-eksadm,
+,,
+Application User,<orgname>-<envtype>-openidl-apps-user,"IAM user provisioned for using in application configuration to access AWS resources. This IAM user has access to Cognito, Secrets Manager, S3 Buckets created for HDS data analytics and public S3 bucket provisioned for logos. "

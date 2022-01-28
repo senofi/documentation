@@ -1,0 +1,3 @@
+﻿Security Group Name,Example,Description
+<org_name>-<env>-app-eks-worker-node-group-sg,Aais-dev-app-eks-worker-node-group-sg,This is the security group attached to the worker nodes of app EKS cluster 
+<org_name>-<env>-blk-eks-worker-node-group-sg,Aais-dev-blk-eks-worker-node-group-sg,This is the security group attached to the worker nodes of blk EKS cluster

@@ -1,0 +1,11 @@
+﻿Pipeline File,Prerequisites,Trigger,Description
+deploy-openidl-secrets.yml,Based on node type and environment ensure that the secrets are configured as environment secrets.,Manual trigger. Input org_name and env_type to trigger the pipeline for deploying secrets,The pipeline is used to deploy secrets. This should be executed before deploying OpenIDL application
+,Name format: should be <env>-<org-name> (NOT: <env-type>-<node-type>),,
+,#1. gitactions_user_access_key (use your gitactions_eksadm user access key),,
+,#2. gitactions_user_secret_key,,
+,(use your gitactions_eksadm user secret key),,
+,#3. gitactions_eksadm_role (this is the arn),,
+,#4. gitactions_external_id (git-actions),,
+,#5. aws_region,,
+,#6. app_cluster_name,,
+,#7. vault_secret_name (name of the secret setup in vault to retrieve credentials. Refer to AWS Secret Manager to identify the vault secret names provisioned. Format <orgname>-<env>-config-vault. Ex: aais-dev-config-vault,,

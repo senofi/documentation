@@ -1,0 +1,11 @@
+﻿Pipeline File,Prerequisites,Trigger,Description
+deploy-openidl-app-dev-aais.yml,Based on node type and environment that it belongs to setup gitactions secrets accordingly in the respective environment:,"On push to branch: ""develop"",",Currently the pipeline exists only for dev AAIS. When needed additional pipeline file needs to be created for test/prod AAIS. 
+,Naming format: <env-type>-<node-type>,change in file: openidl-k8s/global-values-dev-aais.yml,
+,#1. gitactions_user_access_key,,
+,#2. gitactions_user_secret_key,,
+,#3. gitactions_eksadm_role (this is the full arn),,
+,#4. gitactions_external_id (default: git-actions),,
+deploy-openidl-app-dev-analytics.yml,#5. aws_region,"On push to branch: ""develop"",",Currently the pipeline exists only for dev Analytics. When needed additional pipeline file needs to be created for test/prod Analytics. 
+,#6. app_cluster_name,change in file: openidl-k8s/global-values-dev-analytics.yml,
+deploy-openidl-app-dev-carrier.yml,,"On push to branch: ""develop"",",Currently the pipeline exists only for dev dummy carrier. When needed additional pipeline file needs to be created for test/prod carrier. Also for specific carrier this pipeline file needs to be updated to reflect specific global-values-dev-<carrier>.yml and also relevant helm upgrade command in the pipeline which refers to this file at line number 64
+,,change in file: openidl-k8s/global-values-dev-<carrier>.yml,

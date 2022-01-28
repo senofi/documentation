@@ -1,0 +1,28 @@
+﻿AAIS - Analytics,,,,,,,,,
+#,Node,Action,ORG ,ENV,Channel Name,Extra ,New Org Name,Chaincode Version,Comments and Verification
+,,,,,,Arguments,,,
+0,Analytics,Baf_image,<org_name>,<env>,,,,,The image should be available in the organization on github
+1,Analytics,vault,aais,<env>,defaultchannel,,,,Vault UI should be visible from the port-forward.
+,1. Get Orderer TLS cert from AAIS vault and convert to base64 encoded string.  Refer to 10.6 Connecting to Vault Cluster,,,,,,,,
+,2. Share the TLS Cert with Analytics,,,,,,,,
+,3. Analytics uploads the TLS Cert to its AWS Secret Manager. Refer to 10.7 Connecting to AWS Secret Manager,,,,,,,,
+2,Analytics,new_org,analytics,<env>,defaultchannel,,,,??
+,1. Get Org MSP from Analytics vault. Refer to 10.6 Connecting to Vault Cluster,,,,,,,,
+,2. Share the Org MSP with AAIS,,,,,,,,
+,3. AAIS uploads the Analytics Org MSP to its AWS Secret Manager. Refer to 10.7 Connecting to AWS Secret Manager,,,,,,,,
+,4. Make sure the aais-config-dev.yml in the aais-dev branch has the analytics org and domain,,,,,,,,
+3,AAIS,add_new_org,aais,<env>,defaultchannel,,analytics,,??
+4,Analytics,join_peer,analytics,<env>,defaultchannel,,,,??
+,Chaincode version should be same as the one used on AAIS for defaultchannel. (See step #3),,,,,,,,
+5,Analytics,chaincode,analytics,<env>,defaultchannel,'-e add_new_org=true',,Format: MMDDTTTT,??
+,Update organization configuration file with new channel analytics-aais and chaincode information (channels section). Push the config file to repository in the aais-<env> branch,,,,,,,,
+6,AAIS,add_new_channel,aais,<env>,anal-aais,,,,??
+,AAIS node should be able to pull the Analytics MSP from AWS secret manager which was added as part of add_new_org action on defaultchannel (See step #6),,,,,,,,
+7,AAIS,add_new_org,aais,<env>,anal-aais,,analytics,,??
+8,AAIS,chaincode,aais,<env>,anal-aais,,,Format: MMDDTTTT,??
+,Update analytics organization configuration file with new channel analytics-aais and chaincode information (channels section). Push the config file to repository,,,,,,,,
+9,Analytics,join_peer,analytics,<env>,anal-aais,,,,??
+,Chaincode version should be same as the one used on AAIS for analytics-aais channel (See step #11),,,,,,,,
+10,Analytics,chaincode,analytics,<env>,anal-aais,'-e add_new_org=true',, Format: MMDDTTTT,??
+11,Analytics,register_users,analytics,<env>,defaultchannel,,,,??
+ The first step is to build the baf_image before starting the rest of the process. This action will build baf_image and push to the repository. In case this is already done and the image is latest the rest of the steps can be proceed.,,,,,,,,,

@@ -1,0 +1,12 @@
+﻿Required Input,Description
+aws_account_id,AWS account number
+aws_access_key,IAM user access key - from the terraform user
+aws_secret_key,IAM user secret key - from the terraform user
+aws_user_arn,IAM user ARN - from the terraform user
+aws_role_arn,IAM role ARN - from the terraform user
+aws_region,AWS region to setup the resources
+aws_external_id,AWS external id used while setting up IAM user and IAM role
+tf_backend_s3_bucket,Globally unique bucket name for terraform state files - suggest something like <node_type>-<node_env>-<org_name>-backend-state eg: aais-dev-aais-backend-state
+tf_inputs_s3_bucket,Globally unique bucket name for terraform input files - suggest something like <node_type>-<node_env>-<org_name>-inputs eg: aais-dev-aais-inputs
+tf_backend_dynamodb_table_aws_resources,DynamoDB table to manage terraform state locking in AWS resources pipeline - suggest <node_type>-<node_env>-<org_name>-aws-resources
+tf_backend_dynamodb_table_k8s_resources,DynamoDB table to manage terraform state locking in Kubernetes resources pipeline - suggest <node_type>-<node_env>-<org_name>-k8s-resources

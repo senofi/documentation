@@ -1,0 +1,12 @@
+﻿Node Type,Environment,Branch Name,Environment Name
+aais node,dev,aais_dev,aais_dev
+aais node,test,aais_test,aais_test
+aais node,prod,aais_prod,aais_prod
+carrier node,dev,carrier_dev,carrier_dev
+carrier node,test,carrier_test,carrier_test
+carrier node,prod,carrier_prod,carrier_prod
+analytics node,dev,analytics_dev,analytics_dev
+analytics node,test,analytics_test,analytics_test
+analytics node,prod,analytics_prod,analytics_prod
+,,,
+,,,

@@ -1,0 +1,22 @@
+﻿AAIS,,
+Variable,Description,Example Value
+GITOPS_REPO_URL,github repo url of openidl-aais-gitops repo,https://github.com/aais-openidl/openidl-aais-gitops
+,This is the forked repo.,
+GITOPS_REPO_BRANCH,github branch in openidl-aais-gitops repo,develop
+,The branch where saving the file <node_type>_<env>,
+ORDERERORG_DOMAIN_NAME,Domain name of the ordering service running in AAIS account,aais.aaisdirect.com
+,<domain_name>,
+,This is common across all and should be the same for every carrier,
+DOMAIN_NAME,Domain name to be used for fabric endpoints,aais.aaisdirect.com
+,<subdomain>.<domain_name>,
+INTERNAL_DOMAIN_NAME,Internal domain name from the Route53 private hosted zone,aais.internal.aaisdirect.org
+,<subdomain>.internal.<domain_name>,
+ENV,Environment,dev
+AAIS_ORGNAME,AAIS organization name,aais
+ANALYTICS_ORGNAME,Analytics organization name,analytics
+ANALYTICS_DOMAIN_NAME,Analytics domain name to be used for its endpoints,analytics.openidldirect.org
+CARRIER_ORGNAME,Carrier organization name,ins (should be four or less characters)
+CARRIER_DOMAIN_NAME,Carrier domain name to be used for its endpoints,ins.openidldirect.org
+ANAYTICS_AAIS_CHANNEL_NAME,Channel name between Analytics and AAIS nodes,anal-aais
+ANAYTICS_CARRIER_CHANNEL_NAME,Channel name between Analytics and Carrier nodes,anal-ins
+CHAINCODE_REPO_BRANCH,Branch to be used for installing chaincode from github.com/openidl-org/openidl-main repository ,develop

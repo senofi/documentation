@@ -1,0 +1,19 @@
+﻿Carrier,,
+Variable,Description,Example Value
+BAF_IMAGE_REPO,the org and repo name of the baf_image,use this value unless otherwise stated openidl-org/openidl-aais-gitops
+GITOPS_REPO_URL,github repo url of openidl-aais-gitops repo,https://github.com/trv-openidl/openidl-aais-gitops
+GITOPS_REPO_BRANCH,github branch in openidl-aais-gitops repo,baf-automation
+ORDERERORG_DOMAIN_NAME,Domain name of the ordering service running in AAIS account.,aais.openidldirect.org
+,This was defined on the aais node and should be repeated here.,
+DOMAIN_NAME,Domain name to be used for fabric endpoints,trv.openidldirect.org
+INTERNAL_DOMAIN_NAME,Internal domain name from the Route53 private hosted zone,trv.internal.openidldirect.org
+,,
+ENV,Environment,dev
+AAIS_ORGNAME,AAIS organization name,aais
+ANALYTICS_ORGNAME,Analytics organization name,analytics
+ANALYTICS_DOMAIN_NAME,Analytics domain name to be used for its endpoints,analytics.openidldirect.org
+CARRIER_ORGNAME,Carrier organization name,trv
+CARRIER_DOMAIN_NAME,Carrier domain name to be used for its endpoints,trv.openidldirect.org
+ANAYTICS_AAIS_CHANNEL_NAME,Channel name between Analytics and AAIS nodes,analytics-aais
+ANAYTICS_CARRIER_CHANNEL_NAME,Channel name between Analytics and Carrier nodes,analytics-trv
+CHAINCODE_REPO_BRANCH,Branch to be used for installing chaincode from github.com/openidl-org/openidl-main repository ,develop

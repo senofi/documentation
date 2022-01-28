@@ -1,0 +1,62 @@
+﻿AWS area,Input name,Data type,Description
+Organization,org_name,String,Set the organization name as below. 
+,,,"For aais node, set org_name = “aais”,"
+,,,"For analytics node, set org_name = “analytics”"
+,,,"For carrier node, set org_name = “<carrierogname>”. Example org_name = “travelers”."
+,,,Note: For aais’s dummy carrier set org_name=”carrier” for others set respective org name.
+Environment,aws_env,String,Set to dev | test | prod
+app cluster VPC,app_vpc_cidr,string,Network CIDR for the application cluster
+,app_availability_zones,list,List of availability zones for application cluster
+,app_public_subnets,list,List of subnet CIDRs for application cluster public subnets
+,app_private_subnets,list,List of subnet CIDRs for application cluster private subnets
+blk cluster VPC,blk_vpc_cidr,string,Network CIDR for the blockchain cluster
+,blk_availability_zones,list,List of availability zones for blockchain cluster
+,blk_public_subnets,list,List of subnet CIDRs for blockchain cluster public subnets
+,blk_private_subnets,list,List of subnet CIDRs for blockchain cluster private subnets
+bastion hosts,bastion_host_nlb_external,Bool,"Set to “true” if bastion’s NLB to be publicly accessible, otherwise “false” for being internal NLB."
+app cluster bastion host sg traffic rules,app_bastion_sg_ingress,list(any),Ingress traffic rules to be allowed for bastion host in application cluster
+,app_bastion_sg_egress,list(any),Egress traffic rules to be allowed for bastion host in application cluster
+blk cluster bastion host sg traffic rules,blk_bastion_sg_ingress,list(any),Ingress traffic rules to be allowed for bastion host in blockchain cluster
+,blk_bastion_sg_egress,list(any),Egress traffic rules to be allowed for bastion host in blockchain cluster
+route53 (public),domain_info (,map,
+,"r53_public_hosted_zone_required, domain_name, sub_domain_name, comments)",,"Choose whether to create public hosted zone in Route 53. When chosen to create hosted zone, it results name servers after terraform run. These name servers need to be added in the domain registrar under the list of domain’s name servers. "
+,,,"When chosen not to create hosted zone in route 53, it results list of URLs/FQDNs which are required to enter in the domain records. "
+,,,Be sure to include ‘.com’ in the domain.
+,tgw_amazon_side_asn,String,The ASN number on the amazon side. Default “64532”
+transit gateway,,,
+Cognito user pool,userpool_name,string,A name to the user pool
+,client_app_name,string,A name to the application client that will use user pool
+,client_callback_urls,list,"List of call-back URLs of the application, include explicitly redirect URL as well.  These are dummy urls.  They must be https://.."
+,client_default_redirect_url,string,A redirect URL of the application
+,client_logout_urls,list,A list of logouts URLs of the application
+,cognito_domain,string,A unique Cognito domain name 
+,email_sending_account,String,"“COGNITO_DEFAULT” | “DEVELOPER” depends on email service is Cognito default or SES. Accordingly, setup secrets, SES service."
+application related traffic in app cluster,app_eks_workers_app_sg_ingress,list(any),Any additional traffic required to allowed to reach worker nodes. Set by default empty. This can be used in future if any additional rules required to enable. Otherwise set to empty (refer to templates)
+,app_eks_workers_app_sg_egress,list(any),List of egress traffic rules to be allowed to the EKS worker nodes in app cluster – application specific traffics (refer to templates)
+application related traffic in blk cluster,blk_eks_workers_app_sg_ingress,list(any),Any additional traffic required to allowed to reach worker nodes. Set by default empty. This can be used in future if any additional rules required to enable. Otherwise set to empty (refer to templates)
+,blk_eks_workers_app_sg_egress,list(any),List of egress traffic rules to be allowed to the EKS worker nodes in blk cluster – application specific traffics (refer to templates)
+application EKS cluster,app_cluster_name,string,Application EKS cluster name
+,app_cluster_version,string,Application EKS cluster version.  Refer to https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html. Prefer n-1 version. 
+,app_worker_nodes_ami_id,String,We use the x86 ami.
+,,,
+,,,AMI ID for the EKS worker nodes. Refer to below link to identity the AMI ID based on EKS cluster version and the AWS region
+,,,https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
+,,,To retrieve AMI ID:
+,,,https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
+,,,
+,,,for version 1.20 it would be:
+,,,"#aws ssm get-parameter --name /aws/service/eks/optimized-ami/1.20/amazon-linux-2-x64/recommended/image_id --region us-east-1 --query ""Parameter.Value"" --output text"
+Blockchain EKS cluster,blk_cluster_name,string,Blockchain EKS cluster name
+,blk_cluster_version,string,Blockchain EKS cluster version
+,,,Refer to https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html. Prefer n-1 version.
+,blk_worker_nodes_ami_id,,We use the x86 ami.
+,,,
+,,,AMI ID for the EKS worker nodes. Refer to below link to identity the AMI ID based on EKS cluster version and the AWS region
+,,,https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
+,,,To retrieve AMI ID:
+,,,https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
+CloudTrail (audit logging),cw_logs_retention_period,number,Enter no of days to retain cloud trail logs (audit logs)
+,s3_bucke_name_cloudtrail,String,"Name of the s3 bucket to use with CloudTrail, (NOTE: s3 bucket names should be unique globally). suggest <node_type>-<node_env>-<org_name>-cloudtrail"
+S3 bucket – terraform state – AWS resources,terraform_state_s3_bucket_name,String,Name of the S3 bucket that would be managing terraform state files of AWS resources (First pipeline backend s3 bucket name)
+S3 bucket – HDS data analytics (applicable for analytics and carrier nodes only),S3_bucket_name_hds_analytics,String,Name of the S3 bucket that would be used to store HDS analytics data. This is applicable only for carrier and analytics nodes. For AAIS node set to empty (“”)
+S3 bucket – Public bucket to manage logos (images),S3_bucket_name_logos,String,Name of the S3 bucket that would be used to manage web page images (logos). This bucket would be publicly accessible 
