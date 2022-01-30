@@ -883,26 +883,27 @@ details to update domain accordingly.
 MongoDB Port Forwarding
 -----------------------
 
-1. Setup AWS CLI and log-in using aws_access_key_id and
-   aws_secret_access_key
+1. Setup AWS CLI and log-in using aws_access_key_id and aws_secret_access_key.  Alternately setup your aws credentials for the cli in the ~/.aws/credentials file
 
 2. Set the context for application cluster
 
-Example: >aws eks update-kubeconfig –region <region> --name
-<app-cluster>
+Example: >aws eks update-kubeconfig –region <region> --name <app-cluster>
+
+Example: >aws --profile uat-role eks update-kubeconfig --region us-east-1 -name caru-dev-app-cluster
 
 3. Setup port forward using below command
 
 # kubectl port-forward --namespace database
 svc/${ORG_NAME}-mongodb-headless 27017:27017
 
+Example: >kubectl port-forward --namespace database svc/caru-mongodb-headless 27017:27017
+
 NOTE: if you are running mongo locally, you should use another port like
 28017:27017
 
 4. Connect to Mongo DB using Compass with following URL
 
-# mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@localhost:27017
-/openidl-offchain-db?authSource=openidl-offchain-db
+# mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@localhost:27017/openidl-offchain-db?authSource=openidl-offchain-db
 
 NOTE: the mongodb_username and mongodb_password are put into the aws
 secrets manager at <org_name>-<env>-mongodb-user for the username and

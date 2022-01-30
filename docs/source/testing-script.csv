@@ -1,0 +1,14 @@
+﻿Area,Node,Organization,Role,Action,Expected Result
+UI,AAIS,Regulator,Regulator,Log In,Logged in
+UI,AAIS,Regulator,Regulator,Create Data Call,Data Call Created in Draft
+UI,AAIS,Regulator,Regulator,Create New Draft,New Draft
+UI,AAIS,Carrier,Carrier,Like Data Ccall,Like recorded and appears on data call list
+UI,Carrier,Carrier,Carrier,Like Data Ccall,Like recorded and appears on data call list
+UI,AAIS,Regulator,Regulator,Issue Data Call,Data Call Is in Issued List
+UI,AAIS,Regulator,Regulator,View Liking Organizations,List of Orgs that Liked
+UI,AAIS,AAIS,Stat-Agent,Update Issued Data Call,Data Call Info Updated
+UI,AAIS,AAIS,Stat-Agent,Set Extraction Pattern,Extraction Pattern Visible on Data Call
+UI,AAIS,Carrier,Carrier,Download Extraction Pattern,Etraction Pattern downloaded
+UI,Carrier,Carrier,Carrier,Download Extraction Pattern,Etraction Pattern downloaded
+-,-,-,-,-,-
+Extraction Patterns,N/A,N/A,N/A,Create Extraction Pattern,Extraction Pattern Tested

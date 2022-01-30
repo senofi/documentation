@@ -1,22 +1,19 @@
 Testing
 =======
 
-Scenarios
----------
+Use this :download:`Worksheet <./Testing-Worksheet.xlsx>` to manage a test.
 
-1. Create a Data Call
+Testing Script
+--------------
 
-2. Assign an Extraction Pattern
+.. csv-table:: Testing Script
+    :file: testing-script.csv
+    :header-rows: 1
+
 
 3. Upload Data
 
-4. Like the Data Call
-
 5. Consent to the Data Call
-
-6. Assign a Report
-
-7. Load data into the HDS
 
 Assume each of the roles
 ------------------------
