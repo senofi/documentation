@@ -24,7 +24,7 @@ table are setup part of preparing GitHub repository in the previous
 section.
 
 .. csv-table:: Environments
-    :file: table2.csv
+    :file: table-gitactions-environments.csv
     :header-rows: 1
 
 Add the following sensitive data as environment secrets. Ensure that the secrets are added according to the node_type, envrionment_type and branch.
@@ -34,6 +34,6 @@ For the SSH keys, create one for the terraform user and use that for all the ssh
 --------------------------------------------------------------------------------------
 
 .. csv-table:: Environment Secrets
-    :file: table3.csv
+    :file: table-gitactions-secrets.csv
     :header-rows: 1
 

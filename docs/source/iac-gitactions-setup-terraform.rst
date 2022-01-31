@@ -51,7 +51,7 @@ Option1: Using terraform automation
    file.
 
     .. csv-table:: Terraform Variables
-        :file: table1.csv
+        :file: table-terraform-variables.csv
         :header-rows: 1
 
 
