@@ -50,4 +50,6 @@ These records can be pulled from the public zone created in the VPC and ported t
 Perl Script to Copy
 ===================
 
-Use this :download:`Script <./code/r53-conf.pl>` to copy dns to the main route 53.
+Use this :download:`Script <./code/r53-conv.pl>` to copy dns to the main route 53.
+
+.. include:: ./code/r53-conv.pl
