@@ -11,7 +11,7 @@
       "id": "1235"
     }
   ],
-  "environment": "dev",
+  "environment": "<env>",
   "support": {
     "fromAddress": "support@openidl.org",
     "toAddresses": [
@@ -26,7 +26,7 @@
     "tlsCA": "-----BEGIN CERTIFICATE----- -----END CERTIFICATE-----"
   },
   "aws": {
-    "accountNumber": "866105055666",
+    "accountNumber": "<aws account>",
     "region": "us-east-1",
     "accessKeyId": "key id",
     "secretAccessKey": "secret key",
@@ -37,17 +37,17 @@
       "sesEmailIdentity": "",
       "userpoolEmailSourceArn": ""
     },
-    "terraformUserArn": "arn:aws:iam::685993417699:user/terraform_user",
-    "terraformRoleArn": "arn:aws:iam::685993417699:role/tf_automation",
+    "terraformUserArn": "arn:aws:iam::<aws account>:user/terraform_user",
+    "terraformRoleArn": "arn:aws:iam::<aws account>:role/tf_automation",
     "terraformExternalId": "terraform",
-    "terraformBackendBucketName": "carrier-dev-hig1-backend-state",
-    "terraformInputsBucketName": "carrier-dev-hig1-inputs",
-    "terraformBackendAWSTableName": "carrier-dev-hig1-aws-resources",
-    "terraformBackendK8STableName": "carrier-dev-hig1-k8s-resources",
-    "awsSSHKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoNp2Lb07gNTdnKWZfNanZIfxdxnylW7rY27iKWVAzUS4xL7CjcPTD5ksrmsOg2sicdlsZM6tSXJCdXKLeiTx19cOHJoAENKoEQs64LVVyR8hXAns2gC6DO3KeQe6lEz+SSP3+N+AhgbdcUceR1jLaQiqfpvh+bqPqzxDJsOeXQbNRUSXEvtujDV5ZOw003lNQ7z19+8RWl9WtPs+gXvncbqBKQD7F/lD8cNwHsL9DAaDWLH+oNmrHy9uIggukgxxVJt4hZ2LO5CM/vAxwY1thfsAmkfm7E1jEOZRn4PLPNFDUOU7KuMGspeiSD1s5iWNW9eZdFwOF8kqJU4fyD7/EA7lmDB54pYOCbXA3A5irJSbP7LSyXa9rPHwBPkJBt9Adk2BbEHjaRHXs00ODFZAyPDJNKmsbz/EFwG7umz1qEehSDfQIB4fUyHiPFkEpWljb6ORdeniMKsSpdP/fRCctBgWjipgZ0c9aYAbl1LcE3GV+g/ADzLO7OzneJ7GSLu0= kennethwsayers@Kenneths-MacBook-Pro-3.local"
+    "terraformBackendBucketName": "carrier-<env>-<org name>-backend-state",
+    "terraformInputsBucketName": "carrier-<env>-<org name>-inputs",
+    "terraformBackendAWSTableName": "carrier-<env>-<org name>-aws-resources",
+    "terraformBackendK8STableName": "carrier-<env>-<org name>-k8s-resources",
+    "awsSSHKey": "<ssh key>"
   },
   "vault": {
-    "url": "http://vault.dev.carrier.internal.caru.aaisdirect.com",
+    "url": "http://vault.<env>.<subdomain>.internal.<domain>",
     "username": "username",
     "password": "password",
     "orgName": "orgName",
@@ -79,16 +79,16 @@
 {
   "aws": {},
   "vault": {
-    "url": "http://vault.dev.carrier.internal.caru.aaisdirect.com",
-    "username": "config-caru-vc0fvds8",
-    "password": "meBLxecXoqT9jp7jyEWsiK2RAC7FNUFGB9AvIox1",
+    "url": "http://vault.<env>.<subdomain>.internal.<domain>",
+    "username": "<vault user>",
+    "password": "<vault user token>",
     "orgName": "config",
     "vaultPath": "config-caru",
     "apiVersion": "v1"
   },
   "mongo": {
-    "user": "caru-dev-dFxh92vY7DyHihav",
-    "token": "b8EoObq9mJhZ3m9XcoAY74H7V7ReeiYnT770avYM"
+    "user": "<mongo user>",
+    "token": "<mongo token>"
   },
   "channels": [
     {
@@ -103,7 +103,7 @@
         "name": "openidl-cc-aais-carriers"
       },
       "isCrossChannel": true,
-      "name": "anal-caru"
+      "name": "anal-<org name>"
     }
   ]
 }
