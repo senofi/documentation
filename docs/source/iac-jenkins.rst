@@ -23,17 +23,19 @@ Source code repository (GitHub)
 
 The following are the two repositories involved.
 
-+----+-----------------+-----------------------------------------------+
-| No | **Repository**  | **Description**                               |
-+====+=================+===============================================+
-| 1  | open            | Infrastructure as a code repository. This     |
-|    | idl-aais-gitops | repository is used to provision               |
-|    |                 | Infrastructure using related pipelines.       |
-+----+-----------------+-----------------------------------------------+
-| 2  | openidl-main    | Application specific code repository. This    |
-|    |                 | repository is used to provision application   |
-|    |                 | using its specific pipelines.                 |
-+----+-----------------+-----------------------------------------------+
++----+---------------------+-----------------------------------------------+
+| No | **Repository**      | **Description**                               |
++====+=====================+===============================================+
+| 1  | openidl-aais-gitops | Infrastructure as a code repository. This     |
+|    |                     | repository is used to provision               |
+|    |                     | Infrastructure using related pipelines.       |
++----+---------------------+-----------------------------------------------+
+| 2  | openidl-main        | Application specific code repository. This    |
+|    |                     | repository holds application code and is used |
+|    |                     | to build and deploy the images.               |
++----+---------------------+-----------------------------------------------+
+
+|checkbox| **Setup user and personal access tokens**
 
 A user account with necessary permissions to manage these repositories
 is required. Further provision a Personal Access Token with Selected
@@ -84,7 +86,9 @@ steps.
 Terraform Cloud/Enterprise
 ==========================
 
-   The following are items are required to setup in Terraform.
+Terraform Cloud or Terraform Enterprise are assumed to be setup.  Please see your administrator for how to accomplish this.
+
+The following are items are required to setup in Terraform.
 
 1. User Token/Team Token
 
@@ -94,6 +98,8 @@ Terraform Cloud/Enterprise
 
 Terraform User/Team Token
 -------------------------
+
+|checkbox| **Setup terraform token**
 
 A user token/team token is required to allow Jenkins to authenticate and
 successfully communicate with Terraform. It depends on an organization
@@ -124,23 +130,25 @@ Workspaces
 ----------
 
 The terraform code to provision necessary Infrastructure resources for
-OpenIDL node is provisioned into two independent set. The first set is
+OpenIDL node is provisioned into two independent sets. The first set is
 used to provision AWS resources and the other one to provision K8s
-resources. There is dependency in provisioning K8s which are addressed
-in first set of code and before provisioning K8s.
+resources. There is a dependency in provisioning K8s which are addressed
+in the first set of code and before provisioning K8s.
 
 For example, K8s resources like config-map, storage class and ha proxy
-has dependency with EKS cluster which gets provisioned before these
-resources. Hence two set of codes are managed which requires two
+have dependencies with the EKS cluster which gets provisioned before these
+resources. Hence two sets of code are managed which requires two
 different terraform workspaces in the environment to manage and
 configure. The details are below.
 
 Workspace to manage K8S Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+|checkbox| **Create K8S Workspace**
+
 1. A workspace to manage K8s resources is required. Create a new
-   workspace and choose workflow as “API-Drive workflow” and give a
-   meaningful name.
+   workspace and choose workflow as “API-Driven workflow” and give a
+   meaningful name.  Like <org name>-k8s-workspace
 
 2. Open the workspace go to settings => General and set the execution
    mode to Remote, Apply method as Manual and Terraform version above
@@ -168,9 +176,11 @@ workspace.*
 Workspace to manage AWS Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+|checkbox| **Create AWS Workspace**
+
 1. A workspace to manage AWS resources is required. Create a new
-   workspace and choose workflow as “API-Drive workflow” and give a
-   meaningful name.
+   workspace and choose workflow as “API-Driven workflow” and give a
+   meaningful name. Like <org name>-aws-workspace
 
 2. Open the workspace go to settings => General and set the execution
    mode to Remote, Apply method as Manual and Terraform version above
@@ -198,16 +208,20 @@ workspace*
 Variable Set
 ------------
 
-Update to include ALL variables in a table when merging with main doc.
+|checkbox| **Enter terraform variables**
+
+.. csv-table:: terraform variables
+   :file: table-terraform-variables.csv
+   :header-rows: 1
 
 All the terraform variables and their values (including sensitive and
-non-sensitive) are added in variable set. The details of actual
+non-sensitive) are added in a variable set. The details of actual
 variables and samples can be referred in the repository under directory
 “aws/templates”.
 
 All the variables in the templates are required to add in the variable
 set. The detailed description of the variable’s significance is
-documented in base document as a table to refer as well.
+documented above.
 
 The variable set is preferred as it can be shared across workspaces
 which is the typical use case in our solution. Configure variable set
@@ -271,9 +285,7 @@ Plugins required
 
 2. Source Code Plugin (Git Plugin)
 
-3. 
-
-4. Ansible Tower Plugin
+3. Ansible Tower Plugin
 
 5. AnsiColor
 

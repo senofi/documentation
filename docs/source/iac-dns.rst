@@ -52,4 +52,6 @@ Perl Script to Copy
 
 Use this :download:`Script <./code/r53-conv.pl>` to copy dns to the main route 53.
 
-.. include:: ./code/r53-conv.pl
+.. code-block:: perl
+
+    .. include:: ./code/r53-conv.pl

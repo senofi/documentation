@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: icons.rst
+
 Welcome to openIDL documentation!
 =================================
 
@@ -39,3 +41,8 @@ The overall infrastructure as code to deploy the required nodes (AAIS node | ana
 #. AWS Cloud
 
 .. include:: iac-configuration.rst
+
+Instructions
+------------
+
+If you see a |checkbox| then you will find a step in the iac-workbook.

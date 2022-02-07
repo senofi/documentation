@@ -1,0 +1,1 @@
+.. |checkbox| image:: images/checkbox.png
