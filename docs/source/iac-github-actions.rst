@@ -13,7 +13,9 @@ The overall workflow is represented in the below workflow diagram. A user pushes
 .. |iac_design| image:: images/iac_gitactions_design.png
 .. |iac_gitactions_flow| image:: images/iac_gitactions_flow.png
 
-.. include:: setup-github-repo.rest
+.. include:: iac-setup-github-repo.rst
+
+.. include:: iac-gitactions-setup-github-repo.rst
 
 .. include:: iac-gitactions-activate.rst
 

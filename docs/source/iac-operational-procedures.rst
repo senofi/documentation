@@ -896,7 +896,7 @@ Example: >aws --profile uat-role eks update-kubeconfig --region us-east-1 -name 
 # kubectl port-forward --namespace database
 svc/${ORG_NAME}-mongodb-headless 27017:27017
 
-Example: >kubectl port-forward --namespace database svc/caru-mongodb-headless 27017:27017
+Example: >kubectl port-forward --namespace database svc/caru-mongodb-headless 28017:27017
 
 NOTE: if you are running mongo locally, you should use another port like
 28017:27017

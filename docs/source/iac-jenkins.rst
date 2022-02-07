@@ -16,8 +16,7 @@ Environment Required
 
 4. Ansible Tower /AWX (open source)
 
-
-.. include:: setup-github-repo.rest
+.. include:: iac-setup-github-repo.rst
 
 Source code repository (GitHub)
 -------------------------------

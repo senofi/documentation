@@ -81,7 +81,10 @@ Mood Listener
 Likes and unlikes not working for a node.
 
 Restart the aais and analytics node to make sure they have the
+
 configuration correctly pointing to the new carrier node.
+
+you can also just restart the mood listener pod on the analytics node.
 
 Chaincode Troubleshooting
 -------------------------

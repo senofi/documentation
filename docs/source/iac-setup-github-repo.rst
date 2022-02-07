@@ -7,4 +7,3 @@ Setting up the GitHub repository
 *	We are using the develop branch here.  If you don’t have one called that in your fork, then create that branch now.
 *	Fetch the upstream for develop into your repository.
 
-Most of the time, we’ll be forking the repo.  If so, it is necessary to activate terraform on the actions page.  

@@ -14,6 +14,7 @@ Welcome to openIDL documentation!
    iac-github-actions.rst
    iac-jenkins.rst
    iac-manage-network.rst
+   iac-dns.rst
    iac-operational-procedures.rst
    testing-app.rst
    debugging.rst
@@ -37,11 +38,4 @@ The overall infrastructure as code to deploy the required nodes (AAIS node | ana
 #. Terraform
 #. AWS Cloud
 
-Configuration
--------------
-
-There are many places where configuration values must be provided to the IaC.
-There is one central place where all these configurations originate from.
-This is the openidl-config directory in the gitops repository.
-Create a <nodetype>-<environment>-config.json file in the openidl-config/config/ directory based on the template provided.
-Then as you need configuration items like secrets, variables or full files, just run the appropriate make target and get the results from the config directory.
+.. include:: iac-configuration.rst
