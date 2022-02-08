@@ -1,6 +1,8 @@
 Best practices to consider in setting up GitHub repository
 ----------------------------------------------------------
 
+|checkbox| **Follow best practices in github**
+
 The below are best practices recommended in setting up a GitHub repository and for more details refer to GitHub documentation. However, these are only optional for enabling the pipeline.
 
 #. Enable appropriate branch protection rules to manage who can push/pull to a branch 

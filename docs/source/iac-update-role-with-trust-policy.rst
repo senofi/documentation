@@ -1,7 +1,9 @@
 Update IAM Role with Trust Policy
 ---------------------------------
 
-1. Finally, time to update trust policy for the IAM role created in
+|checkbox| **Update role trust policy**
+
+1. Finally, time to update the trust policy for the IAM role created in the
    previous step. So, within AWS console under IAM go to roles in access
    management, select the role created in previous step.
 
@@ -38,15 +40,9 @@ External ID is from the first step of IAM. “terraform”
 Now we have completed the following steps
 
 1. Created IAM role (ARN to be noted)
-
 2. Assigned permission policy to manage AWS resources
-
-3. Created IAM user that issues access key and secret key as well (ARN,
-access key and secret key to be noted)
-
-4. Created and assigned IAM assume policy to IAM user to assume the IAM
-role
-
+3. Created IAM user that issues access key and secret key as well (ARN, access key and secret key to be noted)
+4. Created and assigned IAM assume policy to IAM user to assume the IAM role
 5. Updated trust policy in IAM role to allow IAM user to assume the role
 
 

@@ -12,3 +12,6 @@ UI,AAIS,Carrier,Carrier,Download Extraction Pattern,Etraction Pattern downloaded
 UI,Carrier,Carrier,Carrier,Download Extraction Pattern,Etraction Pattern downloaded
 -,-,-,-,-,-
 Extraction Patterns,N/A,N/A,N/A,Create Extraction Pattern,Extraction Pattern Tested
+.,,,,,
+Data Load,AAIS,Carrier,Carrier,Load data using the Insurance Data Manager Service,
+Data Load,Carrier,Carrier,Carrier,Load data using the Insurance Data Manager Service,

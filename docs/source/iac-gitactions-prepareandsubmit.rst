@@ -308,7 +308,7 @@ pipeline using the same terraform input file and these are because the
 second pipeline use only subset of data from the input file. Hence, they
 are safe to ignore.
 
-Finally note down the outputs of first pipeline and second pipeline as
+|note| Finally note down the outputs of first pipeline and second pipeline as
 they are further required in setting up the environment.
 
 Disable access keys and setup new access keys

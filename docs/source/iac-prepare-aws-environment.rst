@@ -1,21 +1,24 @@
 Prepare AWS environment
 =======================
 
+We must set up a few things in aws before we can start using the infrastructure as code to provision our node.
+
+|note| **Note the aws account number**
+
 Setup IAM Role
 --------------
 
+|checkbox| Setup terraform IAM Role
+
 1.	Login to AWS console using either a root account or IAM user with administrative rights
 2.	Go to IAM and go to roles under access management and click on create role
-3.	Select type of trusted entity as “Another AWS account”
-4.	Under specify accounts that can use this role set the Account ID to AWS account number (same AWS account number that you are logged in) and select Option Require external ID
+3.	Select type of trusted entity as “AWS account”
+4.	Keep the default for the account.
+5.  Choose "Require external ID" and enter "terraform".  Then click "next"
 
-    .. image:: images/iac_aws_setup_1.png
+    .. image:: images/select-trusted-entity.png
 
-5. Set a value to External ID and note down this as it would be used in terraform configuration and click next
-
-    .. image:: images/iac_aws_setup_2.png
-
-6. Then click on create policy, select json and update the policy content with below policy to limit only necessary permissions for the IAM role to be used by terraform to manage AWS resources. 
+6.  Then click on create policy, select json and update the policy content with below policy to limit only necessary permissions for the IAM role to be used by terraform to manage AWS resources. 
 
     .. code-block:: JSON
 
@@ -75,7 +78,7 @@ Setup IAM Role
 
 11. Enter role name, a description and ensure the policy is assigned as per below screen shot and click on create role to finish setting up IAM role with necessary policy required to manage AWS
 
-12. Note down the ARN of the IAM role created as it is required for next steps as well as in terraform configuration.
+12. |note| Note down the ARN of the IAM role created as it is required for next steps as well as in terraform configuration.
 
     .. image:: images/iac_aws_setup_5.png
 

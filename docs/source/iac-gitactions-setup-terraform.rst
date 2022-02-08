@@ -94,7 +94,7 @@ Option1: Using terraform automation
 
 12. Go to DynamoDB in AWS console and validate DynamoDB table is created
 
-13. Finally note down the name of the resources provisioned and its ARN
+13. |note| Finally note down the name of the resources provisioned and its ARN
     as they would be used further in setting up the pipeline.
 
 ..
@@ -332,7 +332,7 @@ in sending emails to users during self-sign up.
 added. Please login to the email account and complete email id
 verification.
 
-5. Then note down the ARN of the email address and the email address
+5. |note| Then note down the ARN of the email address and the email address
 itself that was verified in SES.
 
 .. image:: images/image37.png

@@ -156,3 +156,5 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 .DS_Store
 docs/source/Testing-Worksheet-Run.xlsx
+docs/source/IaC-Jenkins-Worksheet-Run.xlsx
+docs/source/~$IaC-Jenkins-Worksheet-Run.xlsx
