@@ -16,6 +16,12 @@ Environment Required
 
 4. Ansible Tower /AWX (open source)
 
+.. include:: iac-prepare-aws-environment.rst
+
+.. include:: iac-setup-user-with-inline-policy.rst
+
+.. include:: iac-update-role-with-trust-policy.rst
+
 .. include:: iac-setup-github-repo.rst
 
 Source code repository (GitHub)
@@ -35,7 +41,7 @@ The following are the two repositories involved.
 |    |                     | to build and deploy the images.               |
 +----+---------------------+-----------------------------------------------+
 
-|checkbox| **Setup user and personal access tokens**
+|checkbox| **Setup github user and personal access tokens**
 
 A user account with necessary permissions to manage these repositories
 is required. Further provision a Personal Access Token with Selected
@@ -77,7 +83,7 @@ accordingly.
 
 .. image:: images3/image1.png
 
-**NOTE:** Once the necessary tokens are provisioned, please get them
+|note| **NOTE:** Once the necessary tokens are provisioned, please get them
 recorded to enable them as secrets/credentials in Jenkins/AWX in next
 steps.
 
@@ -210,10 +216,6 @@ Variable Set
 
 |checkbox| **Enter terraform variables**
 
-.. csv-table:: terraform variables
-   :file: table-terraform-variables.csv
-   :header-rows: 1
-
 All the terraform variables and their values (including sensitive and
 non-sensitive) are added in a variable set. The details of actual
 variables and samples can be referred in the repository under directory
@@ -242,12 +244,12 @@ https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
     :width: 4.18333in
     :height: 2.04167in
 
-The below is an example screenshot of variable set showing only subset
-of variables set and not the entire list.
+Below is a list of variables, what they are for and some help with template values.
 
-.. image:: images3/image13.png
-   :width: 6.5in
-   :height: 7.73333in
+.. csv-table:: terraform variables
+   :file: table-terraform-variables.csv
+   :header-rows: 1
+
 
 Team Access
 -----------

@@ -1,6 +1,8 @@
 Setup IAM User with inline policy
 ---------------------------------
 
+|checkbox| **Setup IAM terraform user**
+
 1. Within IAM in AWS console go to users in access management and click
    on Add users
 
@@ -17,6 +19,10 @@ Setup IAM User with inline policy
    finish creating user
 
     **Note**: Do not attach any IAM policy at this moment.
+
+4. Create the user
+
+5. Note the access key id and secret key
 
 4. Then get back to users and open the created user, go to permissions
    and click on Add inline policy, click on json
@@ -39,25 +45,23 @@ Setup IAM User with inline policy
                             "sts:AssumeRole",                                                     
                             "sts:TagSession"                                                      
                     ],                                                                    
-                    "Resource": "**<AWS_IAM_ROLE_ARN>**",                                 
+                    "Resource": "<AWS_IAM_ROLE_ARN>",                                 
                     "Effect": "Allow",                                                    
                     "Condition": {                                                        
                     "StringEquals": {                                                     
-                            "sts:ExternalId": "**<AWS_EXTERNAL_ID>**"                             
+                            "sts:ExternalId": "<AWS_EXTERNAL_ID>"                             
                         }                                                                     
                     }                                                                     
                 }                                                                     
             ]                                                                     
         }                                                                     
 
-6. Finally name the inline policy and finish creating it.
+6. Finally name the inline policy and finish creating it.  Use "tf_user_policy".
 
-7. Note down the IAM user access key and secret key
+7. |note| Note down the IAM user access key and secret key
 
     .. image:: images/image16.png
        :width: 6.49931in
        :height: 2.80208in
 
-8. Note down the ARN of the IAM user created as it is required for
-further steps and terraform configuration.
-
+8. |note| Note the arn for the user
