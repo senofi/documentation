@@ -182,6 +182,12 @@ AAIS Variables-
 |                        | ENV: DEV                                    |
 |                        |                                             |
 |                        | DOMAIN: techiething                         |
+|                        |                                             |
+|                        | SUBDOMAIN                                   |
+|                        |                                             |
+|                        | AWS_REGION                                  |
+|                        |                                             |
+|                        | S3_BUCKET_NAME_LOGOS                        |
 +------------------------+---------------------------------------------+
 | util                   | Fabric CA Admin Credentials                 |
 | ties-admin-config.json |                                             |
@@ -304,10 +310,29 @@ Analytics Variables-
 |                        | ENV: DEV                                    |
 |                        |                                             |
 |                        | DOMAIN: techiething                         |
+|                        |                                             |
+|                        | SUBDOMAIN                                   |
+|                        |                                             |
+|                        | AWS_REGION                                  |
+|                        |                                             |
+|                        | S3_BUCKET_NAME_LOGOS                        |
 +------------------------+---------------------------------------------+
 | util                   | Fabric CA Admin Credentials                 |
 | ties-admin-config.json |                                             |
 |                        | ANALYTICS_ORGNAME: analytics                |
++------------------------+---------------------------------------------+
+| s3-bucket-config.json  | AWS_ACCESS_KEY                              |
+|                        |                                             |
+|                        | AWS_SECRET_KEY                              |
+|                        |                                             |
+|                        | AWS_REGION                                  |
+|                        |                                             |
+|                        | S3_BUCKET_NAME_HDS_ANALYICS                 |
+|                        |                                             |
+|                        | Refer to IAM user provisioned for           |
+|                        | application.                                |
+|                        | <orgname>-<envtype>-openidl-apps-user. Use  |
+|                        | this user credentials.                      |
 +------------------------+---------------------------------------------+
 
 Carrier Variables-
@@ -400,10 +425,29 @@ Carrier Variables-
 |                        | ENV: DEV                                    |
 |                        |                                             |
 |                        | DOMAIN: techiething                         |
+|                        |                                             |
+|                        | SUBDOMAIN                                   |
+|                        |                                             |
+|                        | AWS_REGION                                  |
+|                        |                                             |
+|                        | S3_BUCKET_NAME_LOGOS                        |
 +------------------------+---------------------------------------------+
 | util                   | Fabric CA Admin Credentials                 |
 | ties-admin-config.json |                                             |
 |                        | CARRIER_ORGNAME: trv                        |
++------------------------+---------------------------------------------+
+| s3-bucket-config.json  | AWS_ACCESS_KEY                              |
+|                        |                                             |
+|                        | AWS_SECRET_KEY                              |
+|                        |                                             |
+|                        | AWS_REGION                                  |
+|                        |                                             |
+|                        | S3_BUCKET_NAME_HDS_ANALYICS                 |
+|                        |                                             |
+|                        | Refer to IAM user provisioned for           |
+|                        | application.                                |
+|                        | <orgname>-<envtype>-openidl-apps-user. Use  |
+|                        | this user credentials.                      |
 +------------------------+---------------------------------------------+
 
 Creating CA TLS CERT for connection profile-
@@ -565,7 +609,7 @@ Adding config files to Vault-
 
 # kubectl cp config/config-dev-<node_type>/ default/ubuntu:config
 
-# kubectl cp ../openidl-test-network/vault/add-vault-config.sh
+# kubectl cp ../vault-scripts/add-vault-config.sh
 default/ubuntu:add-vault-config.sh
 
 6. Exec into the pod #kubectl exec --stdin --tty ubuntu -- /bin/bash
@@ -579,7 +623,13 @@ default/ubuntu:add-vault-config.sh
 8. Check whether the files are copied correctly into the pod. You should
    see the file “add-vault-config.sh” in “/” folder
 
-9. Get the vault credentials from AWS secret manager
+9. Set execute permission to the script #chmod +x add-vault-config.sh
+
+10. If these files are copied from windows, then it requires to convert the file from dos2unix. Follow below steps
+    10.1 Install dos2unix utility #apt-get install dos2unix -y
+    10.2 convert the file to unix #dos2unix add-vault-config.sh
+
+10. Get the vault credentials from AWS secret manager
 
 Vault credentials will be available at <org>-<env>-config-vault.
 
@@ -589,7 +639,7 @@ Example: dev-aais-config-vault
    :width: 5.59792in
    :height: 3.32778in
 
-10. Click on retrieve secret value to get the credentials
+11. Click on retrieve secret value to get the credentials
 
 .. image:: images/image60.png
    :width: 6.05764in
@@ -597,7 +647,7 @@ Example: dev-aais-config-vault
 
 Retrieve secret value to get all the values you need.
 
-11. Run the script add-vault-config to update the vault with all config
+12. Run the script add-vault-config to update the vault with all config
     files.
 
 ..
@@ -623,7 +673,7 @@ Mapping of values for add-vault-config script to AWS Secrets
 | c                    | Config Path                                   |
 +----------------------+-----------------------------------------------+
 
-12. Finally delete the pod after some time just keep around to make sure
+13. Finally delete the pod after some time just keep around to make sure
     all is ok.
 
 ..
@@ -687,9 +737,7 @@ The following steps are required to get this pipeline triggered.
 1. Ensure the required environment secrets are configured
 
 2. According to node type and environment, ensure that the relevant
-pipeline file is available/updated. For dev it exists, however for test
-and prod these pipeline files are yet to be created and updated
-referring existing code.
+pipeline file is available/updated.
 
 3. Update the global-values-<env>-<node>.yml file and push the code to
 relevant branch to trigger the pipeline which eventually deploy

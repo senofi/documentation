@@ -319,7 +319,7 @@ this is provisioned part of terraform these user access and secret keys
 are in terraform state file.
 
 The initial provisioned access keys and secret keys should not be used,
-and it should be removed. Further create new access keys and secret keys
+and it should be set as INACTIVE(Do not delete them). Further create new access keys and secret keys
 for these users and use them.
 
 NOTE: The name of the user has the first part truncated from the
