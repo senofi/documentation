@@ -1,6 +1,6 @@
 ﻿Required Input,Description,Sensitive,HCL,Template Value
 tfc_org_name,Name of the organization that owns the terraform cloud / enterprise,no,no,openidl-aais
-tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources.,no,no,{{org name}}=aws-resources
+tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources.,no,no,{{org name}}-aws-resources
 org_name,Four character name unique to the network,no,,carr
 aws_env,Environment.  Valid values are dev | test | prod,no,,
 domain_info,"A json object with values for r53_public_hosted_zone_required, domain_name, sub_domain_name, comments",no,yes,"{ r53_public_hosted_zone_required = ""yes"" domain_name = ""{{ org name }}.dname.dname"" sub_domain_name = ""{{ carrier | aais | analytics }}"" comments = ""comment about domain"" }"
