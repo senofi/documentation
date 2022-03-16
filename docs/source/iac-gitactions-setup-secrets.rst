@@ -27,11 +27,13 @@ section.
     :file: table-gitactions-environments.csv
     :header-rows: 1
 
-Add the following sensitive data as environment secrets. Ensure that the secrets are added according to the node_type, envrionment_type and branch.
+Add the following sensitive data as environment secrets. Ensure that the secrets are added according to the node_type, environment_type and branch.
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-For the SSH keys, create one for the terraform user and use that for all the ssh keys.
---------------------------------------------------------------------------------------
+For the SSH keys, create one key atleast and use the same for all SSH keys (used for bastion and EKS worker nodes).
+------------------------------------------------------------------------------------------------------------------
+
+Use ssh-keygen command to prepare required SSH keys and use the public key in the environment secret for SSH key variable.
 
 .. csv-table:: Environment Secrets
     :file: table-gitactions-secrets.csv

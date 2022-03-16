@@ -16,9 +16,9 @@ There are several variable that control how the DNS names are constructed.
  
  domain_name
  
- sub_domain_name
+ sub_domain_name (This is optional)
  
- The FQDN for the service SERVICE would be SERVICE[.aws_env].sub_domain_name.domain_name
+ The FQDN for the service SERVICE would be SERVICE[.aws_env].sub_domain_name.domain_name. When sub domain is not set then it would be SERVICE[.aws_env].domain_name.
  
  If aws_env is prod the the .aws_env component is omitted.
  
@@ -30,10 +30,10 @@ There are several variable that control how the DNS names are constructed.
  
  sub_domain_name: openidl
  
- 
- domain_name: mycompany.com
+  domain_name: mycompany.com
  
  The resultant FQDN would be data-call-app-service.dev.openidl.mycompany.com
+ The resultant FQDN without subdomain would be data-call-app-service.dev.mycompany.com
 
 Public Zone Location
 --------------------
@@ -43,7 +43,7 @@ r53_public_hosted_zone_required: yes or no
 Public Zone Not in Route53
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The constructed DNS names and the load balancer DNS name are listed in the terraform ouput.
+The constructed DNS names and the load balancer DNS name are listed in the terraform output.
 
 .. image:: images/iac-DNSoutput.png
 

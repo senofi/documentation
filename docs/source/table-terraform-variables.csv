@@ -1,61 +1,55 @@
 ﻿Required Input,Description,Sensitive,HCL,Template Value
-tfc_org_name,Name of the organization that owns the terraform cloud / enterprise,no,no,openidl-aais
-tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources.,no,no,{{org name}}-aws-resources
+tfc_org_name,Name of the organization that owns the terraform cloud / enterprise when TFC/TFE is backend,no,no,openidl-aais
+tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources when TFC/TFE is backend.,no,no,{{org name}}-aws-resources
 org_name,Four character name unique to the network,no,,carr
 aws_env,Environment.  Valid values are dev | test | prod,no,,
 domain_info,"A json object with values for r53_public_hosted_zone_required, domain_name, sub_domain_name, comments",no,yes,"{ r53_public_hosted_zone_required = ""yes"" domain_name = ""{{ org name }}.dname.dname"" sub_domain_name = ""{{ carrier | aais | analytics }}"" comments = ""comment about domain"" }"
-aws_account_id,AWS account number,no,,12 digit number
+aws_account_number,AWS account number,no,,12 digit number
 aws_access_key,IAM user access key - from the terraform user,yes,,
 aws_secret_key,IAM user secret key - from the terraform user,yes,,
 aws_user_arn,IAM user ARN - from the terraform user,no,,arn:aws:iam::{{ account number }}:user/terraform_user
 aws_role_arn,IAM role ARN - from the terraform user,no,,arn:aws:iam::{{ account number }}:role/tf_automation
 aws_region,AWS region to setup the resources,no,,us-east-1
 aws_external_id,AWS external id used while setting up IAM user and IAM role,no,,terraform
-tf_backend_s3_bucket,Globally unique bucket name for terraform state files - suggest something like <node_type>-<node_env>-<org_name>-backend-state eg: aais-dev-aais-backend-state,no,,
-tf_inputs_s3_bucket,Globally unique bucket name for terraform input files - suggest something like <node_type>-<node_env>-<org_name>-inputs eg: aais-dev-aais-inputs,no,,
-tf_backend_dynamodb_table_aws_resources,DynamoDB table to manage terraform state locking in AWS resources pipeline - suggest <node_type>-<node_env>-<org_name>-aws-resources,no,,
-tf_backend_dynamodb_table_k8s_resources,DynamoDB table to manage terraform state locking in Kubernetes resources pipeline - suggest <node_type>-<node_env>-<org_name>-k8s-resources,no,,
+aws_input_bucket,When s3 is choosen as backend then s3 bucket name,no,no, s3_bucket_name
 email_sending_account,Set to COGNITO_DEFAULT,no,,COGNITO_DEFAULT
 ses_email_identity,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,,
 userpool_email_source_arn,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,,
 app_cluster_name,app-cluster,no,no,app-cluster
 app_cluster_version,1.20,no,no,1.20
 app_worker_nodes_ami_id,ami-0e79442ad3ac8887b,no,no,ami-0e79442ad3ac8887b
-app_bastion_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
 app_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
 app_cluster_map_users,Set to [],no,yes,[]
 app_cluster_map_roles,Set to [],no,yes,[]
-app_vpc_cidr,Cidr block for app vpc.  See your network administrator for a valid block.,no,,A.B.0.0/16
-app_availability_zones,"Collection of two zones.  Format is an array: [""us-east-1a"",""us-east-1b""]",no,yes,"[""us-east-1a"",""us-east-1b""]"
-app_public_subnets,Cidr blocks related to above,no,yes,"[""A.B.1.0/24"",""A.B.2.0/24""]"
-app_private_subnets,Cidr blocks related to above,no,yes,"[""A.B.3.0/24"",""A.B.4.0/24""]"
-app_eks_workers_app_sg_ingress,Setup related to above.,no,yes,"[ { from_port = 443 to_port = 443 protocol = ""tcp"" description = ""inbound https traffic"" cidr_blocks = ""A.B.0.0/16"" }, { from_port = 443 to_port = 443 protocol = ""tcp"" description = ""inbound https traffic"" cidr_blocks = ""A.C.0.0/16"" }]"
-app_eks_workers_app_sg_egress,Set to …,no,yes,"[{rule = ""all-all""}]"
+create_vpc,choose whether to create VPC or use existing,no,no,true
+vpc_id,VPC id when create_vpc is false,no,no, VPC_id
+vpc_cidr,Cidr block for app vpc.  See your network administrator for a valid block.,no,,A.B.0.0/16
+availability_zones,"Collection of 3 zones.  Format is an array: [""us-east-1a"",""us-east-1b"", ""us-east-1c""]",no,yes,"[""us-east-1a"",""us-east-1b"", ""us-east-1c""]"
+public_subnets,Cidr blocks related to above,no,yes,"[""A.B.1.0/24"",""A.B.2.0/24"",""A.B.3.0/24""]"
+private_subnets,Cidr blocks related to above,no,yes,"[""A.B.4.0/24"",""A.B.5.0/24"",""A.B.2.0/24""]"
+create_bastion_host,Choose whether to provision bastion host,no,no,true
+bastion_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
+bastion_sg_ingress,Inbound SSH rules,no,yes,[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]
+bastion_sg_egress,Outbound SSH rules,no,yes,[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]
 blk_cluster_name,blk-cluster,no,no,blk-cluster
 blk_cluster_version,1.20,no,no,1.20
 blk_worker_nodes_ami_id,ami-0e79442ad3ac8887b,no,no,ami-0e79442ad3ac8887b
-blk_bastion_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
 blk_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
 blk_cluster_map_users,Set to [],no,yes,[]
 blk_cluster_map_roles,Set to [],no,yes,[]
-blk_eks_workers_app_sg_ingress,Setup related to above.,no,yes,"[ { from_port = 443 to_port = 443 protocol = ""tcp"" description = ""inbound https traffic"" cidr_blocks = ""A.B.0.0/16"" }, { from_port = 443 to_port = 443 protocol = ""tcp"" description = ""inbound https traffic"" cidr_blocks = ""A.C.0.0/16"" }]"
-blk_eks_workers_app_sg_egress,Set to …,no,yes,"[{rule = ""all-all""}]"
-blk_vpc_cidr,Cidr block for app vpc.  See your network administrator for a valid block. (note change B template value to C),no,,A.C.0.0/16
-blk_availability_zones,"Collection of two zones.  Format is an array: [""us-east-1a"",""us-east-1b""]",no,yes,"[""us-east-1a"",""us-east-1b""]"
-blk_public_subnets,Cidr blocks related to above,no,yes,"[""A.C.1.0/24"",""A.C.2.0/24""]"
-blk_private_subnets,Cidr blocks related to above,no,yes,"[""A.C.3.0/24"",""A.C.4.0/24""]"
-bastion_host_nlb_external,Set to true,no,,true
-app_bastion_ssh_ingress,Set based on values above,no,yes,"[ {rule=""ssh-tcp"", cidr_blocks = ""A.B.0.0/16""}, {rule=""ssh-tcp"", cidr_blocks = ""v.x.y.z/32""} ]"
-app_bastion_sg_ingress,Set based on values above,no,yes,"[ {rule=""https-443-tcp"", cidr_blocks = ""0.0.0.0/0""}, {rule=""http-80-tcp"", cidr_blocks = ""0.0.0.0/0""}, {rule=""ssh-tcp"", cidr_blocks = ""A.B.0.0/16""}, {rule=""ssh-tcp"", cidr_blocks = ""v.x.y.z/32""} ]"
-blk_bastion_ssh_ingress,Set based on values above,no,yes,"[ {rule=""ssh-tcp"", cidr_blocks = ""A.C.0.0/16""}, {rule=""ssh-tcp"", cidr_blocks = ""v.x.y.z/32""} ]"
-blk_bastion_sg_ingress,Set based on values above,no,yes,"[ {rule=""https-443-tcp"", cidr_blocks = ""0.0.0.0/0""}, {rule=""http-80-tcp"", cidr_blocks = ""0.0.0.0/0""}, {rule=""ssh-tcp"", cidr_blocks = ""A.C.0.0/16""}, {rule=""ssh-tcp"", cidr_blocks = ""v.x.y.z/32""} ]"
-tgw_amazon_side_asn,Set to 64532,no,no,64532
+create_cognito_userpool,Choose whether to provision Cognito userpool,no,no,true
 userpool_name,Some unique name for the user pool.,no,no,openidl-{{ org name }}-pool
-client_app_name,Cognito app client name,no,no,openidl-{{ org name }}-client
-client_callback_urls,Urls used by cognito.  Can be dummies.,no,yes,"[""https://{{env}}-{{subdomain}}.{{domain}}/callback"", ""https://{{env}}-{{subdomain}}.{{domain}}/redirect""]"
-client_default_redirect_url,Can be dummy.,no,no,https://{{env}}-{{subdomain}}.{{domain}}/redirecft
-client_logout_urls,Can be dummy..,no,yes,"[""https://{{env}}-{{subdomain}}.{{domain}}/signout""]"
-cw_logs_retention_period,Number of days cloudwatch retains logs,no,no,90
+create_cloudtrail,Choose cloudtrail is required to enable,no,no,true
 s3_bucket_name_cloudtrail,Cloudtrail s3 bucket name,no,no,openidl-{{org name}}-{{env}}-cloudtrail
+terraform_state_s3_bucket_name,S3 bucket name managing terraform state files when s3 backend is used,no,no, S3_bucket_name_tf_state_files
 s3_bucket_name_hds_analytics,Bucket for gathering result of extraction,no,no,openidl-{{org name}}-{{env}}-hds-analytics
 s3_bucket_name_logos,Bucket name for holding company logos,no,no,openidl-logos-public
+cw_logs_retention_period,Number of days cloudwatch retains logs,no,no,90
+create_kms_keys,Choose whether KMS keys to be created or use existing,no,no,true
+s3_kms_key_arn,KMS key ARN to encrypt S3 objects,no,no,KMS_KEY_ARN
+eks_kms_key_arn,KMS key ARN to encrypt EKS secrets,no,no,KMS_KEY_ARN
+cloudtrail_cw_logs_kms_key_arn, KMS key ARN to encrypt cloudwatch logs,no,no,KMS_KEY_ARN
+vpc_flow_logs_kms_key_arn,KMS key ARN to encrypt VPC flow logs,no,no,KMS_KEY_ARN
+secrets_manager_kms_key_arn,KMS key ARN to encrypt secrets,no,no,KMS_KEY_ARN
+custom_tags,Additional tags to include,no,yes, { tag1 = "tagvalue", tag2 = "tagvalue2"}
+
