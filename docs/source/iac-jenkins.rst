@@ -744,11 +744,27 @@ Similarly repeat the above steps to setup this credential type as well.
 |                                                                       |
 | help_text: AWS IAM user secret key for baf                            |
 |                                                                       |
+| - id: baf_user_external_id                                            |
+|                                                                       |
+| type: string                                                          |
+|                                                                       |
+| label: baf_user_external_id                                           |
+|                                                                       |
+| - id: baf_user_assume_role_arn                                        |
+|                                                                       |
+| type: string                                                          |
+|                                                                       |
+| label: baf_user_assume_role_arn                                       |
+|                                                                       |
 | required:                                                             |
 |                                                                       |
 | - baf_user_access_key                                                 |
 |                                                                       |
 | - baf_user_secret_key                                                 |
+|                                                                       |
+| - baf_user_external_id                                                |
+|                                                                       |
+| - baf_user_assume_role_arn                                            |
 +=======================================================================+
 +-----------------------------------------------------------------------+
 
@@ -760,6 +776,10 @@ Similarly repeat the above steps to setup this credential type as well.
 | baf_user_access_key: '{{ baf_user_access_key }}'                      |
 |                                                                       |
 | baf_user_secret_key: '{{ baf_user_secret_key }}'                      |
+|                                                                       |
+| baf_user_external_id: '{{ baf_user_external_id }}'                    |
+|                                                                       |
+| baf_user_assume_role_arn: '{{ baf_user_assume_role_arn }}'            |
 +=======================================================================+
 +-----------------------------------------------------------------------+
 
@@ -1159,7 +1179,7 @@ OpenIDL-IAC-AWSUser-BAF
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, provision credential of type OpenIDL-IAC-AWSUser-BAF. Choose
-the relevant credential type, key in AWS access key and secret key of
+the relevant credential type, key in AWS access key, secret key, external_id and baf user assume role arn of
 AWS IAM user provisioned related to BAF.
 
 .. image:: images3/image41.png

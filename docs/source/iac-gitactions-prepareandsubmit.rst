@@ -107,7 +107,11 @@ configuration file named “aws_resources”.
 
     external_id          = "<external_id>" #external id setup during IAM user and role setup for access
 
-2. After updating backend configuration for the pipeline, the next step is to prepare the input file and upload to S3 bucket. Refer to directory aws/templates directory prepare the terraform input file.
+2. Go to aws/aws_resources directory and activate backend as S3 in main.tf file
+
+3. Go to aws/aws_resources directory and activate code snippet relevant to git_actions and disable code snippet relevant to Jenkins in providers.tf
+
+4. After updating backend configuration for the pipeline, the next step is to prepare the input file and upload to S3 bucket. Refer to directory aws/templates directory prepare the terraform input file.
 
 .. image:: images/image41.png
    :width: 4.10833in
@@ -254,18 +258,24 @@ Setup and execute the second pipeline
     session_name         = "terraform-session"
     external_id          = "<external_id>" #external id setup during IAM user and role setup for access role setup for access
 
-4. Once the backend configuration is updated, there are not any other
+3. Go to aws/k8s_resources and activate code snippet to keep S3 as backend
+
+4. Go to aws/k8s_resources and update providers.tf and activate code snippet relevant to git actions and disable code relevant to Jenkins
+
+5. Go to aws/k8s_resources and updata data.tf and activate code snippet relevant to S3 as backend and disable code relevant to TFC/TFE as backend
+
+5. Once the mentioned updates completed, there are not any other
    updates/input file generation required as both the pipelines will be
    using the common input file which was prepared and uploaded to S3
    bucket part of setting up first pipeline.
 
-5. Hence push the code to repository again and submit pull request to
+6. Hence push the code to repository again and submit pull request to
    generate terraform plan
 
-6. Further careful review submits merge request to get this second
+7. Further careful review submits merge request to get this second
    pipeline triggered this time which will provision all k8s resources.
 
-7. Please note that, this pipeline is triggered when there is a change
+8. Please note that, this pipeline is triggered when there is a change
    to directory/files of the below
 
 I)  Aws/k8s_resources
@@ -319,7 +329,7 @@ this is provisioned part of terraform these user access and secret keys
 are in terraform state file.
 
 The initial provisioned access keys and secret keys should not be used,
-and it should be removed. Further create new access keys and secret keys
+and it should be set as INACTIVE(Do not delete them). Further create new access keys and secret keys
 for these users and use them.
 
 NOTE: The name of the user has the first part truncated from the
