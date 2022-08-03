@@ -48,8 +48,10 @@ Setup IAM Role
                         "route53domains:*",
                         "sts:*",
                         "secretsmanager:*",
-                        "cloudformation:ListStacks"
-
+                        "cloudformation:ListStacks",
+                        "sns:*",
+                        "application-autoscaling:*",
+                        "lambda:*"
                     ],
                     "Resource": "*"
                 }

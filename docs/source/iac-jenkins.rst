@@ -8,13 +8,15 @@ which works with Terraform Cloud/Enterprise and AWX.
 Environment Required
 ====================
 
-1. Source code repository (GitHub)
+1. AWS account
 
-2. Jenkins
+2. Source code repository (GitHub)
 
 3. Terraform Cloud/Enterprise
 
-4. Ansible Tower /AWX (open source)
+4. Jenkins
+
+5. Ansible Tower /AWX (open source)
 
 .. include:: iac-prepare-aws-environment.rst
 
@@ -22,12 +24,14 @@ Environment Required
 
 .. include:: iac-update-role-with-trust-policy.rst
 
+.. include:: iac-prepare-aws-cognito-ses.rst
+
 .. include:: iac-setup-github-repo.rst
 
 Source code repository (GitHub)
 -------------------------------
 
-The following are the two repositories involved.
+The following are the two repositories involved in setting up nodes.
 
 +----+---------------------+-----------------------------------------------+
 | No | **Repository**      | **Description**                               |
@@ -343,8 +347,6 @@ Global tools configuration
 
 tool home should be ‘/usr/bin/git’
 
-4. 
-
 Configure System (AWX/Ansible Tower)
 ------------------------------------
 
@@ -361,8 +363,7 @@ Configure System (AWX/Ansible Tower)
 5. Include the username/password to authenticate Jenkins in AWX/Tower.
    Hence get the user first created in AWX/Tower and get that credential
    added in Jenkins as username/password credential type before setting
-   this up. Refer to the section <??> on how to setup a Jenkins
-   username/password credential.
+   this up. Refer to the AWX preparation section on how to setup user account.
 
 6. During development instance SSL is not used, however in production
    environment SSL should be enabled which is not documented here, refer
@@ -376,8 +377,8 @@ Configure System (AWX/Ansible Tower)
 Credentials 
 -----------
 
-The following are the credential types used. The steps to create and
-configure detailed further in the document.
+The following are the listed credentials are required to create in Jenkins. Refer to example of
+username and password kind and secret text type to provision the three credentials in Jenkins.
 
 +----+------------+-----------------+---------------------------------+
 | No | Purpose    | **Cred Type**   | **Description**                 |
@@ -426,6 +427,191 @@ Secret Text Type
    pipeline code. (An example below)
 
 .. image:: images3/image23.png
+
+Jenkins Jobs Configuration
+=========================
+
+Credentials
+-----------
+
+1. Before configuring Jenkins’s job ensure that the required credentials
+   relevant to the jobs are already configured in Jenkins.
+
+..
+
+   Terraform credentials
+
+   AWX (Ansible Tower/AWX User credentials)
+
+   GitHub User credentials
+
++----+------------+------------+----------+-------------+-------------+
+| No | Cred Type  | **ID**     | Username | Password    | Descr       |
++====+============+============+==========+=============+=============+
+| 1  | Username   | openidl-a  | GitHub   | Personal    | GitHub      |
+|    | with       | ais-gitops | account  | access      | credentials |
+|    | password   |            | username | token       |             |
+|    |            |            |          | created     |             |
++----+------------+------------+----------+-------------+-------------+
+| 2  | Username   | AWX        | Ansible  | Ansible     | Ansible     |
+|    | with       |            | tower    | tower user  | Tower/AWX   |
+|    | password   |            | username | password    | credentials |
++----+------------+------------+----------+-------------+-------------+
+| 3  | Secret     | TF_BE      | NA       | Terraform   | Terraform   |
+|    | text       | ARER_TOKEN |          | user/team   | Cloud       |
+|    |            |            |          | API token   | /Enterprise |
+|    |            |            |          |             | access      |
+|    |            |            |          |             | token       |
++----+------------+------------+----------+-------------+-------------+
+
+**References: GitHub credential**
+
+.. image:: images3/image56.png
+
+**References: AWX credential**
+
+.. image:: images3/image57.png
+
+**References: Terraform credential**
+
+.. image:: images3/image58.png
+
+Job Configurations
+------------------
+
+The list of jobs to be configured are
+
+1. Job to provision AWS resources and K8s resources using Terraform
+   Cloud/Enterprise
+
+2. Job to provision Vault using Ansible Tower/AWX
+
+3. Job to provision Blockchain Network using Ansible Tower/AWX
+
+4. Job to provision MongoDB using Ansible Tower/AWX
+
+5. Job to provision OpenIDL application secrets and application using
+   Ansible Tower/AWX
+
+Terraform Job
+~~~~~~~~~~~~~
+
+1. Go to Jenkins => New Item => Give a meaningful name
+
+2. Select Job type as PIPELINE and proceed next
+
+3. Give a description to the job and move to pipeline section
+
+4. Select Definition as Pipeline Script from SCM
+
+5. Select SCM as Git
+
+6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
+
+7. Select the GitHub credentials
+
+8. Specify the relevant branch “refs/heads/<branch-name>”.
+
+9. Set script path to “Jenkins-jobs/jenkinsfile-tf”.
+
+..
+
+   .. image:: images3/image59.png
+
+Vault Job
+~~~~~~~~~
+
+1. Go to Jenkins => New Item => Give a meaningful name
+
+2. Select Job type as PIPELINE and proceed next
+
+3. Give a description to the job and move to pipeline section
+
+4. Select Definition as Pipeline Script from SCM
+
+5. Select SCM as Git
+
+6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
+
+7. Select the GitHub credentials
+
+8. Specify the relevant branch “refs/heads/<branch-name>”.
+
+9. Set script path to “Jenkins-jobs/jenkinsfile-vault”.
+
+.. image:: images3/image60.png
+
+Blockchain Network Job
+~~~~~~~~~~~~~~~~~~~~~~
+
+1. Go to Jenkins => New Item => Give a meaningful name
+
+2. Select Job type as PIPELINE and proceed next
+
+3. Give a description to the job and move to pipeline section
+
+4. Select Definition as Pipeline Script from SCM
+
+5. Select SCM as Git
+
+6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
+
+7. Select the GitHub credentials
+
+8. Specify the relevant branch “refs/heads/<branch-name>”.
+
+9. Set script path to “Jenkins-jobs/jenkinsfile-baf”.
+
+.. image:: images3/image61.png
+
+MongoDB Job
+~~~~~~~~~~~
+
+1. Go to Jenkins => New Item => Give a meaningful name
+
+2. Select Job type as PIPELINE and proceed next
+
+3. Give a description to the job and move to pipeline section
+
+4. Select Definition as Pipeline Script from SCM
+
+5. Select SCM as Git
+
+6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
+
+7. Select the GitHub credentials
+
+8. Specify the relevant branch “refs/heads/<branch-name>”.
+
+9. Set script path to “Jenkins-jobs/jenkinsfile-mongodb”.
+
+..
+
+   .. image:: images3/image62.png
+
+OpenIDL Application Job
+~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Go to Jenkins => New Item => Give a meaningful name
+
+2. Select Job type as PIPELINE and proceed next
+
+3. Give a description to the job and move to pipeline section
+
+4. Select Definition as Pipeline Script from SCM
+
+5. Select SCM as Git
+
+6. Key in the Infrastructure code repository (openidl-main) url.
+
+7. Select the GitHub credentials
+
+8. Specify the relevant branch “refs/heads/<branch-name>”.
+
+9. Set script path to “Jenkins-jobs/jenkinsfile-apps-secrets”.
+
+.. image:: images3/image63.png
+
 
 Terraform code changes to adapt to Terraform Cloud/Enterprise 
 =============================================================
@@ -529,123 +715,123 @@ relevant section.
 |                                                                       |
 | - id: aws_access_key                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS access key                                                 |
+|   label: AWS access key                                                 |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS IAM user access key                                    |
+|   help_text: AWS IAM user access key                                    |
 |                                                                       |
 | - id: aws_secret_key                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS secret key                                                 |
+|   label: AWS secret key                                                 |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS IAM user secret key                                    |
+|   help_text: AWS IAM user secret key                                    |
 |                                                                       |
 | - id: aws_iam_role                                                    |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS IAM role                                                   |
+|   label: AWS IAM role                                                   |
 |                                                                       |
-| help_text: AWS IAM role to be assumed                                 |
+|   help_text: AWS IAM role to be assumed                                 |
 |                                                                       |
 | - id: aws_external_id                                                 |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS external id                                                |
+|   label: AWS external id                                                |
 |                                                                       |
-| help_text: Externl ID set during IAM user/role configuration          |
+|   help_text: Externl ID set during IAM user/role configuration          |
 |                                                                       |
 | - id: aws_region                                                      |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS region                                                     |
+|   label: AWS region                                                     |
 |                                                                       |
-| help_text: AWS Region                                                 |
+|   help_text: AWS Region                                                 |
 |                                                                       |
 | - id: aws_account_number                                              |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS account number                                             |
+|   label: AWS account number                                             |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS account number                                         |
+|   help_text: AWS account number                                         |
 |                                                                       |
 | - id: baf_image_repo                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: BAF image repository                                           |
+|   label: BAF image repository                                           |
 |                                                                       |
-| help_text: Blockchain automation framework Docker image repository    |
+|   help_text: Blockchain automation framework Docker image repository    |
 |                                                                       |
 | - id: blk_cluster_name                                                |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Blockchain cluster name                                        |
+|   label: Blockchain cluster name                                        |
 |                                                                       |
-| help_text: Blockchain EKS cluster name                                |
+|   help_text: Blockchain EKS cluster name                                |
 |                                                                       |
 | - id: app_cluster_name                                                |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Application cluster name                                       |
+|   label: Application cluster name                                       |
 |                                                                       |
-| help_text: OpenIDL Application EKS cluster name                       |
+|   help_text: OpenIDL Application EKS cluster name                       |
 |                                                                       |
 | - id: gitops_repo_url                                                 |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: 'Gitops repository URL (without https://)'                     |
+|   label: 'Gitops repository URL (without https://)'                     |
 |                                                                       |
-| help_text: Github repository URL                                      |
+|   help_text: Github repository URL                                      |
 |                                                                       |
 | - id: gitops_repo_branch                                              |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitops repository branch                                       |
+|   label: Gitops repository branch                                       |
 |                                                                       |
-| help_text: Branch name in Github repository                           |
+|   help_text: Branch name in Github repository                           |
 |                                                                       |
 | - id: gitops_repo_user                                                |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitops repository user                                         |
+|   label: Gitops repository user                                         |
 |                                                                       |
-| help_text: GITHUB repository user                                     |
+|   help_text: GITHUB repository user                                     |
 |                                                                       |
 | - id: gitops_repo_user_token                                          |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitops repository user PAT                                     |
+|   label: Gitops repository user PAT                                     |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: GITHUB repository user token                               |
+|   help_text: GITHUB repository user token                               |
 |                                                                       |
 | - id: gitops_repo_user_email                                          |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitops repository user email                                   |
+|   label: Gitops repository user email                                   |
 |                                                                       |
-| help_text: GITHUB repository user email id                            |
+|   help_text: GITHUB repository user email id                            |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -728,33 +914,33 @@ Similarly repeat the above steps to setup this credential type as well.
 |                                                                       |
 | - id: baf_user_access_key                                             |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: baf_user_access_key                                            |
+|   label: baf_user_access_key                                            |
 |                                                                       |
-| help_text: AWS IAM user access key for baf                            |
+|   help_text: AWS IAM user access key for baf                            |
 |                                                                       |
 | - id: baf_user_secret_key                                             |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: baf_user_secret_key                                            |
+|   label: baf_user_secret_key                                            |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS IAM user secret key for baf                            |
+|   help_text: AWS IAM user secret key for baf                            |
 |                                                                       |
 | - id: baf_user_external_id                                            |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: baf_user_external_id                                           |
+|   label: baf_user_external_id                                           |
 |                                                                       |
 | - id: baf_user_assume_role_arn                                        |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: baf_user_assume_role_arn                                       |
+|   label: baf_user_assume_role_arn                                       |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -797,97 +983,97 @@ Similarly repeat the above steps to setup this credential type as well.
 |                                                                       |
 | - id: aws_access_key                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS access key                                                 |
+|   label: AWS access key                                                 |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS IAM user access key                                    |
+|   help_text: AWS IAM user access key                                    |
 |                                                                       |
 | - id: aws_secret_key                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS secret key                                                 |
+|   label: AWS secret key                                                 |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: AWS IAM user secret key                                    |
+|   help_text: AWS IAM user secret key                                    |
 |                                                                       |
 | - id: aws_iam_role                                                    |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS IAM role                                                   |
+|   label: AWS IAM role                                                   |
 |                                                                       |
-| help_text: AWS IAM role to be assumed                                 |
+|   help_text: AWS IAM role to be assumed                                 |
 |                                                                       |
 | - id: aws_external_id                                                 |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS external id                                                |
+|   label: AWS external id                                                |
 |                                                                       |
-| help_text: Externl ID set during IAM user/role configuration          |
+|   help_text: Externl ID set during IAM user/role configuration          |
 |                                                                       |
 | - id: aws_region                                                      |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: AWS region                                                     |
+|   label: AWS region                                                     |
 |                                                                       |
-| help_text: AWS Region                                                 |
+|   help_text: AWS Region                                                 |
 |                                                                       |
 | - id: gitrepo_name                                                    |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: 'Git Repository (without https://)'                            |
+|   label: 'Git Repository (without https://)'                            |
 |                                                                       |
-| help_text: Git repository URL                                         |
+|   help_text: Git repository URL                                         |
 |                                                                       |
 | - id: gitrepo_branch                                                  |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Git branch name                                                |
+|   label: Git branch name                                                |
 |                                                                       |
-| help_text: Git repository branch name                                 |
+|   help_text: Git repository branch name                                 |
 |                                                                       |
 | - id: gitrepo_username                                                |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitrepo username                                               |
+|   label: Gitrepo username                                               |
 |                                                                       |
-| help_text: Git repository login username                              |
+|   help_text: Git repository login username                              |
 |                                                                       |
 | - id: gitrepo_pat                                                     |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Gitrepo PAT                                                    |
+|   label: Gitrepo PAT                                                    |
 |                                                                       |
-| secret: true                                                          |
+|   secret: true                                                          |
 |                                                                       |
-| help_text: Git repository personl access token                        |
+|   help_text: Git repository personl access token                        |
 |                                                                       |
 | - id: app_cluster_name                                                |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: Application cluster name                                       |
+|   label: Application cluster name                                       |
 |                                                                       |
-| help_text: OpenIDL Application EKS cluster name                       |
+|   help_text: OpenIDL Application EKS cluster name                       |
 |                                                                       |
 | - id: vault_secret_name                                               |
 |                                                                       |
-| type: string                                                          |
+|   type: string                                                          |
 |                                                                       |
-| label: vault secret name                                              |
+|   label: vault secret name                                              |
 |                                                                       |
-| help_text: Vault secret name provisioned in AWS secrets manager       |
+|   help_text: Vault secret name provisioned in AWS secrets manager       |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -1064,6 +1250,10 @@ The next step is to use credential of type OpenIDL-IAC. This will be
 used by infrastructure jobs. A reference screenshot and significance of
 each field is detailed in below table.
 
+|NOTE| However the values for all the fields would not be readily available as the
+AWS infrastructure is not provisioned yet. Hence fill up dummy values which are unknown
+at the moment and later it can be populated before executing the relevant pipeline jobs.
+
 .. image:: images3/image39.png
 
 +-----+--------------+-------------------------------------------------+
@@ -1130,6 +1320,10 @@ OpenIDL-APP
 Create the credential of type OpenIDL-APP as described below which will
 be used by jobs related to OpenIDL application.
 
+|NOTE| However the values for all the fields would not be readily available as the
+AWS infrastructure is not provisioned yet. Hence fill up dummy values which are unknown
+at the moment and later it can be populated before executing the relevant pipeline jobs.
+
 .. image:: images3/image40.png
 
 +-----+---------------------+-----------------------------------------+
@@ -1182,6 +1376,10 @@ Finally, provision credential of type OpenIDL-IAC-AWSUser-BAF. Choose
 the relevant credential type, key in AWS access key, secret key, external_id and baf user assume role arn of
 AWS IAM user provisioned related to BAF.
 
+|NOTE| However the values for all the fields would not be readily available as the
+AWS infrastructure is not provisioned yet. Hence fill up dummy values which are unknown
+at the moment and later it can be populated before executing the relevant pipeline jobs.
+
 .. image:: images3/image41.png
 
 Projects 
@@ -1190,28 +1388,7 @@ Projects
 The next step is to configure projects which is used to pull the ansible
 playbook contents from GitHub to ansible tower/AWX.
 
-1. openidl-main
-
-2. openidl-aais-gitops
-
-openidl-main
-~~~~~~~~~~~~
-
-1. Go to Ansible => Resources => Projects => Add and get the details
-   added referring to the screenshot below.
-
-2. Ensure the relevant organization, Execution environment are chosen
-
-3. Select source control credential type as Git for GitHub.
-
-4. Key in the Source Control URL, Branch and relevant code check in
-   options
-
-5. Finally choose the source control credential created previously to
-   allow Ansible Tower/AWX to authenticate for syncing the code from
-   repository to Ansible.
-
-.. image:: images3/image42.png
+1. openidl-aais-gitops
 
 openidl-aais-gitops
 ~~~~~~~~~~~~~~~~~~~
@@ -1494,189 +1671,19 @@ OpenIDL Application Secrets Install
 
 .. image:: images3/image55.png
 
-Jenkins Job Configuration
-=========================
-
-Credentials
------------
-
-1. Before configuring Jenkins’s job ensure that the required credentials
-   relevant to the jobs are already configured in Jenkins.
-
-..
-
-   Terraform credentials
-
-   AWX (Ansible Tower/AWX User credentials)
-
-   GitHub User credentials
-
-+----+------------+------------+----------+-------------+-------------+
-| No | Cred Type  | **ID**     | Username | Password    | Descr       |
-+====+============+============+==========+=============+=============+
-| 1  | Username   | openidl-a  | GitHub   | Personal    | GitHub      |
-|    | with       | ais-gitops | account  | access      | credentials |
-|    | password   |            | username | token       |             |
-|    |            |            |          | created     |             |
-+----+------------+------------+----------+-------------+-------------+
-| 2  | Username   | AWX        | Ansible  | Ansible     | Ansible     |
-|    | with       |            | tower    | tower user  | Tower/AWX   |
-|    | password   |            | username | password    | credentials |
-+----+------------+------------+----------+-------------+-------------+
-| 3  | Secret     | TF_BE      | NA       | Terraform   | Terraform   |
-|    | text       | ARER_TOKEN |          | user/team   | Cloud       |
-|    |            |            |          | API token   | /Enterprise |
-|    |            |            |          |             | access      |
-|    |            |            |          |             | token       |
-+----+------------+------------+----------+-------------+-------------+
-
-**References: GitHub credential**
-
-.. image:: images3/image56.png
-
-**References: AWX credential**
-
-.. image:: images3/image57.png
-
-**References: Terraform credential**
-
-.. image:: images3/image58.png
-
-Job Configurations 
-------------------
-
-The list of jobs to be configured are
-
-1. Job to provision AWS resources and K8s resources using Terraform
-   Cloud/Enterprise
-
-2. Job to provision Vault using Ansible Tower/AWX
-
-3. Job to provision Blockchain Network using Ansible Tower/AWX
-
-4. Job to provision MongoDB using Ansible Tower/AWX
-
-5. Job to provision OpenIDL application secrets and application using
-   Ansible Tower/AWX
-
-Terraform Job
-~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-tf”.
-
-..
-
-   .. image:: images3/image59.png
-
-Vault Job
-~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-vault”.
-
-.. image:: images3/image60.png
-
-Blockchain Network Job
-~~~~~~~~~~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-baf”.
-
-.. image:: images3/image61.png
-
-MongoDB Job 
-~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-mongodb”.
-
-..
-
-   .. image:: images3/image62.png
-
-OpenIDL Application Job
-~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-main) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-apps-secrets”.
-
-.. image:: images3/image63.png
+Now that the tasks like AWS, GitHub repository, Terraform Cloud, Ansible Tower and
+Jenkins environment are prepared related to their integration, job templates etc. It is all set
+to follow deployment steps in the order setup the node.
+
+Using Jenkins Jobs perform the below
+1. Deploy AWS resources (uses Terraform Cloud/Enterprise)
+2. Deploy Vault (uses AWX)
+3. Deploy Blockchain Network (It involves multiple steps based on node) (uses AWX)
+4. Deploy MongoDB (uses AWX)
+5. Deploy Application Secrets (uses AWX)
+6. Deploy Application APIs (uses AWX)
+
+The following section describes how to prepare and execute each Jenkins job to provision on the node.
 
 Executing Jenkins Pipeline
 ==========================
@@ -1742,18 +1749,92 @@ pipeline which will help.
 | 422                  | JSON API error object | Malformed request.    |
 +----------------------+-----------------------+-----------------------+
 
-Preparing Config file for Infra Job
------------------------------------
 
-For the following pipelines the configuration file should be prepared
-and uploaded to the specific directory in the repository before
-triggering the pipeline.
+Once the AWS resources are provisioned successfully, carefully review the resources provisioned
+and perform the below actions.
 
-1. Vault
+Disable access keys and setup new access keys
+---------------------------------------------
 
-2. MongoDB
+The terraform pipeline provisions three vital AWS IAM user resources. As
+this is provisioned part of terraform these user access and secret keys
+are in terraform state file.
 
-3. Blockchain Network
+The initial provisioned access keys and secret keys should not be used,
+and it should be set as INACTIVE(Do not delete them). Further create new access keys and secret keys
+for these users and use them.
+
+NOTE: The name of the user has the first part truncated from the
+org_name. That is “carrier” becomes “carr-dev-baf-automation” which
+could cause a problem during testing if creating more than one carrier.
+
+.. csv-table: IAM users
+    :file: table5.csv
+    :header-rows: 1
+
+
+Remove security rule created by Kubernetes NGINX proxy deployment
+-----------------------------------------------------------------
+
+Once AWS resources are provisioned. The following security rules from
+the security groups are required to remove as they are deployed by
+default by Ingress Controller deployment in Kubernetes cluster.
+
+Refer to the following security groups to identify the rule and remove
+it.
+
+.. csv-table: Security Groups
+    :file: table6.csv
+    :header-rows: 1
+
+1. Go to EC2/VPC services section in the AWS console
+
+2. Go to Security Group section
+
+3. Look for the security group as mentioned in the above table
+
+.. image:: images/image42.png
+   :width: 6.50556in
+   :height: 2.65486in
+
+3. Open the security group and look for the rule related to ICMP set
+   with source 0.0.0.0/0 and remove it. The below screenshot is a
+   reference. Please remove only this rule only.
+
+..
+
+   .. image:: images/image43.png
+      :width: 6.5in
+      :height: 1.11528in
+
+4. Remove this rule from both (two) security groups as mentioned the
+   table above.
+
+Review and collect AWS resources details required:
+--------------------------------------------------
+1. account number
+2. aws region
+3. application EKS cluster name
+4. blockchain EKS cluster name
+5. vault secret name
+6. <orgname>-<env>-gitactions-admin credentials
+7. <orgname>-<env>-openidl-apps-user credentials
+8. <orgname>-<env>-baf-user  credentials
+9. <orgname>-<env>-baf-automation role ARN which will be assumed by *-baf-user
+10. <orgname>-<env>-gitactions-admin role ARN which will be assumed by *-gitactions-admin user
+11.<orgname>-<env>-openidl-apps role ARN which will be assumed by *-openidl-apps-user
+12. cognito pool id
+13. cognito app client id
+14. s3 bucket created for HDS datastore
+
+In case anything missed to list here, while setting up the environment let us identify and include.
+
+Preparing Config file for Blockchain node setup
+-----------------------------------------------
+
+Since the first step of provisioning based AWS infrastructure is completed, the next step would be
+preparing the dependent components and setting up blockchain network/a node to join the existing
+network.
 
 The template and example configuration files are in the repository under
 “awx-automation/config-references”. Using these templates, the actual
@@ -1770,10 +1851,21 @@ Env: dev \| test \| prod
 The configuration file should be placed in the path
 “awx-automation/config/<org-name>-config-<env>.yml.
 
-**NOTE:** The details in preparing the config file are to refer from
-base document.
+**NOTE:** The details in preparing the config file are to refer from the repository templates.
 
 .. image:: images3/image65.png
+
+After preparing the configuration file as mentioned above and ensure that it is pushed to the
+github repository used to prepare the node. Once it is all set, then the next step would be deploying the
+blockchain network and its dependant components as below.
+
+NOTE: Remember that some of the fields are kept dummy while creating credentials in AWX during prepration phase.
+Now before running pipeline jobs to deploy Vault, Blockchain network etc, update the credentials with relevant actual
+values in AWX.
+
+1. Vault
+
+2. Blockchain Network
 
 .. _vault-job-1:
 
@@ -1794,8 +1886,8 @@ an option Build with Parameters which will be right run.
 
 .. _blockchain-network-job-1:
 
-Blockchain Network Job
-----------------------
+Blockchain Network Setup Job
+----------------------------
 
 To run blockchain relevant tasks, go to the Job created for Blockchain
 Network and trigger relevant actions following the base document.
@@ -1805,11 +1897,22 @@ shows as “Build Now”. This will fail and will update your job with
 relevant parameters required for the job to run. Further runs will show
 an option Build with Parameters which will be right run.
 
-.. image:: images3/image67.png
-
 follow the :ref:`Manage the Network` section to complete all the steps for whichever node you are creating.
 
+.. image:: images3/image67.png
+
 .. _mongodb-job-1:
+
+OpenIDL application deployment Job
+----------------------------------
+
+After setting up blockchain network, the next step is to prepare the config files, deploying
+mongoDB, secrets and actual OpenIDL application APIs.
+
+1. MongoDB
+2. Prepare config files and upload to vault
+3. Deploy config files as K8s secrets
+4. Deploy actual OpenIDL APIs as deployments
 
 MongoDB Job 
 -----------
@@ -1825,6 +1928,18 @@ relevant parameters required for the job to run. Further runs will show
 an option Build with Parameters which will be right run.
 
 .. image:: images3/image68.png
+
+Preparing Config files for OpenIDL secret job
+---------------------------------------------
+
+1. Refer to the repository under openidl-config/config-templates/ directory.
+
+2. There are config files in JSON format grouped based on node (AAIS | Analytics | Carrier)
+
+3. Refer to the config files and update the required values based on the node that is being prepared
+
+4.
+
 
 Preparing Config files for OpenIDL application job
 --------------------------------------------------
@@ -1875,18 +1990,4 @@ containers.
 
 .. image:: images3/image70.png
 
-.. |image1| image:: images3/image2.png
-.. |image2| image:: images3/image3.png
-   :width: 3.68333in
-   :height: 1.85in
-.. |image3| image:: images3/image7.png
-   :width: 3.80833in
-   :height: 1.76667in
-.. |image4| image:: images3/image8.png
-   :width: 4.10833in
-   :height: 1.125in
-.. |image5| image:: images3/image24.png
-   :width: 3.50833in
-   :height: 3.15833in
-.. |image6| image:: images3/image44.png
-.. |image7| image:: images3/image45.png
+

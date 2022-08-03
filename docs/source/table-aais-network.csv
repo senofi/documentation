@@ -1,0 +1,9 @@
+AAIS Node Steps,,,,,,,,
+#,Node,Action,ORG ,ENV,Channel Name,Extra ,New Org Name,Chaincode Version,Comments
+1,AAIS,baf_image,aais,dev,,,,,Not applicable as images are already provisioned
+2,AAIS,vault,aais,dev,defaultchannel,,,
+3,AAIS,deploy_network,aais,dev,defaultchannel,,,
+4,AAIS,chaincode,aais,dev,defaultchannel,,Format:MMDDTTTT,
+5,AAIS,register_users,aais,dev,defaultchannel,,,
+
+

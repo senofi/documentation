@@ -45,4 +45,5 @@ Now we have completed the following steps
 4. Created and assigned IAM assume policy to IAM user to assume the IAM role
 5. Updated trust policy in IAM role to allow IAM user to assume the role
 
+This IAM user credentials and IAM role will be used in managing AWS resources via Terraform IaC.
 

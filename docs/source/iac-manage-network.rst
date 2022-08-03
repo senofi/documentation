@@ -3,8 +3,8 @@
 Managing the Network
 ====================
 
-Environment Secrets for git actions
------------------------------------
+Environment Secrets for git actions (Not applicable for Jenkins)
+----------------------------------------------------------------
 
 The pipeline requires the below defined environment secrets setup.
 Environment name follows the standard name format as
@@ -21,7 +21,7 @@ Create network configuration files
 As a pre-requisite, prepare the organization configuration files using
 the templates under
 openidl-aais-gitops/ansible-automation/config-examples directory based
-on the node type (aais, analytics and carrier).
+on the node type (aais, analytics and carrier) for github actions based pipelines.
 
 Create <org name>-config-<env>.yml under
 openidl-aais-gitops/ansible-automation/ directory for each of the nodes.
@@ -55,76 +55,85 @@ configuration files.
     :file: table10.csv
     :header-rows: 2
 
-Setup AAIS or Analytics node
-----------------------------
+For Jenkins based pipelines,
+the templates are located under awx-automation/config-references/templates
+the example configs are located under awx-automation/config-references/examples
 
-AAIS – Analytics Workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Using the reference and examples which helps to prepare the actual config files and placed them under
+awx-automation/config/
+
+The name of the files suppose to be orgname-config-env.yml. Note that the orgname suppose to be either
+aais|anal|first 4 chars of a carrier org name used while setting up. Example trv|cnd|hig1 etc.,
+dev|test|prod for environment.
+
+
+Setup AAIS
+----------
+The below are the steps required to complete using relevant jenkins jobs to setup base AAIS (multi tenant node).
+In case a carrier/analytics node is prepared this section is not applicable. It is only applicable for
+AAIS(multi tenant node) only.
+
+.. csv-table:: AAIS NODE
+    :file: table-aais-network.csv
+    :header-rows: 2
+
+Setup Analytics node(AAIS – Analytics Workflow)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: images2/image13.png
    :width: 6.45417in
    :height: 4.91944in
 
-AAIS - Analytics Nodes Steps
+Analytics-AAIS network setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-0.	Node=aais, action=baf_image, org=aais, env=<env>	
+The below steps applicable when deploying analytics node in the network. This includes working with both
+analytics node as well as aais node for appropriate network setup between them.
 
-1.	Node=aais, action=vault, org=aais, env=<env>, channel=defaultchannel			
-
-2.	Node=aais, action=deploy_network, org=aais, env=<env>, channel=defaultchannel			
-
-3.	Node=aais, action=chaincode, org=aais, env=<env>, channel=defaultchannel, version=Format: d (one digit)
-
-4.	Node=analytics, action=vault, org=aais, env=<env>, channel=defaultchannel			
-
-    1. Get Orderer TLS cert from aais vault and convert to base64 encoded string.  Refer to 10.6 Connecting to Vault Cluster							
+    1. Get Orderer TLS cert from aais vault and convert to base64 encoded string.  Refer to Connecting to Vault Cluster
 
     2. Share the TLS Cert with analytics							
 
-    3. analytics uploads the TLS Cert to its AWS Secret Manager. Refer to 10.7 Connecting to AWS Secret Manager							
+    3. analytics uploads the TLS Cert to its AWS Secret Manager. Refer to Connecting to AWS Secret Manager
 
-5.	Node=analytics, action=new_org, org=analytics, env=<env>, channel=defaultchannel			
+1.	Node=analytics, action=new_org, org=analytics, env=<env>, channel=defaultchannel
 
-    1. Get Org MSP from analytics vault. Refer to 10.6 Connecting to Vault Cluster							
+    1. Get Org MSP from analytics vault. Refer to section 5.12 Connecting to Vault Cluster in Managing the network
 
     2. Share the Org MSP with aais							
 
-    3. aais uploads the analytics Org MSP to its AWS Secret Manager. Refer to 10.7 Connecting to AWS Secret Manager							
+    3. aais uploads the analytics Org MSP to its AWS Secret Manager. Refer section 5.13 to Connecting to AWS Secret Manager in Managing the network
 
     4. Make sure the aais-config-<env>.yml in the aais-<env> branch has the analytics org and domain							
 
-6.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=defaultchannel, other org=analytics	
+2.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=defaultchannel, other org=analytics
 
-7.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=defaultchannel			
+3.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=defaultchannel
 
     Chaincode version should be same as the one used on aais for defaultchannel. (See step #3)							
 
-8.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=defaultchannel	extra args=-e add_new_org=true, version=Format: d (one digit)
+4.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=defaultchannel	extra args=-e add_new_org=true, version=Format: d (one digit)
 
     Update organization configuration file with new channel analytics-aais and chaincode information (channels section). Push the config file to repository in the aais-<env> branch							
 
-9.	Node=aais, action=add_new_channel, org=aais, env=<env>, channel=analytics-aais	
+5.	Node=aais, action=add_new_channel, org=aais, env=<env>, channel=analytics-aais
 
     aais node should be able to pull the analytics MSP from AWS secret manager which was added as part of add_new_org action on defaultchannel (See step #6)							
 
-10.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=analytics-aais, other org=analytics	
+6.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=analytics-aais, other org=analytics
 
-11.	Node=aais, action=chaincode, org=aais, env=<env>, channel=analytics-aais, version=Format: d (one digit)
+7.	Node=aais, action=chaincode, org=aais, env=<env>, channel=analytics-aais, version=Format: d (one digit)
 
     Update analytics organization configuration file with new channel analytics-aais and chaincode information (channels section). Push the config file to repository							
 
-12.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=analytics-aais			
+8.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=analytics-aais
 
     Chaincode version should be same as the one used on aais for analytics-aais channel (See step #11)							
 
-13.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=analytics-aais, extra args=-e add_new_org=true
+9.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=analytics-aais, extra args=-e add_new_org=true
 
-14.	Node=aais, action=register_users, org=aais, env=<env>, channel=defaultchannel			
+10.	Node=analytics, action=register_users, org=analytics, env=<env>, channel=defaultchannel
 
-15.	Node=analytics, action=register_users, org=analytics, env=<env>, channel=defaultchannel			
-
-The first step is to build the baf_image before starting the rest of the process. This action will build baf_image and push to the repository. In case this is already done and the image is latest the rest of the steps can be proceed.								
 
 Set up a Carrier Node
 ---------------------
@@ -139,21 +148,21 @@ Carrier Workflow
 Carrier Steps
 ~~~~~~~~~~~~~
 
-0.	Node=carrier, action=Baf_image,	org=<org_name>,	env=<env>
+The below steps applicable when deploying a carrier node in the network. This includes working with aais,
+analytics nodes as well as with the carrier node to join the network. Follow the below steps against
+all these nodes to complete the setup.
 
-1.	Node=carrier, action=vault, org=<org_name>, env=<env>, channel=defaultchannel
-
-    * AAIS must share the certificate with the carrier.  AAIS will follow these directions:								
+    * AAIS must share the certificate with the carrier.  AAIS will follow these directions:
     
-    * Get Orderer TLS cert from AAIS vault and convert to base64 encoded string.  Refer to Connecting to Vault Cluster (Org MSP and Orderer TLS Certificate)								
+    * Get Orderer TLS cert from AAIS vault and convert to base64 encoded string.  Refer to section 5.12 Connecting to Vault Cluster (Org MSP and Orderer TLS Certificate) in Managing the network
     
     * Share the TLS Cert with Carrier								
     
     * Carrier now puts the cert from aais into the aws secrets manager								
     
-    * Carrier uploads the TLS Cert to its AWS Secret Manager . Refer to Create Secret using AWS Secret Manager								
+    * Carrier uploads the TLS Cert to its AWS Secret Manager . Refer to section 5.13 Create Secret using AWS Secret Manager in Managing the network
 
-2.	Node=carrier, action=new_org, org=<org_name>, env=<env>, channel=defaultchannel				
+1.	Node=carrier, action=new_org, org=<org_name>, env=<env>, channel=defaultchannel
 
     * Get Org MSP from Carrier vault. Refer to Connecting to Vault Cluster (Org MSP and Orderer TLS Certificate)								
     
@@ -171,43 +180,43 @@ Carrier Steps
     
     * setup org in aais-config-<env>.yml to add organization								
 
-3.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=defaultchannel, other org=<org_name of carrier>		
+2.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=defaultchannel, other org=<org_name of carrier>
 
-4.	Node=carrier, action=join_peer, org=<org_name>, env=<env>, channel=defaultchannel				
+3.	Node=carrier, action=join_peer, org=<org_name>, env=<env>, channel=defaultchannel
 
     Chaincode version should be same as the one used on AAIS for defaultchannel								
 
-5.	Node=carrier, action=chaincode, org=<org_name>, env=<env>, channel=defaultchannel, extra args=-e add_new_org=true, version=Format: d (one digit)	Don’t include the quotes
+4.	Node=carrier, action=chaincode, org=<org_name>, env=<env>, channel=defaultchannel, extra args=-e add_new_org=true, version=Format: d (one digit)	Don’t include the quotes
 
     for aais - Update organization configuration file with new channel analytics-carrier and chaincode information (channels section). Push the config file to repository								
 
-6.	Node=aais, action=add_new_channel, org=aais, env=<env>, channel=anal-<org_name first 4>, extra args=--skip-tags=join,anchorpeer
+5.	Node=aais, action=add_new_channel, org=aais, env=<env>, channel=anal-<org_name first 4>, extra args=--skip-tags=join,anchorpeer
 
     AAIS node should be able to pull the analytics msp from aws secret manager which was added as part of add_new_org action on defaultchannel								
 
-7.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=anal-<org_name first 4>, other org=analytics		
+6.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=anal-<org_name first 4>, other org=analytics
 
     AAIS node should be able to pull the carrier msp from aws secret manager which was added as part of add_new_org action on defaultchannel (See step #2)								
 
-8.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=anal-<org_name first 4>, other org=<org_name>		
+7.	Node=aais, action=add_new_org, org=aais, env=<env>, channel=anal-<org_name first 4>, other org=<org_name>
 
     on the analytics node - Update organization configuration file with new channel analytics-carrier and chaincode information (channels section). Push the config file to repository								
 
-9.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=anal-<org_name first 4>				
+8.	Node=analytics, action=join_peer, org=analytics, env=<env>, channel=anal-<org_name first 4>
 
     On the carrier node - Update organization configuration file with new channel anal-<org_name first 4> and chaincode information (channels section). Push the config file to repository								
 
-10.	Node=carrier, action=join_peer, org=<org_name>, env=<env>, channel=anal-<org_name first 4>				
+9.	Node=carrier, action=join_peer, org=<org_name>, env=<env>, channel=anal-<org_name first 4>
 
-11.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=anal-<org_name first 4>, version=FORMAT: d (one digit)	
+10.	Node=analytics, action=chaincode, org=analytics, env=<env>, channel=anal-<org_name first 4>, version=FORMAT: d (one digit)
 
     Chaincode version should be same as the one used on Analytics for anal-<org_name first 4> channel								
 
-12.	Node=carrier, action=chaincode, org=<org_name>, env=<env>, channel=anal-<org_name first 4>, extra args=-e add_new_org=true, version=FORMAT: d (one digit)
+11.	Node=carrier, action=chaincode, org=<org_name>, env=<env>, channel=anal-<org_name first 4>, extra args=-e add_new_org=true, version=FORMAT: d (one digit)
 
     (anal channel prob better to use 1 character version)	
 
-13.	Node=carrier, action=register_users, org=<org_name>, env=<env>, channel=defaultchannel				
+12.	Node=carrier, action=register_users, org=<org_name>, env=<env>, channel=defaultchannel
 
     Update the configuration files for the analytics node to include the new channel anal-<org_name first 4>.  This will be these files:								
 
@@ -223,10 +232,9 @@ Carrier Steps
 
     Restart the Analytics and AAIS nodes that participate with this carrier.  This allows the pods to be refreshed and pickup any changes necessary to see the new carrier node.								
 
-The first step is to build the baf_image before starting the rest of the process. This action will build baf_image and push to the repository. In case this is already done and the image is latest the rest of the steps can be proceed.									
 
-Details of GitHub Actions List related to Deploy Blockchain Network
--------------------------------------------------------------------
+Details of GitHub Actions List related to Deploy Blockchain Network (Not applicable for Jenkins)
+------------------------------------------------------------------------------------------------
 
 Action: baf_image
 ~~~~~~~~~~~~~~~~~
