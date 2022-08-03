@@ -138,7 +138,7 @@ Fix the secret in the blk-cluster.
 
 \``\`
 
-echo "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" \| base64
+echo "ghp_xxxxxxxxx" \| base64
 
 \``\`
 
