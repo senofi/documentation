@@ -15,8 +15,7 @@ Input Template
 | aws_role_arn = "" #mandatory
 | aws_region = "" #mandatory
 | aws_external_id = "" #mandatory
-| app_bastion_ssh_key = "" #mandatory
-| blk_bastion_ssh_key = "" #mandatory
+| bastion_ssh_key = "" #mandatory
 | app_eks_worker_nodes_ssh_key = "" #mandatory
 | blk_eks_worker_nodes_ssh_key = "" #mandatory
 | #Cognito specifications
@@ -59,277 +58,180 @@ Input Template
 | aws_env = "<env>" #set to dev|test|prod
 
 | #--------------------------------------------------------------------------------------------------------------------
-| #Application cluster VPC specifications
-| app_vpc_cidr = "<app_vpc_cidr>"
-| app_availability_zones = ["", ""]
-| app_public_subnets = ["", ""]
-| app_private_subnets = ["", ""]
-| #--------------------------------------------------------------------------------------------------------------------
-| #Blockchain cluster VPC specifications
-| app_vpc_cidr = "<blk_vpc_cidr>"
-| app_availability_zones = ["", ""]
-| app_public_subnets = ["", ""]
-| app_private_subnets = ["", ""]
+| #Cluster VPC specifications
+| create_vpc = "true" # set to true to create VPC, false when existing VPC is planned to use
+| vpc_id = "" # when create_vpc is set to false, key in valid VPC Id
+| vpc_cidr = "<vpc_cidr>" # applicable when create_vpc is true
+| availability_zones = ["", "", ""] # applicable when create_vpc is true
+| public_subnets = ["", "", ""] # applicable when create_vpc is true
+| private_subnets = ["", "", ""] # applicable when create_vpc is true
 | #--------------------------------------------------------------------------------------------------------------------
 | #Bastion host specifications
-| #Bastion hosts are placed behind nlb. These NLBs can be configured to
-  be private \| public to serve SSH traffics.
-| #Either case whether NLB is private|public, the source
-  ip_address|cidr_block should be enabled in bastion host's security
-  group for incoming ssh traffic.
-| #in bastion hosts security group for ssh traffic
-| #when set to true bastion host's nlb is exposed as public, otherwise
-  exposed only to internal to VPC
-| bastion_host_nlb_external = "true"
-| #application cluster bastion host specifications
-| app_bastion_sg_ingress = [
-| {rule="ssh-tcp", cidr_blocks = "<app_vpc_cidr>"},
-| {rule="ssh-tcp, cidr_blocks = "<cidr_allowed_to_ssh_inbound>"}
-| ]
-| app_bastion_sg_egress = [
-| {rule="https-443-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="http-80-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="ssh-tcp", cidr_blocks = "<app_vpc_cidr>"},
-| {rule="ssh-tcp", cidr_blocks = "<cidr_allowed_to_ssh_outbound>"}
-| ]
-| #blockchain cluster bastion host specifications
-| #bastion host security specifications
-| blk_bastion_sg_ingress = [
-| {rule="ssh-tcp", cidr_blocks = "<blk_vpc_cidr>"},
-| {rule="ssh-tcp, cidr_blocks = "<cidr_allowed_to_ssh_inbound>"}
-| ]
-| blk_bastion_sg_egress = [
-| {rule="https-443-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="http-80-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="ssh-tcp", cidr_blocks = "<blk_vpc_cidr>"},
-| {rule="ssh-tcp", cidr_blocks = "<cidr_allowed_to_ssh_outbound>"}
-| ]
+| #Bastion hosts are placed in autoscaling group with EIP.
+| create_bastion_host = "true" # Choose whether bastion host required or not.
+| bastion_sg_ingress =  [{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}] #applicable when bastion host is opted.
+| bastion_sg_egress =   [{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}] #applicable when bastion host is opted.
 | #--------------------------------------------------------------------------------------------------------------------
 | #Route53 (PUBLIC) DNS domain related specifications
 | domain_info = {
-| r53_public_hosted_zone_required = "<yes>", #Options: yes \| no
+| r53_public_hosted_zone_required = "<yes>", #Options: yes \| no. Setting this to "yes" will provision public hosted zone in Route53
 | domain_name = "<domain_name>", #primary domain registered
-| sub_domain_name = "<sub_domain_name>", #sub domain name
+| sub_domain_name = "<sub_domain_name>", #sub domain name is optional. If not used keep it empty quotes
 | comments = "<comments>"
 | }
-
-| #-------------------------------------------------------------------------------------------------------------------
-| #Transit gateway specifications
-| tgw_amazon_side_asn = "<amazon_side_asn>" #default is 64532
 | #--------------------------------------------------------------------------------------------------------------------
 | #Cognito specifications
-| userpool_name = "<cognito_pool_name>" #unique user_pool name
-| client_app_name = "<cognito_app_client_name>" #a name of the
-  application that uses user pool
-| client_callback_urls = ["", ""] #ensure to add redirect url part of
-  callback urls, as this is required
-| client_default_redirect_url = "" #redirect url
-| client_logout_urls = [""] #logout url
-| cognito_domain = "<cognito_domain_name>" #unique domain name
+| create_cognito_userpool = "true" | Choose whether cognito user pool is required.
+| userpool_name = "<cognito_pool_name>" #unique user_pool name when chosen
 | # COGNITO_DEFAULT - Uses cognito default. When set to cognito default
-  SES related inputs goes empty in git secrets
-| # DEVELOPER - Ensure inputs ses_email_identity and
-  userpool_email_source_arn are setup in git secrets
-| email_sending_account = "COGNITO_DEFAULT" # Options: COGNITO_DEFAULT
-  \| DEVELOPER
-| #--------------------------------------------------------------------------------------------------------------------
-| #Any additional application specific traffic to be allowed in app_vpc
-| app_eks_workers_app_sg_ingress = [
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "<blk_vpc_cidr>"
-| },
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "<app_vpc_cidr>"
-| }]
-| app_eks_workers_app_sg_egress = [{rule = "all-all"}]
-| #Any additional application specific traffic to be allowed in blk_vpc
-| blk_eks_workers_app_sg_ingress = [
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "<blk_vpc_cidr>"
-| },
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "<app_vpc_cidr>"
-| }]
-| blk_eks_workers_app_sg_egress = [{rule = "all-all"}]
+  SES related inputs ses_email_identity and userpool_email_source_arn goes empty in git secrets
+| # DEVELOPER - Ensure inputs ses_email_identity and userpool_email_source_arn are setup in git secrets
+| email_sending_account = "COGNITO_DEFAULT" # Options: COGNITO_DEFAULT \| DEVELOPER
 | #--------------------------------------------------------------------------------------------------------------------
 | # application cluster EKS specifications
 | app_cluster_name = "<app_cluster_name>"
 | app_cluster_version = "<version>"
-
-app_worker_nodes_ami_id = "AMI-ID"
-
+| app_worker_nodes_ami_id = "AMI-ID"
 | #--------------------------------------------------------------------------------------------------------------------
 | # blockchain cluster EKS specifications
 | blk_cluster_name = "<blk_cluster_name>"
 | blk_cluster_version = "<version>"
 | blk_worker_nodes_ami_id = "<AMI-ID>"
-
 | #--------------------------------------------------------------------------------------------------------------------
 | #cloudtrail related
+| create_cloudtrail = "true" # Choose whether cloudtrail is required to enable.
+| s3_bucket_name_cloudtrail = <s3_bucket_name> #s3 bucket name to manage cloudtrail logs
+| #--------------------------------------------------------------------------------------------------------------------
+#Terraform backend specification
+| terraform_state_s3_bucket_name = "" # when s3 is used for TF state backend
+| tf_org_name = "" # organization name in Terraform Cloud/Enterprise when TFC/TFE is used for backend
+| tf_workspace_name_aws_resources = "" # Terraform workspace chosen for AWS resources when TFC/TFE is used
+| #--------------------------------------------------------------------------------------------------------------------
+#Applicable only to analytics and carrier node. For AAIS node set this to empty
+| s3_bucket_name_hds_analytics = "" #S3 bucket name to manage HDS analytics data when node is analytics/carrier
+| #--------------------------------------------------------------------------------------------------------------------
+#Name of Public S3 bucket used to manage logos which is optional.
+| create_s3_bucket_public = "true" | Helps to choose decide in provisioning public s3 bucket
+| s3_bucket_name_logos = "" # public s3 bucket name
+| #--------------------------------------------------------------------------------------------------------------------
+#Name of S3 bucket to store access logs of S3 bucket and its objects
+| s3_bucket_name_access_logs = "" # bucket name to store s3 access logs
+| #--------------------------------------------------------------------------------------------------------------------
+#KMS keys to be either created or used existing Keys
+| create_kms_keys = "true" # Set to true to create keys and false to use existing keys
+| s3_kms_key_arn = "" #KMS key ARN that will be used to encrypt S3
+| eks_kms_key_arn = "" #KMS key ARN that will be used to encrypt EKS secrets
+| cloudtrail_cw_logs_kms_key_arn = "" #KMS key ARN that will be used to encrypt cloutrail cloudwatch logs
+| vpc_flow_logs_kms_key_arn = "" #KMS key ARN that will be used to encrypt VPC flow logs
+| secrets_manager_kms_key_arn = "" #KMS key ARN that will be used to encrypt secrets
+| #--------------------------------------------------------------------------------------------------------------------
+#Cloudwatch logs retention period (VPC flow logs, EKS logs and cloutrail logs)
 | cw_logs_retention_period = "<days>" #example 90 days
-| s3_bucket_name_cloudtrail = <s3_bucket_name> #s3 bucket name to manage
-  cloudtrail logs
-
-| #Name of the S3 bucket managing terraform state files
-| terraform_state_s3_bucket_name = "<s3_bucket_aws_resources_pipeline> "
-
-| #Name of the S3 bucket used to store the data extracted from HDS for
-  analytics
-| #Applicable for carrier and analytics node only. For AAIS node leave
-  it empty
-| s3_bucket_name_hds_analytics = "<s3_bucket_name_hds_data_analytics>"
-| #S3 public bucket to manage application related images (logos)
-| s3_bucket_name_logos = "<unique_bucket_name>"
+| #--------------------------------------------------------------------------------------------------------------------
+| custom_tags = { <tag1> = "<value1>", <tag2> = "<value2>" } # custom tags to include
 
 Sample input file used for aais_node setup
 ------------------------------------------
 
-| org_name = "aais" # For aais set to aais, for analytics set to
-  analytics, for carriers set their org name, ex: travelers
-| aws_env = "dev" #set to dev|test|prod
-| #--------------------------------------------------------------------------------------------------------------------
-| #Application cluster VPC specifications
-| app_vpc_cidr = "172.26.0.0/16"
-| app_availability_zones = ["us-west-2a", "us-west-2b"]
-| app_public_subnets = ["172.26.1.0/24", "172.26.2.0/24"]
-| app_private_subnets = ["172.26.3.0/24", "172.26.4.0/24"]
-| #-------------------------------------------------------------------------------------------------------------------
-| #Blockchain cluster VPC specifications
-| blk_vpc_cidr = "172.27.0.0/16"
-| blk_availability_zones = ["us-west-2a", "us-west-2b"]
-| blk_public_subnets = ["172.27.1.0/24", "172.27.2.0/24"]
-| blk_private_subnets = ["172.27.3.0/24", "172.27.4.0/24"]
-| #--------------------------------------------------------------------------------------------------------------------
-| #Bastion host specifications
-| #bastion hosts are placed behind nlb. These NLBs can be configured to
-  be private \| public to serve SSH.
-| #In any case whether the endpoint is private|public for an nlb, the
-  source ip_address|cidr_block should be enabled
-| #in bastion hosts security group for ssh traffic
-| bastion_host_nlb_external = "true"
-| #application cluster bastion host specifications
-| app_bastion_sg_ingress = [
-| {rule="ssh-tcp", cidr_blocks = "172.26.0.0/16"},
-| {rule="ssh-tcp", cidr_blocks = "3.237.88.84/32"}]
-| app_bastion_sg_egress = [
-| {rule="https-443-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="http-80-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="ssh-tcp", cidr_blocks = "172.26.0.0/16"}] #additional
-  ip_address|cidr_block should be included for ssh
-| #blockchain cluster bastion host specifications
-| #bastion host security specifications
-| blk_bastion_sg_ingress = [
-| {rule="ssh-tcp", cidr_blocks = "172.27.0.0/16"},
-| {rule="ssh-tcp", cidr_blocks = "3.237.88.84/32"}]
-| blk_bastion_sg_egress = [
-| {rule="https-443-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="http-80-tcp", cidr_blocks = "0.0.0.0/0"},
-| {rule="ssh-tcp", cidr_blocks = "172.27.0.0/16"}] #additional
-  ip_address|cidr_block should be included for ssh
-| #--------------------------------------------------------------------------------------------------------------------
-| #Route53 (PUBLIC) DNS domain related specifications
-| domain_info = {
-| r53_public_hosted_zone_required = "yes", #Option: yes \| no
-| domain_name = "aaisonline.com", #primary domain registered
-| sub_domain_name = "demo", #sub domain
-| comments = "aais node dns name resolutions"
-| }
+org_name = "aais"
+aws_env = "dev"
 
-| #-------------------------------------------------------------------------------------------------------------------
-| #Transit gateway specifications
-| tgw_amazon_side_asn = "64532" #default is 64532
-| #--------------------------------------------------------------------------------------------------------------------
-| #Cognito specifications
-| userpool_name = "openidl"
-| client_app_name = "openidl-client"
-| client_callback_urls =
-  ["https://openidl.aais.dev.aaisdemo.com/callback",
-  "https://openidl.aais.dev.aaisdemo.com/redirect"]
-| client_default_redirect_url =
-  "https://openidl.aais.dev.aaisdemo.com/redirect"
-| client_logout_urls = ["https://openidl.aais.dev.aaisdemo.com/signout"]
-| cognito_domain = "aaisdemo" #unique domain name
-| email_sending_account = "COGNITO_DEFAULT" # Options: COGNITO_DEFAULT
-  \| DEVELOPER
-| # COGNITO_DEFAULT - Uses cognito default and SES related inputs goes
-  to empty in git secrets
-| # DEVELOPER - Ensure inputs ses_email_identity and
-  userpool_email_source_arn are setup in git secrets
-| #--------------------------------------------------------------------------------------------------------------------
-| #Any additional application specific traffic to be allowed in app_vpc
-| app_eks_workers_app_sg_ingress = [
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "172.27.0.0/16"
-| },
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "172.26.0.0/16"
-| }]
-| app_eks_workers_app_sg_egress = [{rule = "all-all"}]
-| #Any additional application specific traffic to be allowed in blk_vpc
-| blk_eks_workers_app_sg_ingress = [
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "172.27.0.0/16"
-| },
-| {
-| from_port = 443
-| to_port = 443
-| protocol = "tcp"
-| description = "inbound https traffic"
-| cidr_blocks = "172.26.0.0/16"
-| }]
-| blk_eks_workers_app_sg_egress = [{rule = "all-all"}]
-| #--------------------------------------------------------------------------------------------------------------------
-| # application cluster EKS specifications
-| app_cluster_name = "app-cluster"
-| app_cluster_version = "1.20"
-| app_worker_nodes_ami_id = "ami-06f175a2687bd1c1e"
+#--------------------------------------------------------------------------------------------------------------------
+#Choose whether to create VPC or use existing VPC
+create_vpc = "true"
 
-| #--------------------------------------------------------------------------------------------------------------------
-| # blockchain cluster EKS specifications
-| blk_cluster_name = "blk-cluster"
-| blk_cluster_version = "1.20"
-| blk_worker_nodes_ami_id = "ami-06f175a2687bd1c1e"
+#Key in VPC ID when create_vpc is set to false
+vpc_id = ""
 
-| #--------------------------------------------------------------------------------------------------------------------
-| #cloudtrail related
-| cw_logs_retention_period = 90
-| s3_bucket_name_cloudtrail = "cloudtrail-logs"
+#Key in for the below when create_vpc is set to true
+# 3 Availability Zones required
+vpc_cidr = "172.18.0.0/16"
+availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
+public_subnets = ["172.18.1.0/24", "172.18.2.0/24", "172.18.5.0/24"]
+private_subnets = ["172.18.3.0/24", "172.18.4.0/24", "172.18.6.0/24"]
+#--------------------------------------------------------------------------------------------------------------------
+#Bastion host specs. It is provisioned in autoscaling group and gets an Elastic IP assigned
+#Choose whether to provision bastion host
+create_bastion_host = "true"
 
-| #Name of the S3 bucket managing terraform state files
-| terraform_state_s3_bucket_name = "aais-test-tfstate-mgmt"
+#when chosen to create bastion host, set the required IP address or CIDR block that is allowed SSH access to bastion host
+bastion_sg_ingress =  [{rule="ssh-tcp", cidr_blocks = "3.237.88.84/32"}]
+bastion_sg_egress =   [{rule="ssh-tcp", cidr_blocks = "3.237.88.84/32"}]
+#--------------------------------------------------------------------------------------------------------------------
+#Route53 (PUBLIC) DNS domain related specifications
+domain_info = {
+  r53_public_hosted_zone_required = "yes", #Options: yes | no - This allows to chose whether to setup public hosted zone in Route53
+  domain_name = "aaisdirect.com", #Primary domain registered
+  sub_domain_name = "", #Sub domain if applicable. Otherwise it can be empty quotes
+  comments = "aais-dev node domain"
+}
+#--------------------------------------------------------------------------------------------------------------------
+#Cognito specifications
+#Chose whether to provision Cognito user pool
+create_cognito_userpool = "true"
 
-| #Name of the S3 bucket used to store the data extracted from HDS for
-  analytics
-| #Applicable for carrier and analytics node only. For AAIS node leave
-  it empty
-| s3_bucket_name_hds_analytics = ""
-| #S3 public bucket to manage application related images (logos)
-| s3_bucket_name_logos = "openidl-logos"
+#When cognito is choosen to provision set the below
+userpool_name                = "openidl" #unique user_pool name
+
+# COGNITO_DEFAULT - Uses cognito default. When set to cognito default SES related inputs goes empty in git secrets
+# DEVELOPER - Ensure inputs ses_email_identity and userpool_email_source_arn are setup in git secrets
+email_sending_account        = "COGNITO_DEFAULT" # Options: COGNITO_DEFAULT | DEVELOPER
+#--------------------------------------------------------------------------------------------------------------------
+# application cluster EKS specifications
+app_cluster_name              = "app-cluster"
+app_cluster_version           = "1.20"
+app_worker_nodes_ami_id       = "ami-09fd0b5dd68327412"
+#--------------------------------------------------------------------------------------------------------------------
+# blockchain cluster EKS specifications
+blk_cluster_name = "blk-cluster"
+blk_cluster_version = "1.20"
+blk_worker_nodes_ami_id = "ami-09fd0b5dd68327412"
+#--------------------------------------------------------------------------------------------------------------------
+#cloudtrail related
+#Choose whether to enable cloudtrail
+create_cloudtrail = "true"
+
+#S3 bucket name to manage cloudtrail logs
+s3_bucket_name_cloudtrail = "openidl-cloudtrail"
+#--------------------------------------------------------------------------------------------------------------------
+#Terraform backend specification when S3 is used
+terraform_state_s3_bucket_name = "openidl-tf-state"
+#--------------------------------------------------------------------------------------------------------------------
+#Terraform backend specifications when Terraform Enterprise/Cloud is used
+#Name of the TFE/TFC organization
+tfc_org_name = ""
+#Name of the workspace that manages AWS resources
+tfc_workspace_name_aws_resources = ""
+#--------------------------------------------------------------------------------------------------------------------
+#Applicable only to analytics and carrier nodes and not applicable to AAIS node. For AAIS it can be empty.
+#Name of the S3 bucket used to store the data extracted from HDS for analytics
+
+s3_bucket_name_hds_analytics = "openidl-hds"
+#--------------------------------------------------------------------------------------------------------------------
+#Name of the PUBLIC S3 bucket used to manage logos
+#Optional: Choose whether s3 public bucket is required to provision
+create_s3_bucket_public = "true"
+
+s3_bucket_name_logos = "openidl-public-logos"
+#--------------------------------------------------------------------------------------------------------------------
+#Name of the S3 bucket to store S3 bucket and its object access logs
+s3_bucket_name_access_logs = "openidl-access-logs"
+#--------------------------------------------------------------------------------------------------------------------
+#KMS Key arn to be used when create_kms_keys is set to false
+create_kms_keys = "true"
+s3_kms_key_arn = ""
+eks_kms_key_arn = ""
+cloudtrail_cw_logs_kms_key_arn = ""
+vpc_flow_logs_kms_key_arn = ""
+secrets_manager_kms_key_arn = ""
+
+#--------------------------------------------------------------------------------------------------------------------
+#Cloudwatch logs retention period (For VPC flow logs, EKS logs, Cloudtrail logs)
+cw_logs_retention_period = "90" #example 90 days
+#--------------------------------------------------------------------------------------------------------------------
+#Custom tags to include
+
+custom_tags = {
+  department = "openidl"
+  team = "demo-team"
+}

@@ -134,19 +134,19 @@ Create a new token.
 
 Update the secrets in github environments with the new token.
 
-Fix the secret in the blk-cluster
+Fix the secret in the blk-cluster.
 
 \``\`
 
-echo "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" \| base64
+echo "ghp_xxxxxxxxx" \| base64
 
 \``\`
 
-put that into the secret
+put that into the secret object.
 
 \``\`
 
-kubectl -n flux-dev edit secret git-auth-dev
+kubectl -n flux-dev edit secret git-auth-dev (example)
 
 \``\`
 
@@ -159,5 +159,7 @@ Fix the flux deployment
 kubectl -n flux-dev get deployments
 
 kubectl -n flux-dev edit deployment flux-dev
+
+Look for the deployment specification for "Args: --git-url" and update the github token in the "git-url".
 
 \``\`

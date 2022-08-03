@@ -51,7 +51,7 @@ Option1: Using terraform automation
    file.
 
     .. csv-table:: Terraform Variables
-        :file: table-terraform-variables.csv
+        :file: table-terraform-backend-variables.csv
         :header-rows: 1
 
 
@@ -221,7 +221,12 @@ resources provisioning and one with Kubernetes resource provisioning.
 **Note**: Bucket name is name of the bucket that this policy is getting
 created, role ARN is the IAM role that was created in previous step.
 
-Step3: Setting up DynamoDB table for AWS resources pipeline & K8s resources pipeline
+Step3: Setting up S3 bucket for Terraform Input file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Follow same steps of in creating S3 bucket in previous step to provision another S3 bucket for terraform input files.
+
+Step4: Setting up DynamoDB table for AWS resources pipeline & K8s resources pipeline
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Create two DyanmoDB tables for the following.

@@ -2,7 +2,7 @@
 Infrastructure as Code using GitHub Actions
 ===========================================
 
-In this section we describe how to run all the Infrastructure as Code using Jenkins, Terraform Cloud or Enterprise and Ansible Tower or AWX.
+In this section we describe how to run all the Infrastructure as Code using GitHub actions, Terraform CLI, AWS.
 
 |iac_design|
 

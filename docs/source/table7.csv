@@ -3,13 +3,15 @@
 2,aws_region,string,The AWS region
 3,baf_user_access_key,string,IAM user provisioned for BAF automation. Remember it was provisioned part of terraform and its access key should be rotated before using. See outputs from previous pipelines.
 4,baf_user_secret_key,string,IAM user provisioned for BAF automation. Remember it was provisioned part of terraform and its access key should be rotated before using.  See outputs from previous pipelines.
-,baf_image_repo,string,repository where the baf_image can be found
-5,gitactions_user_access_key,string,IAM user provisioned for GitActions pipeline. Remember it was provisioned part of terraform and its access key should be rotated before using.  See outputs from previous pipelines.
-6,gitactions_user_secret_key,string,IAM user provisioned for GitActions pipeline. Remember it was provisioned part of terraform and its access key should be rotated before using.  See outputs from previous pipelines.
-7,gitactions_external_id,string,“git-actions”. This is the default value to set. 
-8,gitactions_eksadm_role,string,IAM role provisioned earlier. Refer to pipeline outputs or IAM console. The role name format would be <orgname first four>-<env>-gitactions-eksadm. See outputs from previous pipelines.  Use the full arn for the role.
-9,blk_cluster_name,string,Name of the blockchain EKS cluster
-10,git_repo_user,string,User ID of the GitHub repository. This ID should have access to write to repository
-11,git_repo_user_token,string,User token of the GitHub repository user. The Personal Access Token should have permission to write to the repository. Go to settings => Developer settings => Personal access token => Generate a token and set scope as “repo” which will allow read/write permissions for this token to the repository.
-12,git_repo_user_email,string,Email ID of the GitHub repository user
-13,App_cluster_name,String,Name of the application EKS cluster
+5,baf_user_external_id,string,"baf-user" This is the default value to set.
+6,baf_user_assume_role_arn,string,,IAM role provisioned earlier. Refer to pipeline outputs or IAM console. The role name format would be <orgname first four>-<env>-baf-automation. See outputs from previous pipelines.  Use the full arn for the role.
+7,baf_image_repo,string,repository where the baf_image can be found
+8,gitactions_user_access_key,string,IAM user provisioned for GitActions pipeline. Remember it was provisioned part of terraform and its access key should be rotated before using.  See outputs from previous pipelines.
+9,gitactions_user_secret_key,string,IAM user provisioned for GitActions pipeline. Remember it was provisioned part of terraform and its access key should be rotated before using.  See outputs from previous pipelines.
+10,gitactions_external_id,string,“git-actions”. This is the default value to set.
+11,gitactions_eksadm_role,string,IAM role provisioned earlier. Refer to pipeline outputs or IAM console. The role name format would be <orgname first four>-<env>-gitactions-eksadm. See outputs from previous pipelines.  Use the full arn for the role.
+12,blk_cluster_name,string,Name of the blockchain EKS cluster
+13,git_repo_user,string,User ID of the GitHub repository. This ID should have access to write to repository
+14,git_repo_user_token,string,User token of the GitHub repository user. The Personal Access Token should have permission to write to the repository. Go to settings => Developer settings => Personal access token => Generate a token and set scope as “repo” which will allow read/write permissions for this token to the repository.
+15,git_repo_user_email,string,Email ID of the GitHub repository user
+16,app_cluster_name,String,Name of the application EKS cluster
