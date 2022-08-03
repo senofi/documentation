@@ -51,5 +51,12 @@ eks_kms_key_arn,KMS key ARN to encrypt EKS secrets,no,no,KMS_KEY_ARN
 cloudtrail_cw_logs_kms_key_arn, KMS key ARN to encrypt cloudwatch logs,no,no,KMS_KEY_ARN
 vpc_flow_logs_kms_key_arn,KMS key ARN to encrypt VPC flow logs,no,no,KMS_KEY_ARN
 secrets_manager_kms_key_arn,KMS key ARN to encrypt secrets,no,no,KMS_KEY_ARN
+s3_bucket_names_etl,List the buckets used for IDM-ETL function,no,yes,{idm-loader: "<bucket_name>", intake: "<bucket_name>", failure: "<bucket_name>"}
+sns_subscription_email_ids,List the email Ids used for SNS notification for IDM-ETL,no,yes,["email1", "email2"]
+api_username,Application API userID used to connect with utility/idm services,no,no,aais-apiuser@domain
+api_user_password,Application API user password to authenticate utility/idm services,yes,no,<password>
+carrier_id,The Carrier ID that will be setup in the application,no,no,1235
+state,Name of the state in United States the node is used,no,no,<state>
 custom_tags,Additional tags to include,no,yes, { tag1 = "tagvalue", tag2 = "tagvalue2"}
+
 

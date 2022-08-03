@@ -16,6 +16,7 @@ Welcome to openIDL documentation!
    iac-github-actions.rst
    iac-jenkins.rst
    iac-manage-network.rst
+   iac-deploy-apps.rst
    iac-dns.rst
    iac-operational-procedures.rst
    testing-app.rst
