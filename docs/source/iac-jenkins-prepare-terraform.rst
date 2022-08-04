@@ -1,6 +1,8 @@
 Prepare Terraform Cloud/Enterprise
 ==================================
 
+.. include:: icons.rst
+
 Terraform Cloud or Terraform Enterprise are assumed to be setup.  Please see your administrator for how to accomplish this.
 
 The following are the configuration required to setup in Terraform cloud/enterprise instance.
@@ -168,9 +170,10 @@ https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
 
 Below is a list of variables, what they are for and some help with template values.
 
-.. csv-table:: terraform variables
-     :file: table-terraform-variables.csv
-     :header-rows: 1
+    .. csv-table:: Terraform Variables
+        :file: table-terraform-variables.csv
+        :header-rows: 1
+
 
 Team Access
 -----------

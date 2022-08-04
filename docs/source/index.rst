@@ -15,27 +15,14 @@ Welcome to openIDL documentation!
 
    iac-github-actions.rst
    iac-jenkins.rst
+   iac-jenkins-updated.rst
    iac-manage-network.rst
    iac-deploy-apps.rst
    iac-dns.rst
    iac-operational-procedures.rst
    testing-app.rst
    debugging.rst
-   jenkins.rst
-   iac-jenkins-introduction.rst
-   iac-jenkins-prepare-aws.rst
-   iac-jenkins-prepare-github.rst
-   iac-jenkins-prepare-terraform.rst
-   iac-jenkins-prepare-jenkins.rst
-   iac-jenkins-prepare-ansible-tower.rst
-   iac-jenkins-deploy-base-infra.rst
-   iac-jenkins-deploy-blockchain.rst
-   iac-jenkins-deploy-application.rst
-   iac-jenkins-operational-procedures.rst
-   iac-operational-procedures.rst
-   iac-dns.rst
-   testing-app.rst
-   debugging.rst
+
 
 Overview
 --------

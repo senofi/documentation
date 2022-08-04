@@ -1,6 +1,8 @@
 Prepare Amazon Web Services Account
 ==================================
 
+.. include:: icons.rst
+
 The AWS account needs to be prepared before the actual resources are deployed as a prerequisite.
 
 |note| **As a first step note down the aws account number as it will be used later**
