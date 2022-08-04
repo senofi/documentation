@@ -1,9 +1,7 @@
-.. _Setup repo:
-
-.. include:: icons.rst
-
 Prepare GitHub repositories
 ===========================
+
+.. include:: icons.rst
 
 |checkbox| **Setup forked repository**
 
@@ -23,7 +21,7 @@ There are three public repositories that are used in the overall node setup.
 |    |                     | setting up the node.                          | branch: develop-nginx-v1                               |
 +----+---------------------+-----------------------------------------------+--------------------------------------------------------+
 | 2  | openidl-main        | application codes are managed in this         | https://github.com/openidl-org/openidl-main.git        |
-|    |                     | repository. Indirectly used in the pipelines  | branch: develop
+|    |                     | repository. Indirectly used in the pipelines  | branch: develop                                        |
 +----+---------------------+-----------------------------------------------+--------------------------------------------------------+
 | 3  | openidl-etl         | There are lambda functions used and those     | https://github.com/openidl-org/openidl-etl.git         |
 |    |                     | code is located in this repository. Indirectly| branch: develop                                        |

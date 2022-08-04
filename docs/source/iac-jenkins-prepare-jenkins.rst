@@ -1,6 +1,8 @@
 Prepare Jenkins
 ===============
 
+.. include:: icons.rst
+
 It is assumed that Jenkins exist in the environment, if not refer to jenkins documentation to setup an instance in the network.
 
 When the jenkins instance is up and running below are the configuration required to complete.

@@ -1,6 +1,8 @@
 Prepare Ansible Tower/AWX
 =========================
 
+.. include:: icons.rst
+
 The following configuration items are required to setup in Ansible for the pipelines to work.
 
 1. An User Account
@@ -65,123 +67,123 @@ relevant section.
 |                                                                       |
 | - id: aws_access_key                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS access key                                                 |
+|   label: AWS access key                                               |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS IAM user access key                                    |
+|   help_text: AWS IAM user access key                                  |
 |                                                                       |
 | - id: aws_secret_key                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS secret key                                                 |
+|   label: AWS secret key                                               |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS IAM user secret key                                    |
+|   help_text: AWS IAM user secret key                                  |
 |                                                                       |
 | - id: aws_iam_role                                                    |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS IAM role                                                   |
+|   label: AWS IAM role                                                 |
 |                                                                       |
-|   help_text: AWS IAM role to be assumed                                 |
+|   help_text: AWS IAM role to be assumed                               |
 |                                                                       |
 | - id: aws_external_id                                                 |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS external id                                                |
+|   label: AWS external id                                              |
 |                                                                       |
-|   help_text: Externl ID set during IAM user/role configuration          |
+|   help_text: Externl ID set during IAM user/role configuration        |
 |                                                                       |
 | - id: aws_region                                                      |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS region                                                     |
+|   label: AWS region                                                   |
 |                                                                       |
-|   help_text: AWS Region                                                 |
+|   help_text: AWS Region                                               |
 |                                                                       |
 | - id: aws_account_number                                              |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS account number                                             |
+|   label: AWS account number                                           |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS account number                                         |
+|   help_text: AWS account number                                       |
 |                                                                       |
 | - id: baf_image_repo                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: BAF image repository                                           |
+|   label: BAF image repository                                         |
 |                                                                       |
-|   help_text: Blockchain automation framework Docker image repository    |
+|   help_text: Blockchain automation framework Docker image repository  |
 |                                                                       |
 | - id: blk_cluster_name                                                |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Blockchain cluster name                                        |
+|   label: Blockchain cluster name                                      |
 |                                                                       |
-|   help_text: Blockchain EKS cluster name                                |
+|   help_text: Blockchain EKS cluster name                              |
 |                                                                       |
 | - id: app_cluster_name                                                |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Application cluster name                                       |
+|   label: Application cluster name                                     |
 |                                                                       |
-|   help_text: OpenIDL Application EKS cluster name                       |
+|   help_text: OpenIDL Application EKS cluster name                     |
 |                                                                       |
 | - id: gitops_repo_url                                                 |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: 'Gitops repository URL (without https://)'                     |
+|   label: 'Gitops repository URL (without https://)'                   |
 |                                                                       |
-|   help_text: Github repository URL                                      |
+|   help_text: Github repository URL                                    |
 |                                                                       |
 | - id: gitops_repo_branch                                              |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitops repository branch                                       |
+|   label: Gitops repository branch                                     |
 |                                                                       |
-|   help_text: Branch name in Github repository                           |
+|   help_text: Branch name in Github repository                         |
 |                                                                       |
 | - id: gitops_repo_user                                                |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitops repository user                                         |
+|   label: Gitops repository user                                       |
 |                                                                       |
-|   help_text: GITHUB repository user                                     |
+|   help_text: GITHUB repository user                                   |
 |                                                                       |
 | - id: gitops_repo_user_token                                          |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitops repository user PAT                                     |
+|   label: Gitops repository user PAT                                   |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: GITHUB repository user token                               |
+|   help_text: GITHUB repository user token                             |
 |                                                                       |
 | - id: gitops_repo_user_email                                          |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitops repository user email                                   |
+|   label: Gitops repository user email                                 |
 |                                                                       |
-|   help_text: GITHUB repository user email id                            |
+|   help_text: GITHUB repository user email id                          |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -264,33 +266,33 @@ Similarly repeat the above steps to setup this credential type as well.
 |                                                                       |
 | - id: baf_user_access_key                                             |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: baf_user_access_key                                            |
+|   label: baf_user_access_key                                          |
 |                                                                       |
-|   help_text: AWS IAM user access key for baf                            |
+|   help_text: AWS IAM user access key for baf                          |
 |                                                                       |
 | - id: baf_user_secret_key                                             |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: baf_user_secret_key                                            |
+|   label: baf_user_secret_key                                          |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS IAM user secret key for baf                            |
+|   help_text: AWS IAM user secret key for baf                          |
 |                                                                       |
 | - id: baf_user_external_id                                            |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: baf_user_external_id                                           |
+|   label: baf_user_external_id                                         |
 |                                                                       |
 | - id: baf_user_assume_role_arn                                        |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: baf_user_assume_role_arn                                       |
+|   label: baf_user_assume_role_arn                                     |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -333,97 +335,97 @@ Similarly repeat the above steps to setup this credential type as well.
 |                                                                       |
 | - id: aws_access_key                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS access key                                                 |
+|   label: AWS access key                                               |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS IAM user access key                                    |
+|   help_text: AWS IAM user access key                                  |
 |                                                                       |
 | - id: aws_secret_key                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS secret key                                                 |
+|   label: AWS secret key                                               |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: AWS IAM user secret key                                    |
+|   help_text: AWS IAM user secret key                                  |
 |                                                                       |
 | - id: aws_iam_role                                                    |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS IAM role                                                   |
+|   label: AWS IAM role                                                 |
 |                                                                       |
-|   help_text: AWS IAM role to be assumed                                 |
+|   help_text: AWS IAM role to be assumed                               |
 |                                                                       |
 | - id: aws_external_id                                                 |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS external id                                                |
+|   label: AWS external id                                              |
 |                                                                       |
-|   help_text: Externl ID set during IAM user/role configuration          |
+|   help_text: Externl ID set during IAM user/role configuration        |
 |                                                                       |
 | - id: aws_region                                                      |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: AWS region                                                     |
+|   label: AWS region                                                   |
 |                                                                       |
-|   help_text: AWS Region                                                 |
+|   help_text: AWS Region                                               |
 |                                                                       |
 | - id: gitrepo_name                                                    |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: 'Git Repository (without https://)'                            |
+|   label: 'Git Repository (without https://)'                          |
 |                                                                       |
-|   help_text: Git repository URL                                         |
+|   help_text: Git repository URL                                       |
 |                                                                       |
 | - id: gitrepo_branch                                                  |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Git branch name                                                |
+|   label: Git branch name                                              |
 |                                                                       |
-|   help_text: Git repository branch name                                 |
+|   help_text: Git repository branch name                               |
 |                                                                       |
 | - id: gitrepo_username                                                |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitrepo username                                               |
+|   label: Gitrepo username                                             |
 |                                                                       |
-|   help_text: Git repository login username                              |
+|   help_text: Git repository login username                            |
 |                                                                       |
 | - id: gitrepo_pat                                                     |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Gitrepo PAT                                                    |
+|   label: Gitrepo PAT                                                  |
 |                                                                       |
-|   secret: true                                                          |
+|   secret: true                                                        |
 |                                                                       |
-|   help_text: Git repository personl access token                        |
+|   help_text: Git repository personl access token                      |
 |                                                                       |
 | - id: app_cluster_name                                                |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: Application cluster name                                       |
+|   label: Application cluster name                                     |
 |                                                                       |
-|   help_text: OpenIDL Application EKS cluster name                       |
+|   help_text: OpenIDL Application EKS cluster name                     |
 |                                                                       |
 | - id: vault_secret_name                                               |
 |                                                                       |
-|   type: string                                                          |
+|   type: string                                                        |
 |                                                                       |
-|   label: vault secret name                                              |
+|   label: vault secret name                                            |
 |                                                                       |
-|   help_text: Vault secret name provisioned in AWS secrets manager       |
+|   help_text: Vault secret name provisioned in AWS secrets manager     |
 |                                                                       |
 | required:                                                             |
 |                                                                       |
@@ -1048,11 +1050,12 @@ Summary
 
 At this stage the preparation phase is completed in getting the below technology tools and environment readiness.
 
-Sourcecode repositories |checkbox|
-AWS account |checkbox|
-Terraform Cloud/Enterprise |checkbox|
-Jenkins |checkbox|
-Ansible Tower/AWX |checkbox|
+|checkbox| Sourcecode repositories
+|checkbox| AWS account
+|checkbox| Terraform Cloud/Enterprise
+|checkbox| Jenkins
+|checkbox| Ansible Tower/AWX
 
 The next stage is the deployment phase in preparing base infrastructure, setting up blockchain network and deploying
 openidl application.
+
