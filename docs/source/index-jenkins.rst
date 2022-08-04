@@ -13,15 +13,23 @@ Welcome to openIDL documentation!
    :numbered:
    :caption: Contents:
 
-   iac-github-actions.rst
-   iac-jenkins.rst
-   iac-manage-network.rst
-   iac-deploy-apps.rst
-   iac-dns.rst
-   iac-operational-procedures.rst
-   testing-app.rst
-   debugging.rst
+   iac-jenkins-introduction.rst (completed)
+   iac-jenkins-prepare-aws.rst (completed)
+   iac-jenkins-prepare-github.rst (completed)
+   iac-jenkins-prepare-terraform.rst (completed)
+   iac-jenkins-prepare-jenkins.rst (completed)
+   iac-jenkins-prepare-ansible-tower.rst (completed)
+   iac-jenkins-deploy-base-infra.rst (completed)
+   iac-jenkins-deploy-blockchain.rst (tonight)
+   iac-jenkins-deploy-application.rst (tomorrow)
+   iac-jenkins-operational-procedures.rst (Thurs/fri)
+   iac-operational-procedures.rst (thurs/fri)
+   iac-dns.rst (thus/fri)
+   testing-app.rst (thrus/fri)
+   debugging.rst (thrus/fri)
+   leftover-rst (thrus/fri)
 
+NOTE: Update openidl repository, config files etc.,
 
 Overview
 --------
@@ -34,7 +42,7 @@ NOTE: When setting up nodes, all nodes must use the same environment.  It is not
 
 Throughout this document you will find sections, sub sections, paragraphs or steps that apply to one or the other path.  This will be designated with a if statement or a flag in the right part of the page.
 
-The overall infrastructure as code to deploy the required nodes (AAIS node | analytics node | carrier node) involves the following. 
+The overall infrastructure as code to deploy the required nodes (AAIS node | analytics node | carrier node) involves the following.
 
 #. GitHub
 #. Jenkins
