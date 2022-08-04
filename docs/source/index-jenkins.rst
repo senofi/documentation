@@ -13,21 +13,21 @@ Welcome to openIDL documentation!
    :numbered:
    :caption: Contents:
 
-   iac-jenkins-introduction.rst (completed)
-   iac-jenkins-prepare-aws.rst (completed)
-   iac-jenkins-prepare-github.rst (completed)
-   iac-jenkins-prepare-terraform.rst (completed)
-   iac-jenkins-prepare-jenkins.rst (completed)
-   iac-jenkins-prepare-ansible-tower.rst (completed)
-   iac-jenkins-deploy-base-infra.rst (completed)
-   iac-jenkins-deploy-blockchain.rst (tonight)
-   iac-jenkins-deploy-application.rst (tomorrow)
-   iac-jenkins-operational-procedures.rst (Thurs/fri)
-   iac-operational-procedures.rst (thurs/fri)
-   iac-dns.rst (thus/fri)
-   testing-app.rst (thrus/fri)
-   debugging.rst (thrus/fri)
-   leftover-rst (thrus/fri)
+   iac-jenkins-introduction.rst
+   iac-jenkins-prepare-aws.rst
+   iac-jenkins-prepare-github.rst
+   iac-jenkins-prepare-terraform.rst
+   iac-jenkins-prepare-jenkins.rst
+   iac-jenkins-prepare-ansible-tower.rst
+   iac-jenkins-deploy-base-infra.rst
+   iac-jenkins-deploy-blockchain.rst
+   iac-jenkins-deploy-application.rst
+   iac-jenkins-operational-procedures.rst
+   iac-operational-procedures.rst
+   iac-dns.rst
+   testing-app.rst
+   debugging.rst
+   leftover-rst
 
 NOTE: Update openidl repository, config files etc.,
 

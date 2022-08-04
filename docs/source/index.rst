@@ -21,6 +21,7 @@ Welcome to openIDL documentation!
    iac-operational-procedures.rst
    testing-app.rst
    debugging.rst
+   index-jenkins.rst
 
 
 Overview
