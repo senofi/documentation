@@ -174,7 +174,6 @@ Below is a list of variables, what they are for and some help with template valu
         :file: table-terraform-variables.csv
         :header-rows: 1
 
-
 Team Access
 -----------
 

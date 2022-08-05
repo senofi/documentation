@@ -7,7 +7,7 @@ Setup IAM User with inline policy
    on Add users
 
 2. Enter a username and select AWS access type as “Programmatic access”
-   and click next
+   and click next.
 
 ..
 
