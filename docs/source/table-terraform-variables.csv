@@ -1,5 +1,5 @@
 ﻿Required Input,Description,Sensitive,HCL,Template Value
-tfc_org_name,Name of the organization that owns the terraform cloud / enterprise when TFC/TFE is backend,no,no,openidl-aais
+tfc_org_name,Name of the organization that owns the terraform cloud/enterprise when TFC/TFE is backend,no,no,openidl-aais
 tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources when TFC/TFE is backend.,no,no,{{org name}}-aws-resources
 org_name,Four character name unique to the network,no,,carr
 aws_env,Environment.  Valid values are dev | test | prod,no,,

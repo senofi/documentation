@@ -1051,9 +1051,13 @@ Summary
 At this stage the preparation phase is completed in getting the below technology tools and environment readiness.
 
 |checkbox| Sourcecode repositories
+
 |checkbox| AWS account
+
 |checkbox| Terraform Cloud/Enterprise
+
 |checkbox| Jenkins
+
 |checkbox| Ansible Tower/AWX
 
 The next stage is the deployment phase in preparing base infrastructure, setting up blockchain network and deploying

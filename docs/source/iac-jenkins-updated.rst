@@ -41,6 +41,8 @@ If you see a |checkbox| then you will find a step in the iac-workbook.
 
 .. include:: iac-jenkins-deploy-blockchain.rst
 
+.. include:: iac-jenkins-manage-resources.rst
+
 .. include:: iac-jenkins-deploy-application.rst
 
 

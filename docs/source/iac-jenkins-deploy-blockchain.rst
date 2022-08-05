@@ -1,6 +1,8 @@
 Deploy Blockchain Network
 =========================
 
+.. include:: icons.rst
+
 The next phase is blockchain deployment phase in which the following steps are required to perform.
 
 1. Prepare config file for blockchain network setup
@@ -92,7 +94,6 @@ an option Build with Parameters which will be right run.**
 
 .. _blockchain-network-job-1:
 
-**include verification steps**
 
 Deploy Blockchain Network
 -------------------------
@@ -113,8 +114,8 @@ Before triggering the blockchain pipeline, let us understand the workflow involv
 that needs to be followed in sequence. Then it would be easy to follow the workflow table and trigger the
 blockchain pipeline job in jenkins accordingly.
 
-AAIS node setup workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~
+AAIS node setup
+~~~~~~~~~~~~~~~
 
 The below are the steps required to complete using relevant jenkins jobs to setup base AAIS (multi tenant node).
 These steps are to be performed on AAIS (multi tenant node).
@@ -124,8 +125,8 @@ These steps are to be performed on AAIS (multi tenant node).
     :header-rows: 2
 
 
-Analytics node setup workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Analytics node setup
+~~~~~~~~~~~~~~~~~~~~
 
 Pictorial representation
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,6 +134,9 @@ Pictorial representation
 .. image:: images2/image13.png
    :width: 6.45417in
    :height: 4.91944in
+
+Analytics node workflow
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The below are the steps to follow in deploying analytics node and joining with AAIS(multi tenant node). The procedure
 involves performing joint action working with AAIS(multi tenant) node.
@@ -143,8 +147,8 @@ in jenkins.
 .. image:: images/analytics-aais-node.png
 
 
-Carrier node setup workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Carrier node setup
+~~~~~~~~~~~~~~~~~~
 
 Pictorial representation
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,6 +158,9 @@ Pictorial representation
    :height: 6.09792in
 
 
+Carrier node workflow
+~~~~~~~~~~~~~~~~~~~~~
+
 The below are the steps to follow in deploying carrier node and joining with AAIS(multi tenant node)/Analytics node.
 The procedure involves performing joint action working with AAIS(multi tenant) node and Analytics node.
 
@@ -161,11 +168,3 @@ These steps are required to perform in sequential order. These steps are to be p
 in jenkins.
 
 .. image:: images/carrier-anal-aais-node.png
-
-
-
-
-Verification steps to include for each action right from terraform/blockchain/vault/mongodb/etc.,
-============
-
-
