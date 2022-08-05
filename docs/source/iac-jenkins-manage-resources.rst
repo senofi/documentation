@@ -13,3 +13,5 @@ This section describes the operational procedures to manage OpenIDL project infr
 
 .. include:: iac-jenkins-connect-aws-secretsmanager.rst
 
+.. include:: iac-jenkins-manage-mongodb.rst
+
