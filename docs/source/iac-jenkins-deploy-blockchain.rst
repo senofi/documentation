@@ -14,7 +14,7 @@ The next phase is blockchain deployment phase in which the following steps are r
 Preparing Config file for Blockchain network setup
 --------------------------------------------------
 
-|check| **Prepare config file for blockchain network setup**
+|checkbox| **Prepare config file for blockchain network setup**
 
 Since the first step of provisioning base AWS infrastructure is completed, the next step would be
 preparing the dependent components and setting up either blockchain network/a node to join the existing
@@ -62,7 +62,7 @@ The following table details the meaningful description for the configuration fil
 Update openIDL related credentials in Ansible
 ---------------------------------------------
 
-|check| **Update OpenIDL relevant credentials in Ansible Tower/AWX**
+|checkbox| **Update OpenIDL relevant credentials in Ansible Tower/AWX**
 
 The next step is critical, as if you remember while setting Ansible Tower/AWX there was a step to create credentials.
 However the credentials setup was not completed 100% as there were unknown values for certain fields during

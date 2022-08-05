@@ -25,7 +25,7 @@ The below are the steps involved
 Deploy MongoDB
 --------------
 
-|check| **deploy mongodb instance**
+|checkbox| **deploy mongodb instance**
 
 1. Go to Jenkins and click on relevant MongoDB job
 
@@ -46,7 +46,7 @@ The deploy_action "mongodb_cleanup" helps in Jenkins job to perform cleanup.
 Preparing application API configuration files
 ---------------------------------------------
 
-|check| **preparing application config json files**
+|checkbox| **preparing application config json files**
 
 1. Get to the repository openidl-aais-gitops and to the directory "openidl-config/"
 
@@ -122,7 +122,7 @@ Retrieving CA TLS Certificate
 Add application API configuration files to vault
 ------------------------------------------------
 
-|check| **Add application configuration json files as secrets into vault**
+|checkbox| **Add application configuration json files as secrets into vault**
 
 1. Go to command line and set AWS_PROFILE to the relevant profile that has access to EKS cluster
 
@@ -203,7 +203,7 @@ application config files under "/config" directory
 Prepare application API deployment value files
 ----------------------------------------------
 
-|check| **Prepare application api deployment value files**
+|checkbox| **Prepare application api deployment value files**
 
 1. Go to openidl-aais-gitops/openidl-k8s directory
 
@@ -240,7 +240,7 @@ However the below table describes brief information that benefits to some extend
 Deploy config files as secret object to EKS application cluster & Deploy application APIs
 -----------------------------------------------------------------------------------------
 
-|check|  **deploy secret object & application apis**
+|checkbox| **deploy secret object & application apis**
 
 To deploy application secrets and OpenIDL application, run the job configured for OpenIDL applications. Go to Jenkins and select the relevant job and use Build with Parameters.
 
