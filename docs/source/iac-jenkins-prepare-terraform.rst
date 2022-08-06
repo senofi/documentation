@@ -170,7 +170,7 @@ https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
 
 Refer to this spreadsheet that details the list of variables and its details to help populate variable set.
 
-:download: `Worksheet <./table-terraform-variables.xls>` to prepare variable set in terraform cloud/enterprise.
+Use this :download:`TerraformVariables <./table-terraform-variables.xls>` to prepare variable set in terraform cloud/enterprise.
 
 Team Access
 -----------
