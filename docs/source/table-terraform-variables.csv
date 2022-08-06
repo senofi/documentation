@@ -1,48 +1,48 @@
 ﻿Required Input,Description,Sensitive,HCL,Template Value
-tfc_org_name,Name of the organization that owns the terraform cloud/enterprise when TFC/TFE is backend,no,no,openidl-aais
-tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources when TFC/TFE is backend.,no,no,{{org name}}-aws-resources
-org_name,Four character name unique to the network,no,,carr
-aws_env,Environment.  Valid values are dev | test | prod,no,,
-domain_info,"A json object with values for r53_public_hosted_zone_required, domain_name, sub_domain_name, comments",no,yes,"{ r53_public_hosted_zone_required = ""yes"" domain_name = ""{{ org name }}.dname.dname"" sub_domain_name = ""{{ carrier | aais | analytics }}"" comments = ""comment about domain"" }"
-aws_account_number,AWS account number,no,,12 digit number
-aws_access_key,IAM user access key - from the terraform user,yes,,
-aws_secret_key,IAM user secret key - from the terraform user,yes,,
-aws_user_arn,IAM user ARN - from the terraform user,no,,arn:aws:iam::{{ account number }}:user/terraform_user
-aws_role_arn,IAM role ARN - from the terraform user,no,,arn:aws:iam::{{ account number }}:role/tf_automation
-aws_region,AWS region to setup the resources,no,,us-east-1
-aws_external_id,AWS external id used while setting up IAM user and IAM role,no,,terraform
-aws_input_bucket,When s3 is choosen as backend then s3 bucket name,no,no, s3_bucket_name
-email_sending_account,Set to COGNITO_DEFAULT,no,,COGNITO_DEFAULT
-ses_email_identity,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,,
-userpool_email_source_arn,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,,
+tfc_org_name,Name of the organization that owns the terraform cloud or enterprise when TFC or TFE is backend,no,no,openidl-aais
+tfc_workspace_name_aws_resources,Name of the terraform workspace used for the aws resources when TFC or TFE is backend,no,no,aais-aws-resources
+org_name,Four character name unique to the network,no,no,carr
+aws_env,Environment values can be dev | test | prod,no,no,dev
+domain_info,A json object with values for r53_public_hosted_zone_required like domain_name sub_domain_name comments,no,yes,"{ r53_public_hosted_zone_required = ""yes"" domain_name = ""{{ org name }}.dname.dname"" sub_domain_name = ""{{ carrier | aais | analytics }}"" comments = ""comment about domain"" }"
+aws_account_number,AWS account number,no,no,12 digit acc number
+aws_access_key,IAM user access key - from the terraform user,yes,no,access key value
+aws_secret_key,IAM user secret key - from the terraform user,yes,no,secret key value
+aws_user_arn,IAM user ARN - from the terraform user,no,no,arn:aws:iam::{{ account number }}:user/terraform_user
+aws_role_arn,IAM role ARN - from the terraform user,no,no,arn:aws:iam::{{ account number }}:role/tf_automation
+aws_region,AWS region to setup the resources,no,no,us-east-1
+aws_external_id,AWS external id used while setting up IAM user and IAM role,no,no,terraform
+aws_input_bucket,When s3 is chosen as backend then s3 bucket name,no,no,s3_bucket_name
+email_sending_account,Set to COGNITO_DEFAULT,no,no,COGNITO_DEFAULT
+ses_email_identity,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,no,
+userpool_email_source_arn,"Leave blank if sending account is ""COGNITO_DEFAULT""",no,no,
 app_cluster_name,app-cluster,no,no,app-cluster
 app_cluster_version,1.20,no,no,1.20
-app_worker_nodes_ami_id,ami-0e79442ad3ac8887b,no,no,ami-0e79442ad3ac8887b
-app_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
-app_cluster_map_users,Set to [],no,yes,[]
-app_cluster_map_roles,Set to [],no,yes,[]
+app_worker_nodes_ami_id,identify AMI id for that region and mention according to cluster version,no,no,ami-0e79442ad3ac8887b
+app_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,no,ssh key
+app_cluster_map_users,Set to IAM users ARN to have access to EKS clusters,no,yes,[]
+app_cluster_map_roles,Set to IAM roles to have access to EKS clusters,no,yes,[]
 create_vpc,choose whether to create VPC or use existing,no,no,true
 vpc_id,VPC id when create_vpc is false,no,no, VPC_id
-vpc_cidr,Cidr block for app vpc.  See your network administrator for a valid block.,no,,A.B.0.0/16
+vpc_cidr,"Cidr block for app vpc.  See your network administrator for a valid block.",no,,"A.B.0.0/16"
 availability_zones,"Collection of 3 zones.  Format is an array: [""us-east-1a"",""us-east-1b"", ""us-east-1c""]",no,yes,"[""us-east-1a"",""us-east-1b"", ""us-east-1c""]"
 public_subnets,Cidr blocks related to above,no,yes,"[""A.B.1.0/24"",""A.B.2.0/24"",""A.B.3.0/24""]"
 private_subnets,Cidr blocks related to above,no,yes,"[""A.B.4.0/24"",""A.B.5.0/24"",""A.B.2.0/24""]"
 create_bastion_host,Choose whether to provision bastion host,no,no,true
-bastion_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
-bastion_sg_ingress,Inbound SSH rules,no,yes,[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]
-bastion_sg_egress,Outbound SSH rules,no,yes,[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]
+bastion_ssh_key,SSH key for the user that runs the infrastructure as code,yes,ssh key,
+bastion_sg_ingress,Inbound SSH rules,no,yes,"[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]"
+bastion_sg_egress,Outbound SSH rules,no,yes,"[{rule="ssh-tcp", cidr_blocks = "<IP/CIDR>"}]"
 blk_cluster_name,blk-cluster,no,no,blk-cluster
 blk_cluster_version,1.20,no,no,1.20
-blk_worker_nodes_ami_id,ami-0e79442ad3ac8887b,no,no,ami-0e79442ad3ac8887b
-blk_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,,
-blk_cluster_map_users,Set to [],no,yes,[]
-blk_cluster_map_roles,Set to [],no,yes,[]
+blk_worker_nodes_ami_id,Identify AMI id for that region and mention based on cluster version,no,no,ami-0e79442ad3ac8887b
+blk_eks_worker_nodes_ssh_key,SSH key for the user that runs the infrastructure as code,yes,ssh key,
+blk_cluster_map_users,Set to IAM users ARN to have access to EKS clusters,no,yes,[]
+blk_cluster_map_roles,Set to IAM roles to have access to EKS clusters,no,yes,[]
 create_cognito_userpool,Choose whether to provision Cognito userpool,no,no,true
-userpool_name,Some unique name for the user pool.,no,no,openidl-{{ org name }}-pool
+userpool_name,Some unique name for the user pool.,no,no,pool name
 create_cloudtrail,Choose cloudtrail is required to enable,no,no,true
-s3_bucket_name_cloudtrail,Cloudtrail s3 bucket name,no,no,openidl-{{org name}}-{{env}}-cloudtrail
+s3_bucket_name_cloudtrail,Cloudtrail s3 bucket name,no,no,bucket name
 terraform_state_s3_bucket_name,S3 bucket name managing terraform state files when s3 backend is used,no,no, S3_bucket_name_tf_state_files
-s3_bucket_name_hds_analytics,Bucket for gathering result of extraction,no,no,openidl-{{org name}}-{{env}}-hds-analytics
+s3_bucket_name_hds_analytics,Bucket for gathering result of extraction,no,no,bucket name
 s3_bucket_name_logos,Bucket name for holding company logos,no,no,openidl-logos-public
 cw_logs_retention_period,Number of days cloudwatch retains logs,no,no,90
 create_kms_keys,Choose whether KMS keys to be created or use existing,no,no,true
@@ -51,12 +51,12 @@ eks_kms_key_arn,KMS key ARN to encrypt EKS secrets,no,no,KMS_KEY_ARN
 cloudtrail_cw_logs_kms_key_arn, KMS key ARN to encrypt cloudwatch logs,no,no,KMS_KEY_ARN
 vpc_flow_logs_kms_key_arn,KMS key ARN to encrypt VPC flow logs,no,no,KMS_KEY_ARN
 secrets_manager_kms_key_arn,KMS key ARN to encrypt secrets,no,no,KMS_KEY_ARN
-s3_bucket_names_etl,List the buckets used for IDM-ETL function,no,yes,{idm-loader: "<bucket_name>", intake: "<bucket_name>", failure: "<bucket_name>"}
+s3_bucket_names_etl,List the buckets used for IDM-ETL function,no,yes,"{idm-loader: "<bucket_name>", intake: "<bucket_name>", failure: "<bucket_name>"}"
 sns_subscription_email_ids,List the email Ids used for SNS notification for IDM-ETL,no,yes,["email1", "email2"]
 api_username,Application API userID used to connect with utility/idm services,no,no,aais-apiuser@domain
-api_user_password,Application API user password to authenticate utility/idm services,yes,no,<password>
+api_user_password,Application API user password to authenticate utility and idm services,yes,no,passwordhere
 carrier_id,The Carrier ID that will be setup in the application,no,no,1235
-state,Name of the state in United States the node is used,no,no,<state>
-custom_tags,Additional tags to include,no,yes, { tag1 = "tagvalue", tag2 = "tagvalue2"}
+state,Name of the state in United States the node is used,no,no,ND
+custom_tags,Additional tags to include,no,yes,{ tag1 = "tagvalue", tag2 = "tagvalue2"}
 
 
