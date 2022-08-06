@@ -168,11 +168,9 @@ https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
     :width: 4.18333in
     :height: 2.04167in
 
-Below is a list of variables, what they are for and some help with template values.
+Refer to this spreadsheet that details the list of variables and its details to help populate variable set.
 
-    .. csv-table:: Terraform Variables
-        :file: table-terraform-variables.csv
-        :header-rows: 1
+Use this :download:`TerraformVariables <./table-terraform-variables.xls>` to prepare variable set in terraform cloud/enterprise.
 
 Team Access
 -----------
