@@ -146,6 +146,17 @@ it.
 4. Remove this rule from both (two) security groups as mentioned the
    table above.
 
+Confirm email id subscription confirmation
+------------------------------------------
+
+1. During the resource provisioning list of email ids included for SNS notification subscription
+
+2. The infra provisioning would have subscribed these list of email ids to the SNS topics
+
+3. The subscription process involves SES emailing subscription confirm/verify emails to individual email Ids
+
+4. Each email account owners required to verify them before SNS could start sending notifications
+
 Review and collect AWS resources details required:
 --------------------------------------------------
 
