@@ -248,7 +248,7 @@ https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
     :width: 4.18333in
     :height: 2.04167in
 
-Refer to this spreesheet that details the list of variables and its details to help populate variable set.
+Refer to this spreadsheet that details the list of variables and its details to help populate variable set.
 
 :download: `Worksheet <./table-terraform-variables.xls>` to prepare variable set in terraform cloud/enterprise.
 
