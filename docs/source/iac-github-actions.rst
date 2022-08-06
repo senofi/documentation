@@ -25,7 +25,7 @@ Note:
 	The naming format for any feature branch should be <base_branch_name>*
 	Example: feature branch for carrier node in test environment may be: carrier_test_feature
 
-.. include:: iac-github-bestpractices.rest
+.. include:: iac-github-bestpractices.rst
 
 .. include:: iac-gitactions-environments.rst
 
