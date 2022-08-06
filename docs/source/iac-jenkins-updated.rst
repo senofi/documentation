@@ -1,6 +1,6 @@
-===============================================
-Infrastructure as Code using Jenkins - UPDATED
-===============================================
+====================================
+Infrastructure as Code using Jenkins
+====================================
 
 .. include:: icons.rst
 

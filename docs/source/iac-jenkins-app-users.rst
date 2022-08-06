@@ -14,6 +14,8 @@ After deploying application the next step is setting up the below
 Creating Admin user in Cognito
 ------------------------------
 
+|checkbox| **setting up cognito admin user**
+
 1.	Log into AWS Console and select the Cognito User Pool. Click on ‘Users and Groups’
 
 .. image:: images/image75.png
@@ -36,6 +38,8 @@ Creating Admin user in Cognito
 
 Creating application users
 --------------------------
+
+|checkbox| **setting up application users for API endpoint access**
 
 1.	Launch the Utilities Service Swagger at http://utilities-service ${ENV}.${ORGNAME}.${DOMAIN}.com/api-docs
 

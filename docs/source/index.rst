@@ -14,7 +14,6 @@ Welcome to openIDL documentation!
    :caption: Contents:
 
    iac-github-actions.rst
-   iac-jenkins.rst
    iac-jenkins-updated.rst
    iac-manage-network.rst
    iac-deploy-apps.rst

@@ -94,6 +94,22 @@ an option Build with Parameters which will be right run.**
 
 .. _blockchain-network-job-1:
 
+Verify Vault
+~~~~~~~~~~~~
+
+1. Setup AWS CLI
+
+2. Set AWS_PROFILE to the credentials that has access to EKS blockchain cluster
+
+3. Set cluster context as blockchain cluster
+
+4. Review vault objects and its working, refer to below screen shot.
+
+.. image:: images/verify-vault-1.png
+
+.. image:: images/verify-vault-2.png
+
+|Note| **This should allow access to the vault UI**
 
 Deploy Blockchain Network
 -------------------------
@@ -168,3 +184,59 @@ These steps are required to perform in sequential order. These steps are to be p
 in jenkins.
 
 .. image:: images/carrier-anal-aais-node.png
+
+
+How to verify blockchain actions are successful
+-----------------------------------------------
+
+1. Using kubectl client get into blockchain cluster to run kubectl commands to verify and below screenshot self explains the details.
+
+deploy network action on AAIS node
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/verify-deploy-network.png
+
+deploy new org action on other nodes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/verify-new-org.png
+
+deploy chaincode action
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Verify chaincode install
+
+.. image:: images/verify-chaincode-install.png
+
+2. Verify chaincode approve
+
+.. image:: images/verify-chaincode-approve.png
+
+
+3. Verify chaincode commit
+
+.. image:: images/verify-chaincode-commit.png
+
+
+4. Verify chaincode invoke
+
+.. image:: images/verify-chaincode-invoke.png
+
+deploy add new channel action
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/verify-new-channel.png
+
+deploy join peer action
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/verify-join-channel.png
+
+deploy register users action
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/verify-register-users.png
+
+
+
+
