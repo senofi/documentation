@@ -3,7 +3,7 @@ Setting up application users
 
 .. include:: icons.rst
 
-|check|  **creating cognito admin user and application users**
+|checkbox| **creating cognito admin user and application users**
 
 After deploying application the next step is setting up the below
 

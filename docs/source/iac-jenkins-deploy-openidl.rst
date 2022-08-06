@@ -25,7 +25,7 @@ The below are the steps involved
 Deploy MongoDB
 --------------
 
-|check| **deploy mongodb instance**
+|checkbox| **deploy mongodb instance**
 
 1. Go to Jenkins and click on relevant MongoDB job
 
@@ -40,13 +40,13 @@ an option Build with Parameters which will be right run.
 
 .. image:: images3/image68.png
 
-|NOE| In case mongodb deployment ran to issues, bug fix the issues and perform mongodb_cleaup before rerun deployment.
+|NOTE| In case mongodb deployment ran to issues, bug fix the issues and perform mongodb_cleaup before rerun deployment.
 The deploy_action "mongodb_cleanup" helps in Jenkins job to perform cleanup.
 
 Preparing application API configuration files
 ---------------------------------------------
 
-|check| **preparing application config json files**
+|checkbox| **preparing application config json files**
 
 1. Get to the repository openidl-aais-gitops and to the directory "openidl-config/"
 
@@ -122,7 +122,7 @@ Retrieving CA TLS Certificate
 Add application API configuration files to vault
 ------------------------------------------------
 
-|check| **Add application configuration json files as secrets into vault**
+|checkbox| **Add application configuration json files as secrets into vault**
 
 1. Go to command line and set AWS_PROFILE to the relevant profile that has access to EKS cluster
 
@@ -159,7 +159,7 @@ under openidl-config)
 
     Example: kubectl cp config/config-dev-aais/ default/ubuntu:config
 
-6. Copy pull-vault-config script to the pod
+6. Copy add-vault-config script to the pod
 
     #cd openidl-aais-gitops/vault-scripts
 
@@ -203,7 +203,7 @@ application config files under "/config" directory
 Prepare application API deployment value files
 ----------------------------------------------
 
-|check| **Prepare application api deployment value files**
+|checkbox| **Prepare application api deployment value files**
 
 1. Go to openidl-aais-gitops/openidl-k8s directory
 
@@ -237,22 +237,24 @@ However the below table describes brief information that benefits to some extend
 |image.tag               | Get the image tag from AAIS                    |
 +-------------------------------------------------------------------------+
 
-Deploy config files as secret object to EKS application cluster & Deploy application APIs
------------------------------------------------------------------------------------------
+Deploy Deploy application APIs and its secrets
+----------------------------------------------
 
-|check|  **deploy secret object & application apis**
-
-To deploy application secrets and OpenIDL application, run the job configured for OpenIDL applications. Go to Jenkins and select the relevant job and use Build with Parameters.
+|checkbox| **deploy secret object & application apis**
 
 |NOTE| First run after configuring the job is dummy run as the option shows as “Build Now”. This will fail and will update your job with relevant parameters required for the job to run. Further runs will show an option Build with Parameters which will be right run.
 
-This job has two step process.
+This step involves two actions as the APIs needs to the config files which are set as secret object. Hence
+deploy secrets and then APIs.
 
-    1. Perform deploy-secrets and then deploy-apps action. The first action deploys relevant configuration as Kubernetes secrets
+To deploy application secrets and OpenIDL application, run the job configured for OpenIDL applications. Go to Jenkins and select the relevant job and use Build with Parameters.
 
-    2. Then perform action deploy application as deployment objects in EKS cluster
+    1. Perform deploy-secrets action in the pipeline to get the config files from vault to K8s as secrets
+    2. Perform deploy-apps action in the pipeline to get the openIDL apis to be deployed as deployment objects in K8s
 
 .. image:: images3/image70.png
+
+
 
 
 
