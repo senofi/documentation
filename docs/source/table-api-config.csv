@@ -1,0 +1,29 @@
+Variable,Description,Example
+AAIS_ORGNAME,Organization name used in setting up infra/blockchain network,aais
+AAIS_ORGNAME_SHORT,Organization short name used by automation in setting up resources (first 4 chars), aais
+ANALYTICS_ORGNAME,Organization name used in setting up infra/blockchain network,analytics
+ANALYTICS_ORGNAME_SHORT,Organization short name used by automation (first 4 chars),anal
+CARRIER_ORGNAME,Organization name used in setting up infra/blockchain network,travelers or hig or cnd
+CARRIER_ORGNAME_SHORT,Organization short name used by automation (upto first 4 chars),trav or hig or cnd
+ENV,environment name dev or test or prod,dev
+DOMAIN,DNS domain name set,thetech.digital
+SUBDOMAIN,DNS sub domain if used (optional: otherwise remove this),openidl
+TLS_CERT,Refer to section CREATING CA TLS CERT for connection profile,go to particular section to understand
+AWS_COGNITO_ACCESS_KEY_ID,AWS access key of application user provisioned by terraform,refer to IAM
+AWS_COGNITO_SECRET_ACCESS_KEY,AWS secret key of application user provisioned by terraform,refer to IAM
+AWS_COGNITO_REGION,AWS region,us-east-2
+AWS_COGNITO_USERPOOLID,Cognito userpool ID,refer to cognito to identify the ID
+AWS_COGNITO_CLIENTID,Cognito application client ID,refer to cognito to identify application ID
+AWS_COGNITO_REGION,AWS region,us-east-2
+MONGO_DB_USERNAME,Get the username from AWS secrets manager <orgname>-<dev>-mongodb-user,aais-dev-mongodb-user
+MONGO_DB_PASSWORD,Get the password from AWS secrets manager <orgname>-<dev>-mongodb-user-token,aais-dev-mongodb-user-token
+AWS_SECRET_MANAGER_ACCESS_KEY_ID,AWS access key of application user provisioned by terraform,refer to IAM
+AWS_SECRET_MANAGER_SECRET_ACCESS_KEY,AWS secret key of application user provisioned by terraform,refer to IAM
+AWS_SECRET_MANAGER_REGION,aws region,us-east-2
+VAULT_SECRET_NAME,Name of the secret that gets the valut secret for application <orgname>-<dev>-kvs-vault,aais-dev-kvs-vault
+AWS_S3_ACCESS_KEY_ID,AWS access key of application user provisioned by terraform,refer to IAM
+AWS_S3_SECRET_ACCESS_KEY,AWS secret key of application user provisioned by terraform,refer to IAM
+AWS_S3_REGION,aws region,us-east-2
+S3_BUCKET_NAME,Name of the S3 bucket provisioned for HDS datastore,refer to S3
+S3_BUCKET_NAME_LOGOS,Name of S3 bucket provisioned for icons,refer to S3
+

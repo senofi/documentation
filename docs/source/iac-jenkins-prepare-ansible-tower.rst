@@ -1,662 +1,11 @@
-===========================================
-Infrastructure as Code using Jenkins
-===========================================
+Prepare Ansible Tower/AWX
+=========================
 
-This document describes how to build openIDL nodes using Jenkins pipelines
-which works with Terraform Cloud/Enterprise and AWX. 
+.. include:: icons.rst
 
-Environment Required
-====================
+The following configuration items are required to setup in Ansible for the pipelines to work.
 
-1. AWS account
-
-2. Source code repository (GitHub)
-
-3. Terraform Cloud/Enterprise
-
-4. Jenkins
-
-5. Ansible Tower /AWX (open source)
-
-.. include:: iac-prepare-aws-environment.rst
-
-.. include:: iac-setup-user-with-inline-policy.rst
-
-.. include:: iac-update-role-with-trust-policy.rst
-
-.. include:: iac-prepare-aws-cognito-ses.rst
-
-.. include:: iac-setup-github-repo.rst
-
-Source code repository (GitHub)
--------------------------------
-
-The following are the two repositories involved in setting up nodes.
-
-+----+---------------------+-----------------------------------------------+
-| No | **Repository**      | **Description**                               |
-+====+=====================+===============================================+
-| 1  | openidl-aais-gitops | Infrastructure as a code repository. This     |
-|    |                     | repository is used to provision               |
-|    |                     | Infrastructure using related pipelines.       |
-+----+---------------------+-----------------------------------------------+
-| 2  | openidl-main        | Application specific code repository. This    |
-|    |                     | repository holds application code and is used |
-|    |                     | to build and deploy the images.               |
-+----+---------------------+-----------------------------------------------+
-
-|checkbox| **Setup github user and personal access tokens**
-
-A user account with necessary permissions to manage these repositories
-is required. Further provision a Personal Access Token with Selected
-scopes as **“repo”**.
-
-The following are the areas the token is used. A single PAT or multiple
-PAT can be provisioned and used according to each organization
-decisions. Either provision one or below listed number of tokens and use
-accordingly.
-
-+----+---------------+------------------------------------------------+
-| No | **PAT**       | **Description**                                |
-+====+===============+================================================+
-| 1  | PAT 1         | A personal access token which will be used by  |
-|    |               | Jenkins to connect to GitHub. This token will  |
-|    |               | be added as a username/password secret in      |
-|    |               | Jenkins to allow it to connect to repositories |
-|    |               | successfully.                                  |
-+----+---------------+------------------------------------------------+
-| 2  | PAT 2         | A personal access token which will be used by  |
-|    |               | AWX/Tower to connect to source control to sync |
-|    |               | project (playbooks). This will be added as a   |
-|    |               | source control credential in AWX/Tower and     |
-|    |               | further used to sync playbooks.                |
-+----+---------------+------------------------------------------------+
-| 3  | PAT 3         | A personal access token used by ansible        |
-|    |               | playbooks to download content from the         |
-|    |               | repository during playbook run on remote host. |
-+----+---------------+------------------------------------------------+
-
-1. To provision PAT in GitHub (Source control) login to GitHub, go to
-   settings => Developer settings => Personal access tokens => Generate
-   new token.
-
-2. Name the token, set expiration as either no expiration or required
-   number of days if decided to refresh on a specific interval.
-
-3. Set the selected scopes as “repo”
-
-.. image:: images3/image1.png
-
-|note| **NOTE:** Once the necessary tokens are provisioned, please get them
-recorded to enable them as secrets/credentials in Jenkins/AWX in next
-steps.
-
-.. include:: iac-github-bestpractices.rest
-
-Terraform Cloud/Enterprise
-==========================
-
-Terraform Cloud or Terraform Enterprise are assumed to be setup.  Please see your administrator for how to accomplish this.
-
-The following are items are required to setup in Terraform.
-
-1. User Token/Team Token
-
-2. Workspaces
-
-3. Variable Set
-
-Terraform User/Team Token
--------------------------
-
-|checkbox| **Setup terraform token**
-
-A user token/team token is required to allow Jenkins to authenticate and
-successfully communicate with Terraform. It depends on an organization
-to choose between the type of token used according to their need.
-
-TFC/TFE User Token
-~~~~~~~~~~~~~~~~~~
-
-1. Login to Terraform Cloud/Enterprise go to User settings
-
-2. Create an API token
-
-|image1| |image2|
-
-TFC/TFE Team Token 
-~~~~~~~~~~~~~~~~~~
-
-1. Login to Terraform Cloud/Enterprise, go to Organization settings
-
-2. Go to Teams to setup up a new team and provision a team token or go
-   to existing team and provision a team API token.
-
-.. image:: images3/image4.png
-   :width: 4.725in
-   :height: 1.64167in
-
-Workspaces
-----------
-
-The terraform code to provision necessary Infrastructure resources for
-OpenIDL node is provisioned into two independent sets. The first set is
-used to provision AWS resources and the other one to provision K8s
-resources. There is a dependency in provisioning K8s which are addressed
-in the first set of code and before provisioning K8s.
-
-For example, K8s resources like config-map, storage class and ha proxy
-have dependencies with the EKS cluster which gets provisioned before these
-resources. Hence two sets of code are managed which requires two
-different terraform workspaces in the environment to manage and
-configure. The details are below.
-
-Workspace to manage K8S Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-|checkbox| **Create K8S Workspace**
-
-1. A workspace to manage K8s resources is required. Create a new
-   workspace and choose workflow as “API-Driven workflow” and give a
-   meaningful name.  Like <org name>-k8s-workspace
-
-2. Open the workspace go to settings => General and set the execution
-   mode to Remote, Apply method as Manual and Terraform version above
-   1.1.2
-
-**Note**\ *: This workspace refers to the state file of AWS resources
-workspace.*
-
-.. image:: images3/image5.png
-   :width: 4.41667in
-   :height: 1.84167in
-
-.. image:: images3/image6.png
-   :width: 4.35833in
-   :height: 1.9in
-
-.. image:: images3/image7.png
-   :width: 4.375in
-   :height: 1.75in
-
-.. image:: images3/image8.png
-   :width: 4.3in
-   :height: 1.04167in
-
-Workspace to manage AWS Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-|checkbox| **Create AWS Workspace**
-
-1. A workspace to manage AWS resources is required. Create a new
-   workspace and choose workflow as “API-Driven workflow” and give a
-   meaningful name. Like <org name>-aws-workspace
-
-2. Open the workspace go to settings => General and set the execution
-   mode to Remote, Apply method as Manual and Terraform version above
-   1.1.2
-
-3. And finally, *allow the state file of this workspace is accessible to
-   the workspace used to manage K8s resources.*
-
-**Note:**\ *This workspace shares its state file with K8s resources
-workspace*
-
-.. image:: images3/image9.png
-   :width: 4.50833in
-   :height: 1.76667in
-
-.. image:: images3/image6.png
-   :width: 4.175in
-   :height: 1.625in
-
-.. image:: images3/image10.png
-   :width: 4.83333in
-   :height: 2.18333in
-
-
-Variable Set
-------------
-
-|checkbox| **Enter terraform variables**
-
-All the terraform variables and their values (including sensitive and
-non-sensitive) are added in a variable set. The details of actual
-variables and samples can be referred in the repository under directory
-“aws/templates”.
-
-All the variables in the templates are required to add in the variable
-set. The detailed description of the variable’s significance is
-documented above.
-
-The variable set is preferred as it can be shared across workspaces
-which is the typical use case in our solution. Configure variable set
-and share them across the workspace’s setup in previous section.
-
-**NOTE:** When you are entering variables, in case of complex data types
-like maps, lists etc, follow HCL format and ensure the checkbox HCL is
-checked. Please refer to the below link and section “variable values and
-format”
-
-https://www.terraform.io/cloud-docs/workspaces/variables/managing-variables
-
-.. image:: images3/image11.png
-   :width: 5.51667in
-   :height: 1.95in
-
-.. image:: images3/image12.png
-    :width: 4.18333in
-    :height: 2.04167in
-
-Refer to this spreadsheet that details the list of variables and its details to help populate variable set.
-
-:download: `Worksheet <./table-terraform-variables.xls>` to prepare variable set in terraform cloud/enterprise.
-
-Team Access
------------
-
-Finally in each workspace configured enable team access in case team
-token is chosen as preferred method for API access.
-
-.. image:: images3/image15.png
-   :width: 5.00833in
-   :height: 3.16667in
-
-Jenkin’s Environment
-====================
-
-1. Plugins
-
-2. Node labels
-
-3. Global tools configuration
-
-4. Configure System – Ansible Tower/AWX
-
-5. Credentials
-
-Plugins required
-----------------
-
-..
-
-   The following are the additional plugins required to enable other
-   than standard plugins which are installed during initial Jenkins’s
-   setup.
-
-1. HTTP Request Plugin
-
-2. Source Code Plugin (Git Plugin)
-
-3. Ansible Tower Plugin
-
-5. AnsiColor
-
-..
-
-   .. image:: images3/image16.png
-
-Node labels 
------------
-
-The Jenkins pipeline job code uses a node label “openidl”. Do either of
-the below.
-
-1. Setup “openidl” as node label to an existing node (we are using just
-   master, and we updated the label in the master configuratioin)
-
-2. Setup a new node and label it to “openidl”
-
-3. Update Jenkins pipeline code to fit to a label that refers to a node
-   in your environment.
-
-The steps to labeling a node is skipped as it can be handled by
-Jenkins’s administrator.
-
-In case chosen to update the pipeline code with relevant node label.
-Refer to the pipeline code to the following section and replace
-“openidl” with custom label.
-
-Go to the relevant repository and to the folder Jenkins-jobs/. For each
-job code, update as required.
-
-+-----------------------------+----------------------------------------+
-| node {                      | node(‘openidl’)                        |
-|                             |                                        |
-| label “openidl”             |                                        |
-|                             |                                        |
-| }                           |                                        |
-+=============================+========================================+
-+-----------------------------+----------------------------------------+
-
-Global tools configuration
---------------------------
-
-1. Go to Jenkins => Mange Jenkins => Global Tool Configuration
-
-2. Ensure Git and Terraform are configured according to your environment
-
-3. Note the command shown here works for Ubuntu node and for Linux it
-   will be different. Hence configure Git according to your nodes
-   operating system.
-
-.. image:: images3/image19.png
-
-tool home should be ‘/usr/bin/git’
-
-Configure System (AWX/Ansible Tower)
-------------------------------------
-
-1. Go to Jenkins => Manage Jenkins => Configure System
-
-2. Go to Ansible Tower
-
-3. Click on Add, Give a name to the instance “AWX”. Please note “AWX”
-   instance name is used in Jenkins’s pipeline code. In case a different
-   name is used, the pipeline code needs to be updated.
-
-4. Update the actual URL of Ansible Tower/AWX instance to make API calls
-
-5. Include the username/password to authenticate Jenkins in AWX/Tower.
-   Hence get the user first created in AWX/Tower and get that credential
-   added in Jenkins as username/password credential type before setting
-   this up. Refer to the AWX preparation section on how to setup user account.
-
-6. During development instance SSL is not used, however in production
-   environment SSL should be enabled which is not documented here, refer
-   to relevant Jenkins’s documentation on enabling SSL.
-
-7. Test the connection between Jenkins and Ansible is successful to
-   proceed further.
-
-.. image:: images3/image21.png
-
-Credentials 
------------
-
-The following are the listed credentials are required to create in Jenkins. Refer to example of
-username and password kind and secret text type to provision the three credentials in Jenkins.
-
-+----+------------+-----------------+---------------------------------+
-| No | Purpose    | **Cred Type**   | **Description**                 |
-+====+============+=================+=================================+
-| 1  | Jenkins    | Username and    | An AWX user account having      |
-|    | access to  | Password        | permissions to run jobs, access |
-|    | AWX        |                 | required credentials, project,  |
-|    |            |                 | and resources. A username and   |
-|    |            |                 | password are used.              |
-+----+------------+-----------------+---------------------------------+
-| 2  | Jenkins    | Username and    | GitHub username and Personal    |
-|    | access to  | Password (PAT)  | Access Token. This is used by   |
-|    | GitHub     |                 | Jenkins to work with source     |
-|    | (source    |                 | control                         |
-|    | control)   |                 |                                 |
-+----+------------+-----------------+---------------------------------+
-| 3  | Jenkins    | Secret Text     | A User/team token created in    |
-|    | access to  |                 | Terraform Cloud/Enterprise. Get |
-|    | Terraform  |                 | that added as secret text in    |
-|    | Cloud/     |                 | Jenkins.                        |
-|    | Enterprise |                 |                                 |
-+----+------------+-----------------+---------------------------------+
-
-Username and Password Type 
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Login to Jenkins go to Manage Jenkins => Manage Credentials => Stores
-   scoped to Jenkins (Jenkins) => Global Credentials (unrestricted) =>
-   Add credentials
-
-2. Then choose Kind as “Username Password” and key in username,
-   Password, Description and a unique ID which would be referred in the
-   pipeline code. (An example below)
-
-.. image:: images3/image22.png
-
-Secret Text Type
-~~~~~~~~~~~~~~~~
-
-1. Login to Jenkins go to Manage Jenkins => Manage Credentials => Stores
-   scoped to Jenkins (Jenkins) => Global Credentials (unrestricted) =>
-   Add credentials
-
-2. Choose Kind as secret text, enter secret text like Token in “secret”
-   field and name the secret ID as unique since it will be used in
-   pipeline code. (An example below)
-
-.. image:: images3/image23.png
-
-Jenkins Jobs Configuration
-==========================
-
-Credentials
------------
-
-1. Before configuring Jenkins’s job ensure that the required credentials
-   relevant to the jobs are already configured in Jenkins.
-
-..
-
-   Terraform credentials
-
-   AWX (Ansible Tower/AWX User credentials)
-
-   GitHub User credentials
-
-+----+------------+------------+----------+-------------+-------------+
-| No | Cred Type  | **ID**     | Username | Password    | Descr       |
-+====+============+============+==========+=============+=============+
-| 1  | Username   | openidl-a  | GitHub   | Personal    | GitHub      |
-|    | with       | ais-gitops | account  | access      | credentials |
-|    | password   |            | username | token       |             |
-|    |            |            |          | created     |             |
-+----+------------+------------+----------+-------------+-------------+
-| 2  | Username   | AWX        | Ansible  | Ansible     | Ansible     |
-|    | with       |            | tower    | tower user  | Tower/AWX   |
-|    | password   |            | username | password    | credentials |
-+----+------------+------------+----------+-------------+-------------+
-| 3  | Secret     | TF_BE      | NA       | Terraform   | Terraform   |
-|    | text       | ARER_TOKEN |          | user/team   | Cloud       |
-|    |            |            |          | API token   | /Enterprise |
-|    |            |            |          |             | access      |
-|    |            |            |          |             | token       |
-+----+------------+------------+----------+-------------+-------------+
-
-**References: GitHub credential**
-
-.. image:: images3/image56.png
-
-**References: AWX credential**
-
-.. image:: images3/image57.png
-
-**References: Terraform credential**
-
-.. image:: images3/image58.png
-
-Job Configurations
-------------------
-
-The list of jobs to be configured are
-
-1. Job to provision AWS resources and K8s resources using Terraform
-   Cloud/Enterprise
-
-2. Job to provision Vault using Ansible Tower/AWX
-
-3. Job to provision Blockchain Network using Ansible Tower/AWX
-
-4. Job to provision MongoDB using Ansible Tower/AWX
-
-5. Job to provision OpenIDL application secrets and application using
-   Ansible Tower/AWX
-
-Terraform Job
-~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-tf”.
-
-..
-
-   .. image:: images3/image59.png
-
-Vault Job
-~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-vault”.
-
-.. image:: images3/image60.png
-
-Blockchain Network Job
-~~~~~~~~~~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-baf”.
-
-.. image:: images3/image61.png
-
-MongoDB Job
-~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-aais-gitops) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-mongodb”.
-
-..
-
-   .. image:: images3/image62.png
-
-OpenIDL Application Job
-~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Go to Jenkins => New Item => Give a meaningful name
-
-2. Select Job type as PIPELINE and proceed next
-
-3. Give a description to the job and move to pipeline section
-
-4. Select Definition as Pipeline Script from SCM
-
-5. Select SCM as Git
-
-6. Key in the Infrastructure code repository (openidl-main) url.
-
-7. Select the GitHub credentials
-
-8. Specify the relevant branch “refs/heads/<branch-name>”.
-
-9. Set script path to “Jenkins-jobs/jenkinsfile-apps-secrets”.
-
-.. image:: images3/image63.png
-
-
-Terraform code changes to adapt to Terraform Cloud/Enterprise 
-=============================================================
-
-The following the major changes made to the Terraform code to adapt to
-Terraform Cloud/Enterprise.
-
-Ensure that the code is updated before it is used.
-
-1. Activate the right AWS provider configuration in the code for
-   aws_resources code set. |image5|
-
-2. Comment the terraform backend section of the code in both
-   aws_resources and k8s_resources code set in the file main.tf. Below
-   is an example.
-
-..
-
-   .. image:: images3/image25.png
-      :width: 5.7in
-      :height: 2.125in
-
-3. Activate the AWS provider configuration as below for k8s_resources
-   code set and for remaining providers like Kubernetes and helm
-   requires no changes.
-
-..
-
-   .. image:: images3/image26.png
-      :width: 3.60833in
-      :height: 3.34167in
-
-4. Finally update/activate the code relevant code snippet as below for
-   data.tf in k8s_resources code set.
-
-..
-
-   .. image:: images3/image27.png
-      :width: 3.275in
-      :height: 4.075in
-
-Ansible Tower/AWX Environment 
-=============================
-
-The following objects/items are required to setup for the pipelines to
-work.
-
-1. A User Account
+1. An User Account
 
 2. Credential Types
 
@@ -668,8 +17,10 @@ work.
 
 6. Templates
 
-User Account 
-----------------
+User Account
+------------
+
+|checkbox| **An user account for jenkins to make API calls to Ansible**
 
 A user account to allow Jenkins to successfully work with Ansible
 Tower/AWX API. The user should have necessary permissions to run jobs
@@ -678,8 +29,12 @@ however in production use role-based access control using teams/roles.
 
 .. image:: images3/image28.png
 
+|Note| **Note down the username and password created**
+
 Credential Types
 ----------------
+
+|checkbox| **Custom credential types for openidl project specific in ansible**
 
 For the OpenIDL deployment there are infrastructure and application
 related pipelines. They require specific credentials and additional
@@ -1131,8 +486,12 @@ Similarly repeat the above steps to setup this credential type as well.
 
    .. image:: images3/image31.png
 
-Inventory, Group and Host 
+|Note| **Note down the credential types created**
+
+Inventory, Group and Host
 -------------------------
+
+|checkbox| **Setting up hosts/groups in ansible inventory**
 
    The OpenIDL ansible playbooks use the inventory group
    “ansible_provisioners” and a localhost. Hence setup the relevant
@@ -1181,8 +540,10 @@ Inventory, Group and Host
 
 .. _credentials-1:
 
-Credentials 
+Credentials
 -----------
+
+|checkbox| **Setup credentials that will be used for authentication in jobs**
 
 The following are the credentials to be configured in Ansible Tower/AWX.
 
@@ -1222,7 +583,9 @@ and further the credential is added here.
 
 .. image:: images3/image37.png
 
-Source Control Credential 
+|Note| **Note down the credential**
+
+Source Control Credential
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Similarly create a credential of type source control to enter GitHub
@@ -1237,6 +600,8 @@ with repositories. The screenshot for reference.
    use SSH method)
 
 .. image:: images3/image38.png
+
+|Note| **Note down the credential**
 
 .. _openidl-iac-1:
 
@@ -1309,6 +674,8 @@ at the moment and later it can be populated before executing the relevant pipeli
 |     | user email   |                                                 |
 +-----+--------------+-------------------------------------------------+
 
+|Note| **Note down the credential**
+
 .. _openidl-app-1:
 
 OpenIDL-APP
@@ -1364,6 +731,8 @@ at the moment and later it can be populated before executing the relevant pipeli
 |     |                     | <orgname>-<env>-config-vault            |
 +-----+---------------------+-----------------------------------------+
 
+|Note| **Note down the credential**
+
 .. _openidl-iac-awsuser-baf-1:
 
 OpenIDL-IAC-AWSUser-BAF
@@ -1379,8 +748,12 @@ at the moment and later it can be populated before executing the relevant pipeli
 
 .. image:: images3/image41.png
 
-Projects 
+|Note| **Note down the credential**
+
+Projects
 --------
+
+|checkbox| **Setup projects**
 
 The next step is to configure projects which is used to pull the ansible
 playbook contents from GitHub to ansible tower/AWX.
@@ -1395,8 +768,12 @@ code.
 
 .. image:: images3/image43.png
 
-Templates 
+|Note| **Note down the project name"
+
+Templates
 ---------
+
+|checkbox| **Setup ansible job templates**
 
 It is time to configure ansible job templates in Ansible Tower/AWX. The
 following are the list of job templates required to configure.
@@ -1405,7 +782,7 @@ following are the list of job templates required to configure.
 
 2. MongoDB install
 
-3. Blockchain
+3. Blockchain install
 
 4. Register Users (BAF preregister users)
 
@@ -1455,7 +832,7 @@ Vault Install
 
    |image6|\ |image7|
 
-MongoDB Install 
+MongoDB Install
 ~~~~~~~~~~~~~~~
 
 1. Login to Ansible Tower/AWX, Go to Resources => Templates => Add
@@ -1497,8 +874,8 @@ MongoDB Install
 
 .. image:: images3/image47.png
 
-BlockChain 
-~~~~~~~~~~
+Blockchain install
+~~~~~~~~~~~~~~~~~~
 
 1. Login to Ansible Tower/AWX, Go to Resources => Templates => Add
 
@@ -1541,7 +918,7 @@ BlockChain
 
 .. image:: images3/image49.png
 
-Register Users 
+Register Users
 ~~~~~~~~~~~~~~
 
 1. Login to Ansible Tower/AWX, Go to Resources => Templates => Add
@@ -1584,7 +961,7 @@ Register Users
 
 .. image:: images3/image51.png
 
-OpenIDL Application Install 
+OpenIDL Application Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Login to Ansible Tower/AWX, Go to Resources => Templates => Add
@@ -1626,7 +1003,7 @@ OpenIDL Application Install
 
 .. image:: images3/image53.png
 
-OpenIDL Application Secrets Install 
+OpenIDL Application Secrets Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Login to Ansible Tower/AWX, Go to Resources => Templates => Add
@@ -1668,323 +1045,21 @@ OpenIDL Application Secrets Install
 
 .. image:: images3/image55.png
 
-Now that the tasks like AWS, GitHub repository, Terraform Cloud, Ansible Tower and
-Jenkins environment are prepared related to their integration, job templates etc. It is all set
-to follow deployment steps in the order setup the node.
+Summary
+--------
 
-Using Jenkins Jobs perform the below
-1. Deploy AWS resources (uses Terraform Cloud/Enterprise)
-2. Deploy Vault (uses AWX)
-3. Deploy Blockchain Network (It involves multiple steps based on node) (uses AWX)
-4. Deploy MongoDB (uses AWX)
-5. Deploy Application Secrets (uses AWX)
-6. Deploy Application APIs (uses AWX)
+At this stage the preparation phase is completed in getting the below technology tools and environment readiness.
 
-The following section describes how to prepare and execute each Jenkins job to provision on the node.
+|checkbox| Sourcecode repositories
 
-Executing Jenkins Pipeline
-==========================
+|checkbox| AWS account
 
-Terraform Job
--------------
+|checkbox| Terraform Cloud/Enterprise
 
-This is the job previously setup. It is used to provision AWS resources
-and K8s resources. Before trigging the pipeline ensure the following are
-setup.
+|checkbox| Jenkins
 
-1. Terraform Cloud/Enterprise (Workspaces, VariableSet, API Token)
+|checkbox| Ansible Tower/AWX
 
-2. Jenkins (Credentials, Job configuration)
-
-3. Terraform code changes and pushed to repository
-
-**Note**: First run after configuring the job is dummy run as the option
-shows as “Build Now”. This will fail and will update your job with
-relevant parameters required for the job to run. Further runs will show
-an option Build with Parameters which will be right run.
-
-1. To trigger the job, go to Jenkins => relevant job => Build with
-   Parameters.
-
-2. Enter the values to the inputs as listed below.
-
-+-----------------+----------------------------------------------------+
-| **Field**       | **Description**                                    |
-+=================+====================================================+
-| TF_ADDRESS      | Terraform Cloud/Enterprise endpoint                |
-+-----------------+----------------------------------------------------+
-| TF_ORG_NAME     | Organization name setup in Terraform               |
-+-----------------+----------------------------------------------------+
-| T               | Terraform workspace name setup specifically for    |
-| F_AWS_WORKSPACE | AWS resources                                      |
-+-----------------+----------------------------------------------------+
-| T               | Terraform workspace name setup specifically for    |
-| F_K8S_WORKSPACE | K8s resources                                      |
-+-----------------+----------------------------------------------------+
-| GITHUB_URL      | GitHub repository to check out the code            |
-+-----------------+----------------------------------------------------+
-| GITHUB_BRANCH   | GitHub branch specifically to check out the code   |
-+-----------------+----------------------------------------------------+
-
-3. The job runs terraform plan and asks manual confirmation before
-   running terraform apply. This job will run first to provision AWS
-   resources and further run for K8s resources. Hence twice it asks
-   input to confirm before performing terraform apply.
-
-.. image:: images3/image64.png
-
-**NOTE:**
-
-It is noticed that sometimes the request to upload configuration data
-(git repository content) to Terraform fails with below HTTP error 422.
-In case when you see the pipeline failed with this error, rerun the
-pipeline which will help.
-
-+----------------------+-----------------------+-----------------------+
-| **Status**           | **Response**          | **Reason**            |
-+======================+=======================+=======================+
-| 422                  | JSON API error object | Malformed request.    |
-+----------------------+-----------------------+-----------------------+
-
-
-Once the AWS resources are provisioned successfully, carefully review the resources provisioned
-and perform the below actions.
-
-Disable access keys and setup new access keys
----------------------------------------------
-
-The terraform pipeline provisions three vital AWS IAM user resources. As
-this is provisioned part of terraform these user access and secret keys
-are in terraform state file.
-
-The initial provisioned access keys and secret keys should not be used,
-and it should be set as INACTIVE(Do not delete them). Further create new access keys and secret keys
-for these users and use them.
-
-NOTE: The name of the user has the first part truncated from the
-org_name. That is “carrier” becomes “carr-dev-baf-automation” which
-could cause a problem during testing if creating more than one carrier.
-
-.. csv-table: IAM users
-    :file: table5.csv
-    :header-rows: 1
-
-
-Remove security rule created by Kubernetes NGINX proxy deployment
------------------------------------------------------------------
-
-Once AWS resources are provisioned. The following security rules from
-the security groups are required to remove as they are deployed by
-default by Ingress Controller deployment in Kubernetes cluster.
-
-Refer to the following security groups to identify the rule and remove
-it.
-
-.. csv-table: Security Groups
-    :file: table6.csv
-    :header-rows: 1
-
-1. Go to EC2/VPC services section in the AWS console
-
-2. Go to Security Group section
-
-3. Look for the security group as mentioned in the above table
-
-.. image:: images/image42.png
-   :width: 6.50556in
-   :height: 2.65486in
-
-3. Open the security group and look for the rule related to ICMP set
-   with source 0.0.0.0/0 and remove it. The below screenshot is a
-   reference. Please remove only this rule only.
-
-..
-
-   .. image:: images/image43.png
-      :width: 6.5in
-      :height: 1.11528in
-
-4. Remove this rule from both (two) security groups as mentioned the
-   table above.
-
-Review and collect AWS resources details required:
---------------------------------------------------
-1. account number
-2. aws region
-3. application EKS cluster name
-4. blockchain EKS cluster name
-5. vault secret name
-6. <orgname>-<env>-gitactions-admin credentials
-7. <orgname>-<env>-openidl-apps-user credentials
-8. <orgname>-<env>-baf-user  credentials
-9. <orgname>-<env>-baf-automation role ARN which will be assumed by *-baf-user
-10. <orgname>-<env>-gitactions-admin role ARN which will be assumed by *-gitactions-admin user
-11.<orgname>-<env>-openidl-apps role ARN which will be assumed by *-openidl-apps-user
-12. cognito pool id
-13. cognito app client id
-14. s3 bucket created for HDS datastore
-
-In case anything missed to list here, while setting up the environment let us identify and include.
-
-Preparing Config file for Blockchain node setup
------------------------------------------------
-
-Since the first step of provisioning based AWS infrastructure is completed, the next step would be
-preparing the dependent components and setting up blockchain network/a node to join the existing
-network.
-
-The template and example configuration files are in the repository under
-“awx-automation/config-references”. Using these templates, the actual
-config file can be created and placed in the path
-“awx-automation/config”. The file name should follow the naming standard
-as below.
-
-Name: <org-name>-config-<env>.yml
-
-Org-name: First 4 characters of the org name
-
-Env: dev \| test \| prod
-
-The configuration file should be placed in the path
-“awx-automation/config/<org-name>-config-<env>.yml.
-
-**NOTE:** The details in preparing the config file are to refer from the repository templates.
-
-.. image:: images3/image65.png
-
-After preparing the configuration file as mentioned above and ensure that it is pushed to the
-github repository used to prepare the node. Once it is all set, then the next step would be deploying the
-blockchain network and its dependant components as below.
-
-NOTE: Remember that some of the fields are kept dummy while creating credentials in AWX during prepration phase.
-Now before running pipeline jobs to deploy Vault, Blockchain network etc, update the credentials with relevant actual
-values in AWX.
-
-1. Vault
-
-2. Blockchain Network
-
-.. _vault-job-1:
-
-Vault Job
----------
-
-To run a vault job, go to specific Jenkins Job and click on Build with
-Parameters and key in organization name and environment type (dev \|
-test \|prod) and choose deploy_action whether vault-deploy/vault-clean
-up based on the typical action to take.
-
-**Note**: First run after configuring the job is dummy run as the option
-shows as “Build Now”. This will fail and will update your job with
-relevant parameters required for the job to run. Further runs will show
-an option Build with Parameters which will be right run.
-
-.. image:: images3/image66.png
-
-.. _blockchain-network-job-1:
-
-Blockchain Network Setup Job
-----------------------------
-
-To run blockchain relevant tasks, go to the Job created for Blockchain
-Network and trigger relevant actions following the base document.
-
-**Note**: First run after configuring the job is dummy run as the option
-shows as “Build Now”. This will fail and will update your job with
-relevant parameters required for the job to run. Further runs will show
-an option Build with Parameters which will be right run.
-
-follow the :ref:`Manage the Network` section to complete all the steps for whichever node you are creating.
-
-.. image:: images3/image67.png
-
-.. _mongodb-job-1:
-
-OpenIDL application deployment Job
-----------------------------------
-
-After setting up blockchain network, the next step is to prepare the config files, deploying
-mongoDB, secrets and actual OpenIDL application APIs.
-
-1. MongoDB
-2. Prepare config files and upload to vault
-3. Deploy config files as K8s secrets
-4. Deploy actual OpenIDL APIs as deployments
-
-MongoDB Job 
------------
-
-To run a mongoDB job, go to specific Jenkins Job and click on Build with
-Parameters and key in organization name and environment type (dev \|
-test \|prod) and choose deploy_action whether
-mongoDB-deploy/mongoDB-clean up based on the typical action to take.
-
-**Note**: First run after configuring the job is dummy run as the option
-shows as “Build Now”. This will fail and will update your job with
-relevant parameters required for the job to run. Further runs will show
-an option Build with Parameters which will be right run.
-
-.. image:: images3/image68.png
-
-Preparing Config files for OpenIDL secret job
----------------------------------------------
-
-1. Refer to the repository under openidl-config/config-templates/ directory.
-
-2. There are config files in JSON format grouped based on node (AAIS | Analytics | Carrier)
-
-3. Refer to the config files and update the required values based on the node that is being prepared
-
-4.
-
-
-Preparing Config files for OpenIDL application job
---------------------------------------------------
-
-Before running application, specific jobs ensure that the following
-actions are completed referring to base document.
-
-1. Credentials in AWX specific to application and secrets job templates
-
-2. Referring to the base document getting the application related config
-   json files to vault
-
-3. Referring to the base document getting the application relate
-   global-vaules-<org-name>.yml files under “openidl-main/openidl-k8s”
-   directory in the repository.
-
-..
-
-   **NOTE:** The global-values- .yml files should follow the naming
-   standard as below.
-
-   **NAME:** global-vaules-<org-name>.yaml. The org-name should be
-   4-character representation only.
-
-4. The details about how to prepare the file to be referred from base
-   document.
-
-.. image:: images3/image69.png
-
-.. _openidl-application-job-1:
-
-OpenIDL Application Job 
------------------------
-
-To deploy application secrets and OpenIDL application, run the job
-configured for OpenIDL applications. Go to Jenkins and select the
-relevant job and use Build with Parameters.
-
-**Note**: First run after configuring the job is dummy run as the option
-shows as “Build Now”. This will fail and will update your job with
-relevant parameters required for the job to run. Further runs will show
-an option Build with Parameters which will be right run.
-
-This job has two step process. First perform deploy-secrets and then
-deploy-apps action. The first action deploys relevant configuration as
-Kubernetes secrets and the next action deploys OpenIDL application
-containers.
-
-.. image:: images3/image70.png
-
+The next stage is the deployment phase in preparing base infrastructure, setting up blockchain network and deploying
+openidl application.
 

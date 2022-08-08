@@ -14,7 +14,7 @@ Welcome to openIDL documentation!
    :caption: Contents:
 
    iac-github-actions.rst
-   iac-jenkins.rst
+   iac-jenkins-updated.rst
    iac-manage-network.rst
    iac-deploy-apps.rst
    iac-dns.rst
@@ -40,6 +40,7 @@ The overall infrastructure as code to deploy the required nodes (AAIS node | ana
 #. Jenkins
 #. Terraform
 #. AWS Cloud
+#. Ansible/Ansible Tower
 
 .. include:: iac-configuration.rst
 
